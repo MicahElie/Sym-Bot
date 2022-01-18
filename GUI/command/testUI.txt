@@ -1,0 +1,6 @@
+HomeCartesian,120,33,1
+Joint,20,45,21,44
+GripperOpen
+Cartesian,35,45,21
+GripperClose
+GoHome

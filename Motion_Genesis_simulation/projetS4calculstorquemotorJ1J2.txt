@@ -1,0 +1,145 @@
+% File: projetS4calculstorque
+clear
+
+%% DECLARATION VARIABLES
+Constant long_bras_horiz = 0.12 m
+Constant long_bras_vert = 0.21 m
+Constant masse_bras_horiz = 0.170 kg
+Constant masse_bras_vert = 0.223 kg
+Constant masse_moteur = 0.1 kg
+Constant masse_charge = 0.3 kg
+Constant g = 9.81 m/s^2
+Variable theta_a_n, theta_a_b
+
+
+
+%% DECLARATION CORPS/REFERENTIELS
+RigidFrame N
+RigidBody A, B % A = bras vertical, B = bras horizontal
+% Particle C
+% Particle D
+% C = moteur, D = charge au bout du bras
+
+
+%% DECLARATION POINTS
+Point AB(A)
+Point C(A)
+Point D(B)
+%points inverse sont les zeros des bases
+
+
+%% DEFINITION DE LA GEOMETRIE
+A.RotateZ(N, -theta_a_n)
+B.RotateZ(A, -theta_a_b)
+
+%pos corps a
+Ao.SetPosition(No, 0>)
+
+Acm.SetPosition(Ao, (long_bras_vert/2)*Ay>)
+
+%pos corps b
+Bo.SetPosition(Ao, long_bras_vert*Ay>)
+Bcm.SetPosition(Bo, (long_bras_horiz/2)*By>)
+
+AB.SetPosition(Bo, 0>)
+
+%pos particle C
+C.SetPosition(AB, 0>)
+
+%pos particle D
+D.SetPosition(Bo, long_bras_horiz*By>)
+
+
+%% DEFINITION DES FORCES
+
+%% definition des masses
+% C.SetMass(masse_moteur)
+% D.SetMass(masse_charge)
+
+%%definition des variables de forces
+variable Frx_N,  Fry_N,  Frz_N
+variable Frx_Ab, Fry_Ab, Frz_Ab
+variable TJ1_x, TJ1_y, TJ1_z, TJ2_x, TJ2_y, TJ2_z
+
+
+%%corps a
+Ao.AddForce(Frx_N * Nx>)
+Ao.AddForce(Fry_N * Ny>)
+Ao.AddForce(Frz_N * Nz>)
+Acm.AddForce(-masse_bras_vert * g * Ny>)
+Ab.AddForce(Bo, -Frx_Ab * Nx>)
+Ab.AddForce(Bo, -Fry_Ab * Ny>)
+Ab.AddForce(Bo, -Frz_Ab * Nz>)
+A.AddTorque(N, TJ1_x * Nx> + TJ1_y * Ny> + TJ1_z * Nz>) 
+
+%%corps b
+% Bo.AddForce(Frx_Ab * Nx>)
+% Bo.AddForce(Fry_Ab * Ny>)
+% Bo.AddForce(Frz_Ab * Nz>)
+Bcm.AddForce(-masse_bras_horiz * g * Ny>)
+B.AddTorque(A, TJ2_x * Nx> + TJ2_y * Ny> + TJ2_z * Nz>)
+
+%%particle c
+C.AddForce(-g * masse_moteur * Ny>)
+
+%%particle d
+D.AddForce(-g * masse_charge * Ny>)
+
+
+%% CALCUL DES FORCES ET MOMENTS RÉSULTANTS
+
+Fres_A> = A.GetResultantForce()
+Fres_B> = B.GetResultantForce()
+
+Mres_A> = A.GetMomentOfForces(Ao) + C.GetMomentOfForce(Ao)
+Mres_B> = B.GetMomentOfForces(Bo) + D.GetMomentOfForce(Bo)
+
+%% PROJECTION DES EQUATIONS VECTORIELLES
+
+Eq[1]  = Dot(Fres_A>, Nx>)
+Eq[2]  = Dot(Fres_A>, Ny>)
+Eq[3]  = Dot(Fres_A>, Nz>)
+Eq[4]  = Dot(Mres_A>, Nx>)
+Eq[5]  = Dot(Mres_A>, Ny>)
+Eq[6]  = Dot(Mres_A>, Nz>)
+
+Eq[7]  = Dot(Fres_B>, Nx>)
+Eq[8]  = Dot(Fres_B>, Ny>)
+Eq[9]  = Dot(Fres_B>, Nz>)
+Eq[10] = Dot(Mres_B>, Nx>)
+Eq[11] = Dot(Mres_B>, Ny>)
+Eq[12] = Dot(Mres_B>, Nz>)
+
+
+%EQS = [Eq[1],Eq[2],Eq[3],Eq[4],Eq[5],Eq[6],Eq[7],Eq[8],Eq[9],Eq[10],Eq[11],Eq[12],Eq[13],Eq[14],Eq[15],Eq[16],Eq[17],Eq[18],Eq[23]]
+%% RESOLUTION NUMERIQUE
+
+%Cas 1: 15 degrés
+% Input theta_a_n = 15 deg, theta_a_b= 15 deg
+% Solve(Eq, Frx_N,  Fry_N,  Frz_N, Frx_Ab, Fry_Ab, Frz_Ab, TJ1_x, TJ1_y, TJ1_z, TJ2_x, TJ2_y, TJ2_z)
+% EvaluateToNumber(TJ1_x)
+% EvaluateToNumber(TJ1_y)
+% EvaluateToNumber(TJ1_z)
+% EvaluateToNumber(TJ2_x)
+% EvaluateToNumber(TJ2_y)
+% EvaluateToNumber(TJ2_z)
+
+% %Cas 2: 30 degrés
+% Input theta_a_n = 30 deg, theta_a_b= 30 deg
+% Solve(Eq, Frx_N,  Fry_N,  Frz_N, Frx_Ab, Fry_Ab, Frz_Ab, TJ1_x, TJ1_y, TJ1_z, TJ2_x, TJ2_y, TJ2_z)
+% EvaluateToNumber(TJ1_x)
+% EvaluateToNumber(TJ1_y)
+% EvaluateToNumber(TJ1_z)
+% EvaluateToNumber(TJ2_x)
+% EvaluateToNumber(TJ2_y)
+% EvaluateToNumber(TJ2_z)
+
+% %Cas 3: 45 degrés
+Input theta_a_n = 45 deg, theta_a_b= 45 deg
+Solve(Eq, Frx_N,  Fry_N,  Frz_N, Frx_Ab, Fry_Ab, Frz_Ab, TJ1_x, TJ1_y, TJ1_z, TJ2_x, TJ2_y, TJ2_z)
+EvaluateToNumber(TJ1_x)
+EvaluateToNumber(TJ1_y)
+EvaluateToNumber(TJ1_z)
+EvaluateToNumber(TJ2_x)
+EvaluateToNumber(TJ2_y)
+EvaluateToNumber(TJ2_z)

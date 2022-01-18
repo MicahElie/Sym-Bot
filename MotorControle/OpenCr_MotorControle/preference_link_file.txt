@@ -1,0 +1,2 @@
+Copy this link in the Arduino preference setting in section: URL of additional card managers
+https://raw.githubusercontent.com/ROBOTIS-GIT/OpenCR/master/arduino/opencr_release/package_opencr_index.json
