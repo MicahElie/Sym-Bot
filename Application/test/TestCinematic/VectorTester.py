@@ -6,9 +6,12 @@ import numpy as np
 class VectorTester(unittest.TestCase):
 
     def assertVectorEqual(self, expectedVector, currentVector, delta=0.001):
-        self.assertAlmostEqual(expectedVector[0], currentVector[0], delta=delta)
-        self.assertAlmostEqual(expectedVector[1], currentVector[1], delta=delta)
-        self.assertAlmostEqual(expectedVector[2], currentVector[2], delta=delta)
+        # self.assertAlmostEqual(expectedVector[0], currentVector[0], delta=delta)
+        # self.assertAlmostEqual(expectedVector[1], currentVector[1], delta=delta)
+        # self.assertAlmostEqual(expectedVector[2], currentVector[2], delta=delta)
+        for i in range(len(expectedVector)):
+            self.assertAlmostEqual(expectedVector[i], currentVector[i], delta=delta)
+
 
     def assertMatrixEqual(self, expectedMatrix, currentMatrix, decimal = 3):
         np.testing.assert_array_almost_equal(expectedMatrix,currentMatrix, decimal=decimal)
