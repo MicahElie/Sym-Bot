@@ -49,27 +49,34 @@ if __name__ == '__main__':
 
     commPort = None
     messageIO = MessageIO()
-    messageIO.addDevice(SerialComm("COM3", 57600))  #Port vers open
+    messageIO.addDevice(SerialComm("COM4", 57600))  #Port vers open
     #messageIO.addDevice(SerialComm("COM2", 57600))  #Port vers Pico
     driveManager = DriveManager([0, 0, 0], messageIO)
 
         
     JS = JoinSystem([RevoluteJoin(VectorSpaceAxis.Y, np.array([0.0, 0.0, 0.0]), [-math.pi/2, math.pi/2], hardwareStepDistance= math.pi*2/4096)])
     JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [-math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
-    JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [--math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
+    JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [-math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
 
     robot = robotAPI(JS,[0., 0., 0.], driveManager)
+    print("Start")
 
     msg = ControlMessage(ControlMessage.SET_JOIN_POSITION, [0, 0, 0])
+    print(msg)
     robot.executeCommand(msg)
-    '''
-    val = 100
-    while val < 4096:
-        msg = ControlMessage(ControlMessage.SET_JOIN_POSITION, [val, val, val])
-        robot.executeCommand(msg)
-        #  val = val + 256
-        time.sleep(10)
-    '''
+
+    # val = 0
+    # while val < 4096:
+    #     msg = ControlMessage(ControlMessage.SET_JOIN_POSITION, [val, val, val])
+    #     robot.executeCommand(msg)
+    #     val = val + 128
+    #     print(val)
+    #     time.sleep(1)
+    # print("msg")
+    # msg = ControlMessage(ControlMessage.SET_JOIN_POSITION, [0, 0, 0])
+    # print(msg)
+    # robot.executeCommand(msg)
+ 
 
     # commPort = EthernetComm(conn)
     # messageIO.addDevice(commPort)
@@ -80,3 +87,4 @@ if __name__ == '__main__':
     #         print("paload size: ", msg.getPayloadSize())
     #         print("payload :", msg.getPayload())
     #         robot.executeCommand(msg)
+
