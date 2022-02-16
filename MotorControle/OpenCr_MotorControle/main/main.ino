@@ -1,6 +1,6 @@
 #ifndef UNIT_TEST
 
-#define debug 0
+#define debug 1
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
@@ -61,24 +61,24 @@ Servo servo;
 
 // Definition des defines pour les parametres des moteurs
 // Definition of defines for engine parameters 
-#define NbrMotor 5
-#define NbrMotorDynamixel 4
+#define NbrMotor 4
+#define NbrMotorDynamixel 3
 #define NbrMotorStepper 0
 #define NbrMotorServo 1
 
+// 3 moteur dynamixel et 1 servo(dans l'ordre) ; 7 = base, 13 = épaule, 1 = coude
+int defineID[NbrMotor]= {7,13,1,4};
 
-int defineID[NbrMotor]= {1,2,3,4,5};
-
-int LimiteMax[NbrMotor] = {819210,114096,112000,113400,50000};
-int LimiteMin[NbrMotor] = {0,0,0,0,0};
-int Home[NbrMotor]= {1000,0,0,0,0};
-int ReferencePosition[NbrMotor]= {10000,300,300,0,0};
-int PasInitialisation[NbrMotor]= {200,50,45,50,4096};
-int PetitPasInitialisation[NbrMotor]= {50,10,10,10,4096}; 
-int ActualPosition[NbrMotor]= {1000,100,100,100,4096};
-int inPinsInterupteurNumber[NbrMotor] = {11,6,7,11,9};//{11,6,7,8,9}{8,8,8,8,8}
-int reverseInitialisation[NbrMotor] = {0,1,1,1,0};
-int initialisationAuDepart[NbrMotor] = {1,1,1,1,1};//{1,1,1,1,1};
+int LimiteMax[NbrMotor] = {819210,114096,112000,113400};//50000
+int LimiteMin[NbrMotor] = {0,0,0,0}; //0
+int Home[NbrMotor]= {0,0,0,0}; //0
+int ReferencePosition[NbrMotor]= {300,300,300,0};//0
+int PasInitialisation[NbrMotor]= {50,50,45,50};//4096
+int PetitPasInitialisation[NbrMotor]= {10,10,10,10};//4096 
+int ActualPosition[NbrMotor]= {100,100,100,100};//4096
+int inPinsInterupteurNumber[NbrMotor] = {11,6,7,11};//{11,6,7,8,9}{8,8,8,8,8} 9
+int reverseInitialisation[NbrMotor] = {1,1,1,1};//0
+int initialisationAuDepart[NbrMotor] = {1,1,1,1};//{1,1,1,1,1}; 1
 
 //Définir les parametres pour les interrupteurs
 //#define inpinsdynamixel 3
@@ -137,9 +137,6 @@ class motorservo
   }
  };
 
- 
-
-
 class motorstepper
 {
   public:
@@ -196,8 +193,6 @@ class motorstepper
     return -1;
   }
  };
-
-
 
 // Definition de la classe moteur pour les moteurs dynamixel
 // Definition of the motor class for dynamixel motors
@@ -370,8 +365,6 @@ class motor
 motor* Reference[NbrMotorDynamixel];
 motorservo* ReferenceServo[NbrMotorServo];
 motorstepper* ReferenceStepper[NbrMotorStepper];
-
-
 
 void setup() 
 {
