@@ -1,0 +1,5 @@
+{
+    "configuration": "upload_method=UploadMethod",
+    "board": "OpenCR:OpenCR:OpenCR",
+    "sketch": "MotorControle\\OpenCr_MotorControle\\main\\main.ino"
+}
