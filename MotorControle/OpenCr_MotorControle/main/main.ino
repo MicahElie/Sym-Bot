@@ -14,13 +14,13 @@
 #define DEVICE_NAME ""
 #endif
 
-#define STRING_BUF_NUM 64
-String cmd[STRING_BUF_NUM];
+// #define STRING_BUF_NUM 64
+// String cmd[STRING_BUF_NUM];
 
 #include "SerialComm.h"
 #include "ControlMessage.h"
 #include "MessageIO.h"
-#include "TinyStepper_28BYJ_48.h"
+// #include "TinyStepper_28BYJ_48.h"
 
 #define BAUD 57600
 
@@ -53,7 +53,7 @@ DynamixelWorkbench dxl_wb;
 */
 // Definition de la classe moteur pour les moteurs STEP
 // Definition of the motor class for STEP motors
-TinyStepper_28BYJ_48 stepper;
+// TinyStepper_28BYJ_48 stepper;
 
 // Definition de la classe moteur pour les moteurs SERVO
 // Definition of the motor class for SERVO motors
@@ -70,11 +70,12 @@ Servo servo;
 int defineID[NbrMotor] = {7, 13, 1, 4};
 
 // Limite de rotation maximal positif; en step
-int LimiteMax[NbrMotor] = {2048, 2048, 2048, 2048};
-// int LimiteMin[NbrMotor] = {0,0,0,0}; // pas utilisé
+int LimiteMax[NbrMotor] = {4095, 2672, 1408, 2560};
+int LimiteMin[NbrMotor] = {0, 1648, 0, 1536};
 
-int Home[NbrMotor] = {0, 0, 0, 0};
-int ReferencePosition[NbrMotor] = {300, 300, 300, 0};
+// Avec GetPosition
+int Home[NbrMotor] = {2047, 2048, 1023, 2048};
+int ReferencePosition[NbrMotor] = {0, 0, 0, 0};
 
 int ActualPosition[NbrMotor] = {0, 0, 0, 0};
 // Activer APPROCHE {0: Non | 1: Oui}
@@ -85,7 +86,7 @@ int PetitPasInitialisation[NbrMotor] = {10, 10, 10, 10};
 // Pins d'interrupteur de fin de course
 int inPinsInterupteurNumber[NbrMotor] = {11, 6, 7, 11};
 // ...
-int reverseInitialisation[NbrMotor] = {1, 1, 1, 1}; //0
+int reverseInitialisation[NbrMotor] = {0, 0, 0, 0}; //0
 
 //Définir les parametres pour les interrupteurs
 /* Pas utilisee
@@ -96,9 +97,12 @@ int reverseInitialisation[NbrMotor] = {1, 1, 1, 1}; //0
 */
 class motorservo
 {
+  int id;
+
 public:
   motorservo(int id)
   {
+    this->id = id;
     const int MOTOR_IN_PIN = 3;
 
     servo.attach(MOTOR_IN_PIN);
@@ -121,12 +125,12 @@ public:
   void gotoa(int32_t pos)
   {
     servo.write(pos);
-    ;
   };
 
   void setHomingOffset(int32_t pos)
   {
 #if debug == 1
+    Serial.println(pos);
     Serial.println("Maybe, not avalable with this motor.");
 #endif
   }
@@ -146,144 +150,203 @@ public:
   }
 };
 
-class motorstepper
+/* class motorstepper
 {
-public:
-  motorstepper(int id)
-  {
-    const int LED_PIN = 13;
-    const int MOTOR_IN1_PIN = 8;
-    const int MOTOR_IN2_PIN = 9;
-    const int MOTOR_IN3_PIN = 10;
-    const int MOTOR_IN4_PIN = 11;
-    const int STEPS_PER_REVOLUTION = 2048;
+  public:
+    motorstepper(int id)
+    {
+      const int LED_PIN = 13;
+      const int MOTOR_IN1_PIN = 8;
+      const int MOTOR_IN2_PIN = 9;
+      const int MOTOR_IN3_PIN = 10;
+      const int MOTOR_IN4_PIN = 11;
+      const int STEPS_PER_REVOLUTION = 2048;
 
-    stepper.connectToPins(MOTOR_IN1_PIN, MOTOR_IN2_PIN, MOTOR_IN3_PIN, MOTOR_IN4_PIN);
+      stepper.connectToPins(MOTOR_IN1_PIN, MOTOR_IN2_PIN, MOTOR_IN3_PIN, MOTOR_IN4_PIN);
 
-    //Code for setting motors in different modes
-    //Code pour le réglage des moteurs dans differents modes
-    stepper.setSpeedInStepsPerSecond(500);
-    stepper.setAccelerationInStepsPerSecondPerSecond(500);
-#if debug == 1
-    Serial.println("");
-    Serial.print("If light On, steppermotor ");
-    Serial.print(id);
-    Serial.print(" ready. If light OFF, this steppermotor is NOT ready");
-    Serial.println("");
-#endif
-  };
+      //Code for setting motors in different modes
+      //Code pour le réglage des moteurs dans differents modes
+      stepper.setSpeedInStepsPerSecond(500);
+      stepper.setAccelerationInStepsPerSecondPerSecond(500);
+      #if debug == 1
+          Serial.println("");
+          Serial.print("If light On, steppermotor ");
+          Serial.print(id);
+          Serial.print(" ready. If light OFF, this steppermotor is NOT ready");
+          Serial.println("");
+      #endif
+    };
 
-  void gotoa(int32_t pos)
-  {
-    //stepper.moveRelativeInSteps(pos);
-    stepper.moveToPositionInSteps(pos);
-  };
+    void gotoa(int32_t pos)
+    {
+      //stepper.moveRelativeInSteps(pos);
+      stepper.moveToPositionInSteps(pos);
+    };
 
-  void setHomingOffset(int32_t pos)
-  {
-#if debug == 1
-    Serial.println("Fonction not working at 100%: Error");
-    Serial.println("Maybe, not avalable with this motor.");
-#endif
-    stepper.setCurrentPositionInSteps(pos);
-  }
+    void setHomingOffset(int32_t pos)
+    {
+      #if debug == 1
+          Serial.println("Fonction not working at 100%: Error");
+          Serial.println("Maybe, not avalable with this motor.");
+      #endif
+      stepper.setCurrentPositionInSteps(pos);
+    }
 
-  int32_t GetPosition1()
-  {
-    long actualPos = stepper.getCurrentPositionInSteps();
-    return actualPos;
-  }
+    int32_t GetPosition1()
+    {
+      long actualPos = stepper.getCurrentPositionInSteps();
+      return actualPos;
+    }
 
-  int32_t GetReferencePosition1()
-  {
-#if debug == 1
-    Serial.println("Maybe, not avalable with this motor.");
-#endif
-    return -1;
-  }
-};
+    int32_t GetReferencePosition1()
+    {
+      #if debug == 1
+          Serial.println("Maybe, not avalable with this motor.");
+      #endif
+      return -1;
+    }
+}; */
 
 // Definition de la classe moteur pour les moteurs dynamixel
 // Definition of the motor class for dynamixel motors
+// https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_workbench/#opencr-and-opencm-tutorials
+// https://emanual.robotis.com/docs/en/dxl/x/xl430-w250/#profile-acceleration108
+// https://emanual.robotis.com/docs/en/dxl/x/xm430-w350/#goal-velocity104
+// https://github.com/ROBOTIS-GIT/dynamixel-workbench/blob/09e31a8649a7d3b89d76b6bdd2df3407c1622a5c/dynamixel_workbench_toolbox/src/dynamixel_workbench_toolbox/dynamixel_item.cpp
 class motor
 {
+private:
+  int id;
+  const char *log;
+  uint16_t model_number;
+  int baud = 57600;
+  bool cmdSucceeded;
+
 public:
   motor(int id)
   {
-    int result;
-    int result1;
-    int result3;
-    int actualPosition;
-    int goal = 100;
-    int32_t data;
-    uint16_t model_number;
-    const char *log;
-    int baud = 57600;
+    // int actualPosition;
+    // int goal = 100;
+    // int32_t data;
+    // const char *log;
     this->id = id;
-    result = dxl_wb.init(DEVICE_NAME, baud);
-    result = dxl_wb.ping((int8_t)id, &model_number, &log);
+    cmdSucceeded = dxl_wb.init(DEVICE_NAME, baud);
+    cmdSucceeded = dxl_wb.ping((int8_t)id, &model_number, &log);
 
     //Code for setting motors in different modes
     //Code pour le réglage des moteurs dans differents modes
     //Essaie #1
-    //result = dxl_wb.jointMode(id, 0, 0, &log);
+    if (id == 1 || id == 13)
+    {
+      cmdSucceeded = dxl_wb.setReverseDirection(id, &log);
+      #if debug == 1
+        if (cmdSucceeded == 0)
+        {
+          Serial.println(log);
+          Serial.println("Failed to change joint mode");
+        }
+        else
+        {
+          Serial.print("Succeed to change joint mode ");
+        }
+      #endif
+    }
+
+    cmdSucceeded = dxl_wb.jointMode(id, 75, 0, &log);
+#if debug == 1
+    if (cmdSucceeded == 0)
+    {
+      Serial.println(log);
+      Serial.println("Failed to change joint mode");
+    }
+    else
+    {
+      Serial.print("Succeed to change joint mode ");
+    }
+#endif
+    // Ou
+    // cmdSucceeded = dxl_wb.setExtendedPositionControlMode(id, &log);
+    /* Unit	0.229 [rev/min]	Sets velocity of the Profile
+       * Unit	1 [msec]	Sets the time span for the Profile
+       * Range	0 ~ 32767	‘0’ represents an infinite velocit */
+    // cmdSucceeded = dxl_wb.itemWrite(id, "Profile_Velocity", 50, &log);
+    /* Unit	214.577 [rev/min2]	Sets acceleration of the Profile
+       * Unit	1 [msec]	Sets accelerating time of the Profile
+       * Range	0 ~ 32767	‘0’ represents an infinite acceleration */
+    // cmdSucceeded = dxl_wb.itemWrite(id, "Profile_Acceleration", 50, &log);
+    /* cmdSucceeded = dxl_wb.torqueOn(id, &log);
+      #if debug == 1
+        if (cmdSucceeded == 1)
+        {
+          Serial.println("torque On ");
+        }
+        else
+        {
+          Serial.print("torque off");
+        }
+      #endif */
+    // A ajouter pour plus de securite
+    // cmdSucceeded = dxl_wb.itemWrite(id, "Max_Position_Limit", 4095, &log);
+    // cmdSucceeded = dxl_wb.itemWrite(id, "Min_Position_Limit", 0, &log);
+
     //Essaie #2
-    //result = dxl_wb.setMultiTurnControlMode((int8_t)id,  &log);
+    //cmdSucceeded = dxl_wb.setMultiTurnControlMode((int8_t)id,  &log);
     //Essaie #3
     //result1 = dxl_wb.setExtendedPositionControlMode((int8_t)id,  &log);
     //Essaie #4
-    result = dxl_wb.currentBasedPositionMode((int8_t)id, 100, &log);
-    if (id != 0)
-    {
-      int resultss1 = dxl_wb.itemWrite(id, "Profile_Velocity", 50, &log);
-      int resultss2 = dxl_wb.itemWrite(id, "Goal_PWM", 885, &log);
-      int resultss3 = dxl_wb.itemWrite(id, "Goal_Velocity", 500, &log);
-      int resultss4 = dxl_wb.itemWrite(id, "Goal_Current", 1193, &log);
-#if debug == 1
-      if (resultss1 == 0 || resultss2 == 0 || resultss3 == 0 || resultss4 == 0)
+    /* cmdSucceeded = dxl_wb.currentBasedPositionMode((int8_t)id, 100, &log);
+      if (id != 0)
       {
-        Serial.println(log);
-        Serial.println("Failed to set one of these setting: Profile_Velocity, Goal_PWM, Goal_Velocitu and Goal_Current ");
-      }
-      else
+        int resultss1 = dxl_wb.itemWrite(id, "Profile_Velocity", 50, &log);
+        int resultss2 = dxl_wb.itemWrite(id, "Goal_PWM", 885, &log);
+        int resultss3 = dxl_wb.itemWrite(id, "Goal_Velocity", 500, &log);
+        int resultss4 = dxl_wb.itemWrite(id, "Goal_Current", 1193, &log);
+        #if debug == 1
+          if (resultss1 == 0 || resultss2 == 0 || resultss3 == 0 || resultss4 == 0)
+          {
+            Serial.println(log);
+            Serial.println("Failed to set one of these setting: Profile_Velocity, Goal_PWM, Goal_Velocitu and Goal_Current ");
+          }
+          else
+          {
+            Serial.print("Succeed to set setting : Profile_Velocity, Goal_PWM, Goal_Velocitu and Goal_Current ");
+          }
+        #endif
+      } */
+    /* if (id == 0)
       {
-        Serial.print("Succeed to set setting : Profile_Velocity, Goal_PWM, Goal_Velocitu and Goal_Current ");
-      }
-#endif
-    }
+        cmdSucceeded= dxl_wb.itemWrite(id, "Profile_Velocity", 20, &log);
+        #if debug == 1
+              if (cmdSucceeded == 0)
+              {
+                Serial.println(log);
+                Serial.println("Failed to set reverse mode");
+              }
+              else
+              {
+                Serial.print("Succeed to set reverse mode ");
+              }
+        #endif
+      } */
 
-    if (id == 0)
-    {
-      int results = dxl_wb.itemWrite(id, "Profile_Velocity", 20, &log);
+    // if (id != 5)
+    // {
+    /* cmdSucceeded = dxl_wb.torqueOn(id, &log);
+        #if debug == 1
+          if (cmdSucceeded == 1)
+          {
+            Serial.println("torque On ");
+          }
+          else
+          {
+            Serial.print("torque off");
+          }
+        #endif */
+    // }
+
+    cmdSucceeded = dxl_wb.ledOn((uint8_t)id, &log);
 #if debug == 1
-      if (results == 0)
-      {
-        Serial.println(log);
-        Serial.println("Failed to set reverse mode");
-      }
-      else
-      {
-        Serial.print("Succeed to set reverse mode ");
-      }
-#endif
-    }
-    if (id != 5)
-    {
-      result = dxl_wb.torqueOn(id, &log);
-#if debug == 1
-      if (result == 1)
-      {
-        Serial.println("torque On ");
-      }
-      else
-      {
-        Serial.print("torque off");
-      }
-#endif
-    }
-    result3 = dxl_wb.ledOn((uint8_t)id, &log);
-#if debug == 1
-    if (result3 == 1)
+    if (cmdSucceeded == 1)
     {
       Serial.println("");
       Serial.print("Light On, motor ");
@@ -302,9 +365,6 @@ public:
 #endif
   };
 
-  int id;
-  const char *log;
-
   void gotoa(int32_t pos)
   {
     dxl_wb.goalPosition((int8_t)id, (int32_t)pos, &log);
@@ -312,10 +372,9 @@ public:
 
   void setHomingOffset(int32_t pos)
   {
-    bool resultss = false;
-    resultss = dxl_wb.itemWrite(id, "Homing_Offset", pos, &log);
+    cmdSucceeded = dxl_wb.itemWrite(id, "Homing_Offset", pos, &log);
 #if debug == 1
-    if (resultss == false)
+    if (cmdSucceeded == false)
     {
       Serial.println(log);
       Serial.println("Failed to set Homing_Offset");
@@ -329,11 +388,10 @@ public:
 
   int32_t GetPosition1()
   {
-    bool results;
     int32_t get_data = 0;
-    results = dxl_wb.itemRead(id, "Present_Position", &get_data, &log);
+    cmdSucceeded = dxl_wb.itemRead(id, "Present_Position", &get_data, &log);
 #if debug == 1
-    if (results == false)
+    if (cmdSucceeded == false)
     {
       Serial.println(log);
       Serial.println("Failed to get present position");
@@ -350,11 +408,10 @@ public:
 
   int32_t GetReferencePosition1()
   {
-    bool results;
     int32_t get_data = 0;
-    results = dxl_wb.itemRead(id, "Homing_Offset", &get_data, &log);
+    cmdSucceeded = dxl_wb.itemRead(id, "Homing_Offset", &get_data, &log);
 #if debug == 1
-    if (results == false)
+    if (cmdSucceeded == false)
     {
       Serial.println(log);
       Serial.println("Failed to get Homing_Offset position");
@@ -372,7 +429,7 @@ public:
 
 motor *Reference[NbrMotorDynamixel];
 motorservo *ReferenceServo[NbrMotorServo];
-motorstepper *ReferenceStepper[NbrMotorStepper];
+// motorstepper *ReferenceStepper[NbrMotorStepper];
 
 void setup()
 {
@@ -412,16 +469,16 @@ void loop()
   }
 
   // Instanciation du Stepper
-  for (int M = 0; M < NbrMotorStepper; M++)
+  /* for (int M = 0; M < NbrMotorStepper; M++)
   {
     if (ReferenceStepper[M] == 0)
     {
       ReferenceStepper[M] = new motorstepper(defineID[M]);
-#if debug == 1
-      Serial.println("Je set un steppermotor");
-#endif
+      #if debug == 1
+            Serial.println("Je set un steppermotor");
+      #endif
     }
-  }
+  } */
 
   //INITIALISATION INITIALES DU ROBOT: MOTEUR DYNAMIXEL ET STEPPER
   for (int i = 0; i < (NbrMotor - NbrMotorServo); i++)
@@ -453,12 +510,12 @@ void loop()
           Reference[i]->gotoa(ajout);
           delay(750);
         }
-        else if (i >= NbrMotorDynamixel)
+        /* else if (i >= NbrMotorDynamixel)
         {
           ReferenceStepper[i]->gotoa(ajout);
           delay(2000);
           //Je peut aussi set ca position actuelle comme je le veux
-        }
+        } */
         readingstepper = digitalRead(inPinsInterupteurNumber[i]);
       }
       //APPROCHE #2
@@ -477,11 +534,11 @@ void loop()
         Reference[i]->gotoa(ajout);
         delay(750);
       }
-      else if (i >= NbrMotorDynamixel)
+      /* else if (i >= NbrMotorDynamixel)
       {
         ReferenceStepper[i]->gotoa(ajout);
         delay(2000);
-      }
+      } */
       //APPROCHE #3
       delay(750);
       int readingstepper_fine = digitalRead(inPinsInterupteurNumber[i]);
@@ -501,12 +558,12 @@ void loop()
           Reference[i]->gotoa(ajout);
           delay(500);
         }
-        else if (i >= NbrMotorDynamixel)
+        /* else if (i >= NbrMotorDynamixel)
         {
           ReferenceStepper[i]->gotoa(ajout);
           delay(1000);
           //Je peut aussi set ca position actuelle comme je le veux
-        }
+        } */
         readingstepper_fine = digitalRead(inPinsInterupteurNumber[i]);
       }
 
@@ -528,7 +585,6 @@ void loop()
     for (int ii = valeurservo; ii >= NbrMotor; ii++)
     {
       if (initialisationAuDepart[ii] == 1)
-        ;
       {
         ReferenceServo[ii]->gotoa(0); //0 if the referenco position for SERVO?
         ActualPosition[ii] = 0;
@@ -560,6 +616,11 @@ void loop()
           msg->getPayload()[i] = LimiteMax[i];
         }
 
+        if (msg->getPayload()[i] <= LimiteMin[i])
+        {
+          msg->getPayload()[i] = LimiteMin[i];
+        }
+
         ActualPosition[i] = msg->getPayload()[i] + ReferencePosition[i];
         if (i < NbrMotorDynamixel)
         {
@@ -573,27 +634,27 @@ void loop()
           }
           ActualPosition[i] = (Reference[i])->GetPosition1();
         }
-        else if (i >= NbrMotorDynamixel)
+        /* else if (i >= NbrMotorDynamixel)
         {
           ReferenceStepper[i]->gotoa(msg->getPayload()[i]);
           ActualPosition[i] = msg->getPayload()[i];
-        }
+        } */
       }
 
       //Set position = 77: La nouvelle fonction GoTo sans la section
       if (msg->getType() == 77)
       {
-        int valeurRecu = msg->getPayload()[i];
-        int valeurModifier = 0;
+        // int valeurRecu = msg->getPayload()[i];
+        // int valeurModifier = 0;
 
         if (i < NbrMotorDynamixel)
         {
           Reference[i]->gotoa(msg->getPayload()[i]);
         }
-        else if (i >= NbrMotorDynamixel)
+        /* else if (i >= NbrMotorDynamixel)
         {
           ReferenceStepper[i]->gotoa(msg->getPayload()[i]);
-        }
+        } */
       }
       //Set limite = 1
       else if (msg->getType() == SET_LIMITES_INDEX)
@@ -633,12 +694,12 @@ void loop()
               Reference[i]->gotoa(ajout);
               delay(750);
             }
-            else if (i >= NbrMotorDynamixel)
+            /* else if (i >= NbrMotorDynamixel)
             {
               ReferenceStepper[i]->gotoa(ajout);
               delay(2000);
               //Je peut aussi set ca position actuelle comme je le veux
-            }
+            } */
             readingstepper = digitalRead(inPinsInterupteurNumber[i]);
           }
           //APPROCHE #2
@@ -657,11 +718,11 @@ void loop()
             Reference[i]->gotoa(ajout);
             delay(750);
           }
-          else if (i >= NbrMotorDynamixel)
+          /* else if (i >= NbrMotorDynamixel)
           {
             ReferenceStepper[i]->gotoa(ajout);
             delay(2000);
-          }
+          } */
           //APPROCHE #3
           delay(750);
           int readingstepper_fine = digitalRead(inPinsInterupteurNumber[i]);
@@ -681,12 +742,12 @@ void loop()
               Reference[i]->gotoa(ajout);
               delay(500);
             }
-            else if (i >= NbrMotorDynamixel)
+            /* else if (i >= NbrMotorDynamixel)
             {
               ReferenceStepper[i]->gotoa(ajout);
               delay(2000);
               //Je peut aussi set ca position actuelle comme je le veux
-            }
+            } */
             readingstepper_fine = digitalRead(inPinsInterupteurNumber[i]);
           }
 
@@ -716,26 +777,26 @@ void loop()
           }
           ActualPosition[i] = (Reference[i])->GetPosition1();
         }
-        else if (i >= NbrMotorDynamixel)
+        /* else if (i >= NbrMotorDynamixel)
         {
           ReferenceStepper[i]->gotoa(Home[i]);
           ActualPosition[i] = Home[i];
-        }
+        } */
       }
 
       //Action on gripper = 24
       else if (msg->getType() == ACTION_ON_GRIPPER)
       {
-        if (i < (NbrMotorDynamixel + NbrMotorStepper) && NbrMotorStepper != 0)
+        /* if (i < (NbrMotorDynamixel + NbrMotorStepper) && NbrMotorStepper != 0)
         {
           ReferenceStepper[i]->gotoa((msg->getPayload()[i]));
           ActualPosition[i] = (ReferenceStepper[i])->GetPosition1();
-        }
+        } */
         if (i >= (NbrMotorDynamixel + NbrMotorStepper) && NbrMotorServo != 0)
         {
           float valeur = float((msg->getPayload()[i])) / 270 * 180;
           int valeur_int = valeur;
-          ReferenceServo[i]->gotoa(valeur_int);
+          (ReferenceServo[i])->gotoa(valeur_int);
           //ReferenceServo[i]->gotoa((msg->getPayload()[i]));
           Serial.println(valeur_int);
           ActualPosition[i] = msg->getPayload()[i];
@@ -780,10 +841,10 @@ void loop()
         {
           ActualPosition[i] = (Reference[i])->GetPosition1();
         }
-        else if (i >= NbrMotorDynamixel)
+        /* else if (i >= NbrMotorDynamixel)
         {
           ActualPosition[i] = (ReferenceStepper[i])->GetPosition1();
-        }
+        } */
         msg->getPayload()[i] = ActualPosition[i];
       }
     }

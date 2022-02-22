@@ -11,6 +11,8 @@ from Cinematic.LinearJoin import *
 from Cinematic.RevoluteJoin import *
 from Cinematic.robotAPI import *
 
+from test import TestInteg
+
 import time
 
 class app:
@@ -44,26 +46,30 @@ class app:
                     self.robot.executeCommand(msg)
 
 if __name__ == '__main__':
+    release1 = TestInteg.MotorTesting()
+
+    release1.Motor_position_solo(300)
+    release1.Motor_position_all(300)
+    release1.Motor_set_home(150)
+
+
     # x = threading.Thread(target=waitForConnection, args=("127.0.0.1", 50000, 1, app(),))
     # x.start()
 
-    commPort = None
-    messageIO = MessageIO()
-    messageIO.addDevice(SerialComm("COM4", 57600))  #Port vers open
-    #messageIO.addDevice(SerialComm("COM2", 57600))  #Port vers Pico
-    driveManager = DriveManager([0, 0, 0], messageIO)
+    # commPort = None
+    # messageIO = MessageIO()
+    # messageIO.addDevice(SerialComm("COM4", 57600))  #Port vers open
+    # #messageIO.addDevice(SerialComm("COM2", 57600))  #Port vers Pico
+    # driveManager = DriveManager([0, 0, 0], messageIO)
 
         
-    JS = JoinSystem([RevoluteJoin(VectorSpaceAxis.Y, np.array([0.0, 0.0, 0.0]), [-math.pi/2, math.pi/2], hardwareStepDistance= math.pi*2/4096)])
-    JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [-math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
-    JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [-math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
+    # JS = JoinSystem([RevoluteJoin(VectorSpaceAxis.Y, np.array([0.0, 0.0, 0.0]), [-math.pi/2, math.pi/2], hardwareStepDistance= math.pi*2/4096)])
+    # JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [-math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
+    # JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [-math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
 
-    robot = robotAPI(JS,[0., 0., 0.], driveManager)
-    print("Start")
+    # robot = robotAPI(JS,[0., 0., 0.], driveManager)
+    # print("Start")
 
-    msg = ControlMessage(ControlMessage.SET_JOIN_POSITION, [0, 0, 0])
-    print(msg)
-    robot.executeCommand(msg)
 
     # val = 0
     # while val < 4096:
