@@ -46,31 +46,37 @@ class app:
                     self.robot.executeCommand(msg)
 
 if __name__ == '__main__':
-    release1 = TestInteg.MotorTesting()
+    if False:
+        release1 = TestInteg.MotorTesting()
+        release1.Motor_position_solo(300)
+        release1.Motor_position_all(300)
+        release1.Motor_set_home(150)
+    else:
+        commPort = None
+        messageIO = MessageIO()
+        messageIO.addDevice(SerialComm("COM11", 57600))  #Port vers open
+        #messageIO.addDevice(SerialComm("COM2", 57600))  #Port vers Pico
+        driveManager = DriveManager([0, 0, 0], messageIO)
 
-    release1.Motor_position_solo(300)
-    release1.Motor_position_all(300)
-    release1.Motor_set_home(150)
+            
+        JS = JoinSystem([RevoluteJoin(VectorSpaceAxis.Y, np.array([0.0, 0.0, 0.0]), [-math.pi/2, math.pi/2], hardwareStepDistance= math.pi*2/4096)])
+        JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [-math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
+        JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [-math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
 
+        robot = robotAPI(JS,[0., 0., 0.], driveManager)
+        print("Start")
 
-    # x = threading.Thread(target=waitForConnection, args=("127.0.0.1", 50000, 1, app(),))
-    # x.start()
+        serial = serial.Serial("COM6", 115200, timeout=1)
+        while True:
+            while serial.in_waiting > 0:
+                comm = serial.readline().decode().replace("\r\n", "").split(";")
+                print(comm[0])
+                # print("test", tab)
+                # print(tab[0])
+                msg = ControlMessage(ControlMessage.SET_JOIN_POSITION, [0, int(comm[1])*10 + 1600, int(comm[0])*14])
+                robot.executeCommand(msg)
 
-    # commPort = None
-    # messageIO = MessageIO()
-    # messageIO.addDevice(SerialComm("COM4", 57600))  #Port vers open
-    # #messageIO.addDevice(SerialComm("COM2", 57600))  #Port vers Pico
-    # driveManager = DriveManager([0, 0, 0], messageIO)
-
-        
-    # JS = JoinSystem([RevoluteJoin(VectorSpaceAxis.Y, np.array([0.0, 0.0, 0.0]), [-math.pi/2, math.pi/2], hardwareStepDistance= math.pi*2/4096)])
-    # JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [-math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
-    # JS.addJoin(RevoluteJoin(VectorSpaceAxis.X, np.array([0, 0.245, 0]), [-math.pi/4, math.pi/4], hardwareStepDistance= math.pi*2/4096))
-
-    # robot = robotAPI(JS,[0., 0., 0.], driveManager)
-    # print("Start")
-
-
+    # ---Test:---
     # val = 0
     # while val < 4096:
     #     msg = ControlMessage(ControlMessage.SET_JOIN_POSITION, [val, val, val])
@@ -82,15 +88,3 @@ if __name__ == '__main__':
     # msg = ControlMessage(ControlMessage.SET_JOIN_POSITION, [0, 0, 0])
     # print(msg)
     # robot.executeCommand(msg)
- 
-
-    # commPort = EthernetComm(conn)
-    # messageIO.addDevice(commPort)
-    # while True:
-    #     msg = messageIO.readMessage(1)
-    #     if msg != None:
-    #         print("type:", msg.getType())
-    #         print("paload size: ", msg.getPayloadSize())
-    #         print("payload :", msg.getPayload())
-    #         robot.executeCommand(msg)
-
