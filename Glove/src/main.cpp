@@ -21,7 +21,7 @@ const char *szNames[]  = {"Unknown","SSD1306","SH1106","VL53L0X","BMP180", "BMP2
 
 BBI2C bbi2c;
 ADS1015 fingerSensor;
-
+unsigned zeros[2] = {0, 0};
 
 void setupFingersSensors(){
   Wire.begin();
@@ -38,19 +38,34 @@ void setupFingersSensors(){
   } 
   
   fingerSensor.setGain(ADS1015_CONFIG_PGA_TWOTHIRDS); // Gain of 2/3 to works well with flex glove board voltage swings (default is gain of 2)
+  zeros[0] = fingerSensor.getAnalogData(0);
+  zeros[1] = fingerSensor.getAnalogData(1);
 }
 
 void loopFingersSensors(){
   uint16_t data;
   for (int finger = 0; finger < 2; finger++) {
-    data = fingerSensor.getAnalogData(finger);
-    Serial.print(finger);
-    Serial.print(": ");
+    if (fingerSensor.getAnalogData(finger) >= zeros[finger]){
+      data = 0;
+    }
+    else {
+      data = zeros[finger] - fingerSensor.getAnalogData(finger);
+    }
+    // Serial.print(finger);
+    // Serial.print(": ");
+    if (data >= 100){
+      data =100;
+    }
+    
     Serial.print(data);
-    Serial.print(",");
-  }
+    if(finger < 1)
+      Serial.print(";");
+
   Serial.println();
+  delay(200);    
+  }
 }
+
 void setupI2Cbitbang(){
   memset(&bbi2c, 0, sizeof(bbi2c));
   bbi2c.bWire = 0; // use bit bang, not wire library
