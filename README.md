@@ -4,13 +4,13 @@
 *Image de notre bras avec le gant pas trop loin*
 
 ## Table of Content
-1. [Authors](readme.md)
-2. Project Context
-3. Objectives
-4. Important note
-5. Documentation
-6. External Ressources
-7. Recommandation
+1. [Authors](#authors)
+2. [Project Context](#project-context)
+3. [Objectives](#objectives)
+4. [Important note](#important-note)
+5. [Documentation](#documentation)
+6. [External Ressources](#external-ressources)
+7. [Recommandation](#recommandation)
 
 ## Authors
 - Andrei Ioan Gabor
@@ -35,3 +35,9 @@ Our robotic harm is a simple 3 degrees of freedom robot. The goal is to accompli
 ## Important Note
 Make sure to read all documentation linked with what you want to work on. 
 We'll do anything we can for the documentation to be as clear as possible, but we can't garanty that it's going to work with your application.
+
+## Documentation
+
+## External Ressources
+
+## Recommandation
