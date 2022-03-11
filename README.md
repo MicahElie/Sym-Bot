@@ -10,15 +10,19 @@
 4. [Important note](#important-note)
 5. [Documentation](#documentation)
 6. [External Ressources](#external-ressources)
-7. [Recommandation](#recommandation)
+    * [MicroController](#microcontroller)
+    * [Dynamixel Motor 1](#dynamixel-motors-1)
+    * [Dynamixel Motor 2](#dynamixel-motors-2)
+    * [ServoMotors](#servomotors)
+8. [Recommandation](#recommandation)
 
 ## Authors
-- Andrei Ioan Gabor
-- Julien Thériault
-- Yan-Éric Jérôme
-- Frank Ciric Taicas
-- Frédérick Boisvert
-- Micah-Élie Labrecque
+- Andrei Ioan Gabor - [TerrySpooker](https://github.com/TerrySpooker)
+- Julien Thériault - [JuThe72](https://github.com/JuThe72)
+- Yan-Éric Jérôme - [Arasmith](https://github.com/Arasmith)
+- Frank Ciric Taicas - [Chromlox](https://github.com/Chromlox)
+- Frédérick Boisvert - [boif1403](https://github.com/boif1403)
+- Micah-Élie Labrecque - [MicahElie](https://github.com/MicahElie)
 
 ## Project context
 This project came up from the desire to help people with disabilities to take or move objects out of reach. 
@@ -37,7 +41,29 @@ Make sure to read all documentation linked with what you want to work on.
 We'll do anything we can for the documentation to be as clear as possible, but we can't garanty that it's going to work with your application.
 
 ## Documentation
+For information about the Mechanical, electrical and software design of our projet, look at our [wiki](https://github.com/MicahElie/Sym-Bot/wiki)!
 
 ## External Ressources
+This section list all external ressources used in our projet
+### MicroController
+* Brand : OpenCr
+* Model : OpenCr
+* Quantity : 1
+
+### Dynamixel Motors 1
+* Brand : [Dynamixel](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_workbench/)
+* Model : XM430-W350
+* Quantity : 1
+
+### Dynamixel Motors 2
+* Brand : [Dynamixel](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_workbench/)
+* Model : XM430-W250
+* Quantity : 2
+
+### ServoMotors
+* Brand: Miuzei
+* Model: Miuzei Servo Motor 20 Kg
+* Quantity: 1
+* _A Vérifier_
 
 ## Recommandation
