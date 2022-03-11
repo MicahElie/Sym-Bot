@@ -4,7 +4,7 @@
 *Image de notre bras avec le gant pas trop loin*
 
 ## Table of Content
-1. Authors
+1. [Authors](readme.md)
 2. Project Context
 3. Objectives
 4. Important note
@@ -13,12 +13,12 @@
 7. Recommandation
 
 ## Authors
-Andrei Ioan Gabor
-Yan-Éric Jérôme
-Julien Thériault
-Frank Ciric Taicas
-Frédérick Boivert
-Micah-Élie Labrecque
+- Andrei Ioan Gabor
+- Julien Thériault
+- Yan-Éric Jérôme
+- Frank Ciric Taicas
+- Frédérick Boisvert
+- Micah-Élie Labrecque
 
 ## Project context
 This project came up from the desire to help people with disabilities to take or move objects out of reach. 
@@ -26,7 +26,7 @@ More pricesly, some of these people don't have enough strength in their arms to 
 That's the core of the Symbot Project : Using a glove with sensors to control a robotic arm in the most intuitive way as possible, working in Symbiose with the user.
 
 ## Objectives
-Our robotic harm is a simple 3 degrees of freedom robot. The goal is to accomplish simple tasks only by using the "Glove controler". Here are three things we want to do:
+Our robotic harm is a simple 3 degrees of freedom robot. The goal is to accomplish simple tasks only by using the "Glove controler". Here are four things we want to do:
 1. Push/Pull an object on table, placed in front of our robot
 2. Turn an interuptor On/Off, the interuptor being on the table
 3. Take a cellphone (200g max.) and keep it in the air
