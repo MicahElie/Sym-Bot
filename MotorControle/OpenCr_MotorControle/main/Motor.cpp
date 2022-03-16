@@ -2,6 +2,15 @@
 
 DynamixelWorkbench dxl_wb;
 
+/**
+ * This function initialises a Motor object
+ * 
+ * @param id contains the ID of dynamixel motor
+ * @param zero the position of motor corresponding to its zero
+ * @param home the position of motor corresponding to home
+ * @param max_limmit the position of motor corresponding to its maximal value
+ * @param reverse indicates if motor has to turn the other side
+*/
 Motor::Motor(uint8_t id, uint16_t zero, uint16_t home, uint8_t max_limit, bool reverse)
 {
     this->id = id;
@@ -45,7 +54,7 @@ void Motor::go_to(uint16_t pos)
 };
 
 // 4096/360 = 11,377777777777777777777777777778
-void Motor::go_to_degrees(uint16_t pos) { this->go_to(pos*11.3778); }
+void Motor::go_to_degrees(uint16_t pos) { this->go_to(pos * 11.3778); }
 void Motor::go_to_home() { this->go_to(this->home); }
 
 void Motor::go_forward()
