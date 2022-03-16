@@ -9,12 +9,20 @@
 3. [Objectives](#objectives)
 4. [Important note](#important-note)
 5. [Documentation](#documentation)
-6. [External Ressources](#external-ressources)
+6. [Recommandation](#recommandation)
+    * [Mechanical](#mechanical)
+    * [Electrical](#electrical)
+    * [Software](#software)
+8. [External Ressources](#external-ressources)
+    * [Single board computer](#single-board-computer)
     * [MicroController](#microcontroller)
     * [Dynamixel Motor 1](#dynamixel-motors-1)
     * [Dynamixel Motor 2](#dynamixel-motors-2)
     * [ServoMotors](#servomotors)
-8. [Recommandation](#recommandation)
+    * [Power Supply](#power-supply)
+    * [Flex Sensor](#flex-sensor)
+    * [ESP32 microcontroller](#esp32-microcontroller)
+    * [IMU](#imu)
 
 ## Authors
 - Andrei Ioan Gabor - [TerrySpooker](https://github.com/TerrySpooker)
@@ -41,10 +49,28 @@ Make sure to read all documentation linked with what you want to work on.
 We'll do anything we can for the documentation to be as clear as possible, but we can't garanty that it's going to work with your application.
 
 ## Documentation
-For information about the Mechanical, electrical and software design of our projet, look at our [wiki](https://github.com/MicahElie/Sym-Bot/wiki)!
+For information about the Mechanical, Electrical and Software design of our projet, look at the different readmeS in the section Documentation
+
+## Recommandation
+### Mechanical
+* Most of the parts of our robot arm should be 3D-printed.
+* We use different kind of bolts, shafts, plastic insert and couplers
+* We created our own bearing with metalic balls; but you can easily modify this section
+* For information about the assembly of the robotic arm, look at the Mechanical section in Documentation
+
+### Electrical
+* Most of the electrical part should be for the implementation of sensor on the glove
+* There must be enough space on the glove for all the electrical components
+* The material of the glove must permit to sew the electrical components on it
+* Make sure to use long enough wires for the connection between the motors and the OpenCR
+* For more information abour the Electrical design, look at the Electrical Section in Documentation
+
+### Software
+* We mostly use Python and C/C++ with VS code as code editor
+* For more information abour the Sofware design, look at the Software section in Documentation
 
 ## External Ressources
-This section list all external ressources used in our projet
+This section lists all external ressources used in our projet
 ### MicroController
 * Brand : [OpenCr](https://www.robot-advance.com/art-opencr1-0-robotis-2353.htm)
 * Model : OpenCr
@@ -81,13 +107,11 @@ This section list all external ressources used in our projet
 * Quantity : 2
 
 ### ESP32 microcontroller
-* Brand : [Espressif](https://www.espressif.com/en/products/devkits/esp32-devkitc/overview)
+* Brand : [Espressif inc.](https://www.espressif.com/en/products/devkits/esp32-devkitc/overview)
 * Model : DOIT ESP32 DEVKIT v1
 * Quantity : 1 
 
 ### IMU
-* Brand : 
+* Brand : [Grove](https://wiki.seeedstudio.com/Grove-IMU_9DOF_v2.0/)
 * Model : IMU 9DOF v2.0
-* Quantity : 
-
-## Recommandation
+* Quantity : 1
