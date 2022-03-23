@@ -127,15 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-.vscode/arduino.json
-.vscode/c_cpp_properties.json
+.vscode/
+.vscode(1)/
 Application/.idea/.name
 Application/.idea/other(1).xml
 Application/.idea/other.xml
 Application/.idea/.name(1)
-.vscode/arduino.json
-.vscode(1)/settings.json
-.vscode(1)/c_cpp_properties.json
-.vscode(1)/arduino.json
-.vscode/c_cpp_properties.json
-.vscode/arduino.json
