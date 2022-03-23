@@ -9,6 +9,7 @@ class ControlMessage:
     CLOSE_GRIPPER = 12
     SET_GRIPPER_POSITION = 24
     SET_GRIPPER_POSITION_RATE = 26
+    SET_JOG = 77
 
     def __init__(self, type, payload=[]):
         self.type = type
