@@ -1,20 +1,13 @@
 import threading
-from Comm import BluetoothComm
-from Comm.EthernetComm import *
-from Comm.MessageIO import *
-from Comm.SerialComm import *
-from Comm.driveManager import *
-from Comm.translate import *
-
+from Comm.BluetoothComm import Bluetooth
+from Comm.translate import translate
+from Comm.MessageIO import MessageIO
+from Comm.driveManager import DriveManager
 
 from Cinematic.PositionSolver import *
 from Cinematic.JoinSystem import *
 from Cinematic.RevoluteJoin import *
 from Cinematic.robotAPI import *
-
-from test import TestInteg
-
-import time
 
 class app:
     def __init__(self):
@@ -34,6 +27,7 @@ class app:
         self.robot = robotAPI(self.JS,[0., 0., 0.,0. ], self.driveManager)
         #self.robot.executeCommand(msg)
 
+    '''
     def newConnection(self, conn):
         while True:
             self.commPort = EthernetComm(conn)
@@ -45,39 +39,49 @@ class app:
                     print("paload size: ", msg.getPayloadSize())
                     print("payload :", msg.getPayload())
                     self.robot.executeCommand(msg)
+    '''
+
+def todo(text):
+    msg = {}
+    msg['Mode'] = int(text[0])
+    msg['Flex'] = [int(x) for x in text[1:5]]
+    msg['IMU']  = [float(x) for x in text[5:8]]
+
+    return msg
 
 if __name__ == '__main__':
     
-        commPort = None
-        messageIO = MessageIO()
-        messageIO.addDevice(SerialComm("COM3", 57600))  #Port vers open
-        driveManager = DriveManager([0, 0, 0], messageIO)
+    commPort = None
+    messageIO = MessageIO()
+    # messageIO.addDevice(SerialComm("COM3", 57600))  #Port vers open
+    # driveManager = DriveManager([0, 0, 0], messageIO)
+    
+    '''
+    bt = BluetoothComm(1,1)
+    while True:
+        if bt.isMessageAvailable():
+            msg = bt.readMessage()
+            Micah.chooseMode(msg)
+    '''
 
-        bt = BluetoothComm(1,1)
-        while True:
-            if bt.isMessageAvailable():
-                msg = bt.readMessage()
+    Micah = translate(messageIO)
 
-
-        ''' Comm USB 
-        serial = serial.Serial("COM5", 115200, timeout=1)
-        lastComm = [-10,-10]
-        delta = 3
-        while True:
-            while serial.in_waiting > 0:
-                comm = serial.readline().decode().replace("\r\n", "").split(";")
-                if((int(comm[0]) >= lastComm[0] + delta or int(comm[0]) <= lastComm[0] - delta) or 
-                    (int(comm[1]) >= lastComm[1] + delta or int(comm[1]) <= lastComm[1] - delta)):
-                    comm.split("")
-        '''
-
-
-        
-
-        
-
-
-
+    ''' Comm USB '''
+    serial = serial.Serial("COM6", 57600, timeout=1)
+    # lastComm = [-10,-10]
+    # delta = 3
+    while True:
+        while serial.in_waiting > 0:
+            raw = serial.readline()
+            comm = raw.decode().replace("\r\n", "").split(";")
+            if len(comm) == 9:
+                msg = todo(comm)
+                Micah.chooseMode(msg)
+    '''
+    if((int(comm[0]) >= lastComm[0] + delta or int(comm[0]) <= lastComm[0] - delta) or 
+        (int(comm[1]) >= lastComm[1] + delta or int(comm[1]) <= lastComm[1] - delta)):
+        comm.split("")
+    '''
 
     # if False:
     #     release1 = TestInteg.MotorTesting()

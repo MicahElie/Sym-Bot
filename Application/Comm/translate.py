@@ -1,5 +1,5 @@
 from enum import Enum
-from Comm import ControlMessage
+from Comm.ControlMessage import ControlMessage
 from Comm import MessageIO
 
 class translate:
@@ -10,12 +10,13 @@ class translate:
     AI = 4;
     INTERFACE = 5;
 
+    lastMsg = [0,0,0,0]
+    enumRep = 0
+
     # Forme du message recu par le gant
-    # mode;index;majeur;annulaire;auriculaire;Y;Z;rotation;
+    # "Mode: ", "Flex : [4]", "IMU : [3]"
 
-
-    def __init__(self, length, msgIO):
-        self.msgGlove = [length]
+    def __init__(self, msgIO):
         self.msgIO = msgIO
 
 
@@ -26,13 +27,11 @@ class translate:
         -------------
         msgGlove : double[] Data from the glove
         '''
-        self.msg = msgGlove.split(";")
-        symbotMode = self.msg[0]
 
-        match symbotMode:
+        match msgGlove["Mode"]:
             case 1:
                 print("this is jog mode")
-                self.jogMode(self.msg)
+                self.jogMode(msgGlove["Flex"], msgGlove["IMU"])
                 
             case 2:
                 print("this is joint mode")
@@ -43,46 +42,93 @@ class translate:
             case 5:
                 print("this is interface mode")
 
-    def jogMode(self, msg, flexion, rev):
+    def jogMode(self, flexion, imu):
         '''This function moves the motors as long as fingers are  in flexion
         
         Parameters
         --------------
-        msg : double[] Message from the glove
-        flexion : double Value at which a finger is considered in flexion
-        rev : double Value at which the hand is considered up-side-down
+        flexion : int Values associated with the four flexing fingers
+        imu : double Values associated with the IMU which gives the direction of the hand
         '''
-        flex = flexion
-        reverse = rev
-        tabMsg = [3]*0
-        for id in range(0,3):
-            if msg[id + 1] >= flex:
-                tabMsg[id] = msg[id + 1]
-            elif msg[id + 1] < flex:
-                tabMsg[id] = msg[id + 1]
-            else:
-                print("Values from the glove not precise enough")
-        
-        if msg[8] >= reverse:
-            for id in tabMsg:
-                tabMsg[id] = tabMsg[id]*-1
-        
+        tresholdFlex = 80
+        treshold_IMU_pos = 0.50
+        treshold_IMU_neg = -0.50 
+        msgMotor = [0,0,0,0]
+        sumFinger = 0
+        griperIncrement = 0
 
-        msgMotor = ControlMessage(ControlMessage.SET_JOG, tabMsg)
-        self.msgIO.sendMessage(0, msgMotor)
+        # Verify the rotation of the hand associated with reversing direction
+        if imu[2] <= treshold_IMU_neg:
+            # Verify the flexion of the 3 fingers associated to joint 1,2,3
+            for id in range(0,3):
+                if flexion[id] >= tresholdFlex:
+                    msgMotor[id] = -1
+                    sumFinger += 1
 
-    def jointMode(self, msg):
+            # Verify the flexion of the last finger associated with the gripper        
+            if flexion[3] >= tresholdFlex and sumFinger == 3:
+                if griperIncrement  == 0:
+                    griperIncrement = 1
+                elif griperIncrement == 1:
+                    griperIncrement = 0
+                msgMotor[3] = griperIncrement
 
-        msgMotor = ControlMessage(ControlMessage.SET_JOIN_POSITION, tabMsg)
-        self.msgIO.sendMessage(0, msgMotor)
-    
+        elif imu[2] >= treshold_IMU_pos:  
+            # Verify the flexion of the 3 fingers associated to joint 1,2,3
+            for id in range(0,3):
+                if flexion[id] >= tresholdFlex:
+                    msgMotor[id] = 1
+                    sumFinger += 1
+
+            # Verify the flexion of the last finger associated with the gripper        
+            if flexion[3] >= tresholdFlex and sumFinger == 3:
+                if griperIncrement  == 0:
+                    griperIncrement = 1
+                elif griperIncrement == 1:
+                    griperIncrement = 0
+                msgMotor[3] = griperIncrement
+
+        else: pass
+
+        if msgMotor == self.lastMsg and self.enumRep < 3:
+            msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.lastMsg)
+            self.msgIO.sendMessage(0, msg_to_motor)
+            self.enumRep += 1
+        elif msgMotor == self.lastMsg and self.enumRep >= 3:
+            msg_to_motor = ControlMessage(ControlMessage.SET_JOG, msgMotor)
+            self.msgIO.sendMessage(0, msg_to_motor)
+            self.lastMsg = msgMotor
+            self.enumRep = 0
+        elif msgMotor != self.lastMsg and self.enumRep < 3:
+            print("!=")
+            self.enumRep = 0
+            self.lastMsg = msgMotor
+
     def cartMode(self,msg):
+        '''This function moves to motors with using precise position in space'''
         print("This is meant to be something")
-    
+
     def aiMode (self, msg):
         print("This is meant to be something")
+
+    # def jointMode(self, msg, rev):
+    #     reverse = rev
+    #     msgMotor = [3]*0
+
+    #     for id in range(0,4):
+    #         msgMotor[id] = self.__glovetomotor(msg[id+1])
+    #     print("This is meant to be something")
+    #     # msgMotor = ControlMessage(ControlMessage.SET_JOIN_POSITION, msgMotor)
+    #     self.msgIO.sendMessage(0, msgMotor)
     
-    def interMode (self, msg):
+    # def interMode (self, msg):
+    #     return
+
+    def __glovetomotor(self, gloveValue):
+        angleValue = gloveValue*90/100
+        return angleValue
+
+
 
 
 
