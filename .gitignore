@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.vscode/
+.vscode(1)/
+Application/.idea/.name
+Application/.idea/other(1).xml
+Application/.idea/other.xml
+Application/.idea/.name(1)
