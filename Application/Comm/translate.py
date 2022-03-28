@@ -47,24 +47,24 @@ class translate:
 
         match msgGlove['Mode']:
             case 1:
-                print("this is jog mode")
+                # print("this is jog mode")
                 self.mode = msgGlove['Mode']
                 self.jogMode(msgGlove["Flex"], msgGlove["IMU"])
                 
             case 2:
-                print("this is joint mode")
+                # print("this is joint mode")
                 self.mode = msgGlove['Mode']
 
             case 3:
-                print("this is cartesian mode")
+                # print("this is cartesian mode")
                 self.mode = msgGlove['Mode']
 
             case 4:
-                print("this is AI mode")
+                # print("this is AI mode")
                 self.mode = msgGlove['Mode']
 
             case 5:
-                print("this is interface mode")
+                # print("this is interface mode")
                 self.mode = msgGlove['Mode']
 
 
@@ -108,7 +108,6 @@ class translate:
 
             # Verify the flexion of the last finger associated with the gripper        
             if flexion[3] >= tresholdFlex and sumFinger == 3:
-                # griperIncrement = !griperIncrement
                 if griperIncrement  == 0:
                     griperIncrement = 1
                 elif griperIncrement == 1:
@@ -127,7 +126,6 @@ class translate:
             self.lastMsgMotor = self.currentMsgMotor
             self.enumRep = 0
         elif self.currentMsgMotor != self.lastMsgMotor and self.enumRep < 3:
-            print("!=")
             self.enumRep = 0
             self.lastMsgMotor = self.currentMsgMotor
 
