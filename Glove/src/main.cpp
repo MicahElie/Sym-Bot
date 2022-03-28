@@ -6,25 +6,28 @@
 
 BluetoothSerial SerialBT;
 
+uint8_t led = 2;
+
 // Mode:
-uint8_t mode = 1;
+uint8_t mode = 0;
 // Flex Sensors:
 ADS1015 pinkySensor;
 ADS1015 indexSensor;
 uint16_t hand_max[4] = {0, 0, 0, 0};
 // Order for the right hand: {INDEX MIDDLE RING PINKY}
-uint8_t hand[4] = {0, 0, 0, 0};
-const uint16_t offset[4] = {0,0,0,190};
+uint16_t hand[4] = {0, 0, 0, 0};
+const uint16_t offset[4] = {0,0,0,190};//190
 // IMU:
 MPU9250 mpu;
 // Order for data: {LINEAR_Y LINEAR_Z ROTATION_Z}
-float data[3] = {0, 0, 0};
+float imu[3] = {0, 0, 0};
 
-unsigned milliseconds = 100;
+String serialData;
+
+unsigned milliseconds = 10;
 
 void setupBluetooth() {
   SerialBT.begin("ESP32-Symbot-Glove"); //Bluetooth device name
-  Serial.println("The device started, now you can pair it with bluetooth!");
 }
 
 void setupFlexSensors(){
@@ -49,99 +52,89 @@ void setupFlexSensors(){
 void setupIMUSensor(){
   mpu.setup(0x68);
   mpu.calibrateAccelGyro();
-  mpu.setMagneticDeclination(-14);// la valeur de Sherbrooke
-  // mpu.calibrateMag();
+}
+
+void setupLED(){
+  pinMode(led, OUTPUT);
 }
 
 void flexSensorsData(){
-  //Read and print our data
   for (int finger = 0; finger < 4; finger++){
     hand[finger] = 0;
   }
   for (int finger = 0; finger < 2; finger++) {
     if (indexSensor.getAnalogData(!finger) < hand_max[finger]){
       hand[finger] = hand_max[finger] - indexSensor.getAnalogData(!finger) - offset[finger];
+      if (hand[finger] > 100){
+        hand[finger] = 0;
+      }
     }
     if (pinkySensor.getAnalogData(!finger) < hand_max[finger + 2]){
       hand[finger + 2] = hand_max[finger + 2] - pinkySensor.getAnalogData(!finger) - offset[finger + 2];
+      if (hand[finger + 2] > 100){
+        hand[finger + 2] = 0;
+      }
     }
-    // hand[finger] = indexSensor.getAnalogData(!finger);
-    // hand[finger + 2] = pinkySensor.getAnalogData(!finger);
   }
-  
-  // Serial.println();
-  // delay(100);
 }
 
-void serialIMUSensor(){
-
-  
+void IMUSensorData(){
   if (mpu.update()) {
-    // Serial.print("Rotations: \n(");
-    // Serial.print(mpu.getYaw()); Serial.print(", ");
-    // Serial.print(mpu.getPitch()); Serial.print(", ");
-    // Serial.print(mpu.getRoll()); 
-    // Serial.println(")");
 
     // Serial.print("Accelerations: \n(");
     // Serial.print(mpu.getAccX()); Serial.print(", ");
     // Serial.print(mpu.getAccY()); Serial.print(", ");
     // Serial.print(mpu.getAccZ()); 
     // Serial.println(")");
+
+    imu[0] = mpu.getLinearAccY()*9.81f; //Distance (Verifier l'axe X et Z pour voir si la main est bien plat => Z = 1.03 et X = 0.02 ou mettre un intervalle)
+    if (imu[0] <= 1.0f && imu[0] >= -1.0f)
+      imu[0] = 0;
+    imu[1] = mpu.getLinearAccZ()*9.81f; //Height (Verifier l'axe X et Z pour voir si la main est bien plat => Z = 1.03 et X = 0.02 ou mettre un intervalle)
+    if (imu[1] <= 1.0f && imu[1] >= -1.0f)
+      imu[1] = 0;
+    imu[2] = mpu.getAccZ(); //Rotation
+    if (imu[2] <= 0.15f && imu[2] >= -0.15f)
+      imu[2] = 0;
     
-    // Serial.print("Gyro: \n(");
-    // Serial.print(mpu.getGyroX()); Serial.print(", ");
-    // Serial.print(mpu.getGyroY()); Serial.print(", ");
-    // Serial.print(mpu.getGyroZ()); 
-    // Serial.println(")");
-
-    // Serial.print("Euler: \n(");
-    // Serial.print(mpu.getEulerX()); Serial.print(", ");
-    // Serial.print(mpu.getEulerY()); Serial.print(", ");
-    // Serial.print(mpu.getEulerZ()); 
-    // Serial.println(")");
-
-    // Serial.print("Accelerations 2: \n(");
-    // float accX = mpu.getLinearAccX();
-    // if (accX <= 0.05f){
-    //   accX = 0;
-    // }
-    // Serial.print(accX); Serial.print(", ");
-    float accY = mpu.getLinearAccY();
-    if (accY <= 0.05f)
-      accY = 0;
-    Serial.print(accY); Serial.print(", ");
-    float accZ = mpu.getLinearAccZ();
-    if (accZ <= 0.05f)
-      accZ = 0;
-    Serial.print(accZ);
-    // Serial.println(")");
-
-    // Serial.print("Bias: \n(");
-    // Serial.print(mpu.getAccBiasX()); Serial.print(", ");
-    // Serial.print(mpu.getAccBiasY()); Serial.print(", ");
-    // Serial.print(mpu.getAccBiasZ()); 
-    // Serial.println(")");
-
-    // Serial.print("Mag: \n(");
-    // Serial.print(mpu.getMagX()); Serial.print(", ");
-    // Serial.print(mpu.getMagY()); Serial.print(", ");
-    // Serial.print(mpu.getMagZ()); 
-    // Serial.println(")");
   }
 }
 
-void serialSend(){
-  Serial.print(mode + ";");
+void activationLED(){
+  if (imu[2] == 0.0f){
+    digitalWrite(led, HIGH);
+  }
+  else {
+    digitalWrite(led, LOW);
+  }
+}
+
+void stringToSend(){
+  // serialData = String(mode) + ";";
+  serialData = String(0) + ";";
+
   for (int finger = 0; finger < 4; finger++){
-    // Serial.print(finger);
-    // Serial.print(": ");
-    Serial.print(hand[finger]);
-    SerialBT.print(hand[finger]);
-    Serial.print(";");
-    SerialBT.print(";");
+  //   //serialData += finger + ":";
+  //   // serialData += hand[finger] + ";";
+    serialData += String(hand[finger]) + ";";
+  }
+
+  for (int i = 0; i < 3; i++){
+    // switch(i){
+    //   case 0:
+    //     serialData += "Y:";
+    //     break;
+    //   case 1:
+    //     serialData += "Z:";
+    //     break;
+    //   case 2:
+    //     serialData += "R:";
+    //     break;
+    // }
+    serialData += String(imu[i]) + ";";
   }
 }
+
 /*-------------------------------------------------- main fonctions --------------------------------------------------*/
 void setup() {
   Wire.begin();
@@ -149,16 +142,17 @@ void setup() {
   setupBluetooth();
   delay(1000);
 
-  // setupIMUSensor();
+  setupLED();
+  setupIMUSensor();
   setupFlexSensors();
 }
 
 void loop() {
   flexSensorsData();
-  // serialIMUSensor();
-  serialSend();
-  Serial.println();
-  SerialBT.println();
+  IMUSensorData();
+  activationLED();
+  stringToSend();
+  Serial.println(serialData);
+  SerialBT.println(serialData);
   delay(milliseconds);
 }
-
