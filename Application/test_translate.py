@@ -36,7 +36,7 @@ class testTranslate(unittest.TestCase):
     
     def test_gripper_jogMode(self):
 
-        # valFlex = 10
+        # valFlex = 20
         # valMotor = 0
         # fake_bt_msg = {'Mode' : 1, 'Flex': [valFlex,valFlex,valFlex,valFlex], 'IMU' : [0,0,0.75]}
         # self.message.chooseMode(fake_bt_msg)
