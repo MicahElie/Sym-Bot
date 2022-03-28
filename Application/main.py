@@ -41,6 +41,7 @@ class app:
                     self.robot.executeCommand(msg)
     '''
 
+#Cette partie de code devrait être dans BluetoothComm
 def todo(text):
     msg = {}
     msg['Mode'] = int(text[0])
@@ -53,8 +54,9 @@ if __name__ == '__main__':
     
     commPort = None
     messageIO = MessageIO()
-    # messageIO.addDevice(SerialComm("COM3", 57600))  #Port vers open
-    # driveManager = DriveManager([0, 0, 0], messageIO)
+    Micah = translate(messageIO)
+    messageIO.addDevice(SerialComm("COM7", 57600))  #Port vers open
+    driveManager = DriveManager([0, 0, 0], messageIO)
     
     '''
     bt = BluetoothComm(1,1)
@@ -63,8 +65,6 @@ if __name__ == '__main__':
             msg = bt.readMessage()
             Micah.chooseMode(msg)
     '''
-
-    Micah = translate(messageIO)
 
     ''' Comm USB '''
     serial = serial.Serial("COM6", 57600, timeout=1)
@@ -77,6 +77,9 @@ if __name__ == '__main__':
             if len(comm) == 9:
                 msg = todo(comm)
                 Micah.chooseMode(msg)
+
+
+
     '''
     if((int(comm[0]) >= lastComm[0] + delta or int(comm[0]) <= lastComm[0] - delta) or 
         (int(comm[1]) >= lastComm[1] + delta or int(comm[1]) <= lastComm[1] - delta)):

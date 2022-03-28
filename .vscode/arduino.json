@@ -1,6 +1,6 @@
 {
-    "configuration": "upload_method=UploadMethod",
-    "board": "OpenCR:OpenCR:OpenCR",
+    "configuration": "cpu=atmega328old",
+    "board": "arduino:avr:nano",
     "sketch": "MotorControle\\OpenCr_MotorControle\\main\\main.ino",
-    "port": "COM3"
+    "port": "COM6"
 }
