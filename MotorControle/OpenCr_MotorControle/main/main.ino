@@ -23,7 +23,6 @@
 #define NbrMotorDynamixel 3
 #define NbrMotorServo 1
 
-
 // Definition for used by the mode "INTERFACE"
 enum CMD
 {
@@ -36,7 +35,8 @@ enum CMD
   RETURN_HOME_POSITION_INDEX = 13,
   RETURN_REFERENCE_POSITION_INDEX = 15,
   RETURN_ACTUAL_POSITION_INDEX = 17,
-  ACTION_ON_GRIPPER = 24
+  ACTION_ON_GRIPPER = 24,
+  GO_TO_JOG = 77
 };
 
 MessageIO IO;
@@ -84,7 +84,7 @@ void loop()
         case GO_TO_POSITION_INDEX: //Set position = 7 SET_JOIN_POSITION
           Reference[i]->go_to(msg->getPayload()[i]);
           break;
-        case 77: // Jog
+        case GO_TO_JOG: // Jog
           if (msg->getPayload()[i] == 1)
           {
             Reference[i]->go_forward();

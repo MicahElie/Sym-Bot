@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# User And Workspace Setting - VS Code
+.vscode/
