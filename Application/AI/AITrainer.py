@@ -4,14 +4,14 @@ import numpy as np
 class AITrainer:
 
     def __init__(self, n, k):
-        self.N = n  # Number of parameters (including constant term)
-        self.K = k  # Number of possible actions
-        self.M = 0  # Number of training examples
-        self.Theta = np.zeros((n, k))  # One-vs-all: One set of thetas for every class (action)
-        self.X = np.zeros((1, n))
+        self.N = n + 1  # Number of parameters (plus constant term)
+        self.K = k      # Number of possible actions
+        self.M = 0      # Number of training examples
+        self.Theta = np.zeros((n+1, k))  # One-vs-all: One set of thetas for every class (action)
+        self.X = np.zeros((1, n+1))
         self.Y = np.zeros((1, k))
-        self.Range = np.ones((1, n-1))
-        self.Mean = np.zeros((1, n-1))
+        self.Range = np.ones((1, n))
+        self.Mean = np.zeros((1, n))
         self.debug = np.zeros((1, k))
 
     def sigmoid(self, Z):

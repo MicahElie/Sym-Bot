@@ -1,6 +1,10 @@
 from enum import Enum
+from AI import AITrainer
 from Comm import ControlMessage
 from Comm import MessageIO
+
+import numpy as np
+
 
 class translate:
 
@@ -17,7 +21,9 @@ class translate:
     def __init__(self, length, msgIO):
         self.msgGlove = [length]
         self.msgIO = msgIO
-
+        self.AI = AITrainer(7, 10)
+        #self.AI.read_data("filename")
+        #self.AI.grad_descent(np.zeros((8, 10)), 0.2, 0.01)
 
     def chooseMode(self,msgGlove):
         '''This function analyses the message from the glove, determines the mode and calls the right translation function
@@ -40,6 +46,7 @@ class translate:
                 print("this is cartesian mode")
             case 4:
                 print("this is AI mode")
+                self.aiMode(self.msg)
             case 5:
                 print("this is interface mode")
 
@@ -76,13 +83,23 @@ class translate:
         msgMotor = ControlMessage(ControlMessage.SET_JOIN_POSITION, tabMsg)
         self.msgIO.sendMessage(0, msgMotor)
     
-    def cartMode(self,msg):
+    def cartMode(self, msg):
         print("This is meant to be something")
     
     def aiMode (self, msg):
         print("This is meant to be something")
+        inputs = msg[1:]
+        matches = self.AI.evaluate(inputs)
+        command = matches.index(max(matches))
+        match command:
+            case 1:
+                pass
+            case 2:
+                pass
+            #...
     
     def interMode (self, msg):
+        pass
 
 
 
