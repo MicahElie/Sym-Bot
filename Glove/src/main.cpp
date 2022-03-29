@@ -6,6 +6,7 @@
 
 BluetoothSerial SerialBT;
 
+//Pins:
 uint8_t led = 2;
 
 // Mode:
@@ -14,16 +15,13 @@ uint8_t mode = 0;
 ADS1015 pinkySensor;
 ADS1015 indexSensor;
 uint16_t hand_max[4] = {0, 0, 0, 0};
-// Order for the right hand: {INDEX MIDDLE RING PINKY}
-uint16_t hand[4] = {0, 0, 0, 0};
+uint16_t hand[4] = {0, 0, 0, 0}; // Order for the right hand: {INDEX MIDDLE RING PINKY}
 const uint16_t offset[4] = {0,0,0,190};//190
 // IMU:
 MPU9250 mpu;
-// Order for data: {LINEAR_Y LINEAR_Z ROTATION_Z}
-float imu[3] = {0, 0, 0};
+float imu[3] = {0, 0, 0}; // Order for data: {LINEAR_Y LINEAR_Z ROTATION_Z}
 
 String serialData;
-
 unsigned milliseconds = 10;
 
 void setupBluetooth() {
@@ -96,7 +94,6 @@ void IMUSensorData(){
     imu[2] = mpu.getAccZ(); //Rotation
     if (imu[2] <= 0.15f && imu[2] >= -0.15f)
       imu[2] = 0;
-    
   }
 }
 
@@ -110,8 +107,7 @@ void activationLED(){
 }
 
 void stringToSend(){
-  // serialData = String(mode) + ";";
-  serialData = String(0) + ";";
+  serialData = String(mode) + ";";
 
   for (int finger = 0; finger < 4; finger++){
   //   //serialData += finger + ":";
