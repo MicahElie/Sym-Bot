@@ -1,8 +1,10 @@
 from enum import Enum
 from AI.AITrainer import AITrainer
+from AI.DataCollector import DataCollector
 from Comm import ControlMessage
 from Comm.ControlMessage import ControlMessage
 from Comm import MessageIO
+import msvcrt
 
 import numpy as np
 
@@ -27,6 +29,7 @@ class translate:
     lastMsgMotor = [0,0,0,0]
     currentMsgMotor = [0,0,0,0]
     enumRep = 0
+    file_database = "ai_database.txt"
 
     mode = 0
     flexion = [0,0,0,0]
@@ -40,6 +43,7 @@ class translate:
         self.AI = AITrainer(7, 10)
         #self.AI.read_data("filename")
         #self.AI.grad_descent(np.zeros((8, 10)), 0.2, 0.01)
+        self.AI_dataCollector = DataCollector(7, 10)
         
     def getMode(self):
         return self.mode
@@ -155,7 +159,8 @@ class translate:
         
         Parameters:
         --------------------
-        newparametertofind : description of this new parameter
+        flex : int Values associated with the four flexing fingers
+        imu : double Values associated with the IMU which gives the direction of the hand
         '''
         inputs = flex + imu
         matches = self.AI.evaluate(inputs).tolist()
@@ -166,6 +171,21 @@ class translate:
             case 2:
                 pass
             #...
+
+    def trainMode(self, flex, imu):
+        '''This function registers current sensors values and saves them as
+        training examples for the AI in a database
+
+        Parameters:
+        --------------------
+        flex : int Values associated with the four flexing fingers
+        imu : double Values associated with the IMU which gives the direction of the hand
+        '''
+        if msvcrt.kbhit():
+            action = msvcrt.getch()
+            inputs = flex + imu
+            self.AI_dataCollector.save_new_position(self.file_database, inputs, action)
+            action = input()
     
     def interMode (self, msg):
         pass

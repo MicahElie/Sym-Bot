@@ -1,5 +1,6 @@
 from test.TestCinematic.VectorTester import *
 from AI.DataCollector import *
+import msvcrt
 
 
 class TestDataCollector(VectorTester):
@@ -11,6 +12,11 @@ class TestDataCollector(VectorTester):
         aiDC = DataCollector(7, 10)
         aiDC.save_new_position(filename, inputs1, 2)
         aiDC.save_new_position(filename, inputs2, 4)
+        #test = 1
+        #while not msvcrt.kbhit():
+        #    print(test)
+        #    test = test + 1
+        #test = msvcrt.getch()
         # self.assertVectorEqual(input_exp, input2)
 
 
