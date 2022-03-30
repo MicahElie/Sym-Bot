@@ -11,7 +11,7 @@ class DataCollector:
         action = input()
         while action != -1:
             msg = [0]  # Fetch sensors values
-            inputs = msg[1:]
+            inputs = msg[1:]  # flex + imu
             self.save_new_position(filename, inputs, action)  
             action = input()
 
@@ -19,13 +19,12 @@ class DataCollector:
 
         if len(inputs) != self.N:
             return 1  # Invalid size for input vector
-
         if target_action < 0 or target_action >= self.K:
             return 2  # Invalid target action
 
-        with open(self.file, 'a') as f:
-            f.write('\n' + target_action + '  ')
+        with open(filename, 'a') as f:
+            f.write('\n' + str(target_action) + '  ')
             for i in inputs:
-                f.write(i)
+                f.write(str(i))
                 f.write('  ')
         return 0
