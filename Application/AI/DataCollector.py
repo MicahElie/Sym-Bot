@@ -1,6 +1,5 @@
 import math
 
-
 class DataCollector:
 
     def __init__(self, n, k):
@@ -8,12 +7,7 @@ class DataCollector:
         self.K = k  # Number of possible actions
 
     def collect_data(self, filename):
-        action = input()
-        while action != -1:
-            msg = [0]  # Fetch sensors values
-            inputs = msg[1:]  # flex + imu
-            self.save_new_position(filename, inputs, action)  
-            action = input()
+        pass
 
     def save_new_position(self, filename, inputs, target_action=0):  # inputs: float vector, target_action: int
 
