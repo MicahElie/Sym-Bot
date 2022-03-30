@@ -6,7 +6,7 @@ class fakeSerialComm:
     """This class is meant to be used for tests that need to "communicate" with a robot that doesn't exists"""
     
     def __init__(self):
-        print('hey')
+        pass
 
     def sendJSon(self, JSon):
         print(JSon)

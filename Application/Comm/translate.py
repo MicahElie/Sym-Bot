@@ -93,7 +93,7 @@ class translate:
         flexion : int Values associated with the four flexing fingers
         imu : double Values associated with the IMU which gives the direction of the hand
         '''
-        tresholdFlex = 80
+        tresholdFlex = 30
         treshold_IMU_pos = 0.50
         treshold_IMU_neg = -0.50 
         self.currentMsgMotor = [0,0,0,0]
@@ -130,24 +130,26 @@ class translate:
                 elif griperIncrement == 1:
                     griperIncrement = 0
                 self.currentMsgMotor[3] = griperIncrement
+        
+            msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.currentMsgMotor)
+            self.msgIO.sendMessage(0, msg_to_motor)
 
         else: pass
 
-        if self.currentMsgMotor == self.lastMsgMotor and self.enumRep < 3:
-            msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.lastMsgMotor)
-            self.msgIO.sendMessage(0, msg_to_motor)
-            self.enumRep += 1
-        elif self.currentMsgMotor == self.lastMsgMotor and self.enumRep >= 3:
-            msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.currentMsgMotor)
-            self.msgIO.sendMessage(0, msg_to_motor)
-            self.lastMsgMotor = self.currentMsgMotor
-            self.enumRep = 0
-        elif self.currentMsgMotor != self.lastMsgMotor and self.enumRep < 3:
-            self.enumRep = 0
-            self.lastMsgMotor = self.currentMsgMotor
+        # if self.currentMsgMotor == self.lastMsgMotor and self.enumRep <= 3:
+        #     msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.lastMsgMotor)
+        #     self.msgIO.sendMessage(0, msg_to_motor)
+        #     self.enumRep += 1
+        # elif self.currentMsgMotor == self.lastMsgMotor and self.enumRep > 3:
+        #     msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.currentMsgMotor)
+        #     self.msgIO.sendMessage(0, msg_to_motor)
+        #     self.lastMsgMotor = self.currentMsgMotor
+        #     self.enumRep = 0
+        # elif self.currentMsgMotor != self.lastMsgMotor:
+        #     msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.lastMsgMotor)
+        #     self.lastMsgMotor = self.currentMsgMotor
+        #     self.enumRep = 0
 
-        # msgMotor = ControlMessage(ControlMessage.SET_JOG, tabMsg)
-        # self.msgIO.sendMessage(0, msgMotor)
 
     def aiMode(self, flex, imu):
         '''This function moves the motors according to the hand symbols the user is making; 
