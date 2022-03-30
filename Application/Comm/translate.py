@@ -149,6 +149,7 @@ class translate:
         #     msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.lastMsgMotor)
         #     self.lastMsgMotor = self.currentMsgMotor
         #     self.enumRep = 0
+        #This is a magnificent test
 
 
     def aiMode(self, flex, imu):
