@@ -1,4 +1,4 @@
-# import bluetooth
+import bluetooth
 # https://docs.python.org/3/library/socket.html#socket.socket.listen
 import socket
 # https://docs.python.org/3/library/struct.html
@@ -13,7 +13,7 @@ class Bluetooth:
     def __init__(self, mac, port=1, uuid=0):
         self.port = port
         self.host = mac
-        '''
+        
         services = bluetooth.find_service(uuid=uuid, address=mac)
         first_match = services[0]
         self.port = first_match["port"]
@@ -27,6 +27,7 @@ class Bluetooth:
         '''
         self.sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
         self.sock.connect((mac, self.port))
+        '''
         
     def isMessageAvailable(self):
         self.buffer = []
@@ -44,9 +45,9 @@ class Bluetooth:
         text = (self.buffer[:-3]).split(";")
         try:
             msg = {}
-            msg['Mode'] = text[0]
-            msg['Flex'] = text[1:5]
-            msg['IMU']  = text[5:8]
+            msg['Mode'] = int(text[0])
+            msg['Flex'] = [int(x) for x in text[1:5]]
+            msg['IMU']  = [float(x) for x in text[5:8]]
         except (Exception):
             pass
 
