@@ -3,6 +3,7 @@ from Comm.BluetoothComm import Bluetooth
 from Comm.translate import translate
 from Comm.MessageIO import MessageIO
 from Comm.driveManager import DriveManager
+from test_translate import testTranslate
 
 from Cinematic.PositionSolver import *
 from Cinematic.JoinSystem import *
@@ -51,7 +52,7 @@ def todo(text):
     return msg
 
 if __name__ == '__main__':
-    
+
     commPort = None
     messageIO = MessageIO()
     Micah = translate(messageIO)

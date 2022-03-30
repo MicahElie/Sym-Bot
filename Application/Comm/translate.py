@@ -1,5 +1,5 @@
 from enum import Enum
-from AI import AITrainer
+from AI.AITrainer import AITrainer
 from Comm import ControlMessage
 from Comm.ControlMessage import ControlMessage
 from Comm import MessageIO
@@ -8,6 +8,15 @@ import numpy as np
 
 
 class translate:
+    '''This class represent the translation of a message accordinf to the mode chosen by the user.
+
+    Attributes:
+    ------------------
+        lastMsgMotor :        The last translated message sent to the motors.
+        currentMsgMotor :     The current message that is translated  bein sent to the motors.
+        enumRep :             Counts everytime a message was repeated.
+    
+    '''
 
     JOG = 0;
     JOINT = 1;
@@ -48,9 +57,9 @@ class translate:
     def chooseMode(self,msgGlove):
         '''This function analyses the message from the glove, determines the mode and calls the right translation function
 
-        Parameters,
+        Parameters
         -------------
-        msgGlove : double[] Data from the glove
+        msgGlove : Data from the glove
         '''
 
         match msgGlove['Mode']:
@@ -68,10 +77,8 @@ class translate:
                 self.mode = msgGlove['Mode']
 
             case 4:
-                print("this is AI mode")
-                self.aiMode(self.msg)
-                # print("this is AI mode")
                 self.mode = msgGlove['Mode']
+                self.aiMode(msgGlove['Flex'], msgGlove['IMU'])
 
             case 5:
                 # print("this is interface mode")
@@ -139,24 +146,19 @@ class translate:
             self.enumRep = 0
             self.lastMsgMotor = self.currentMsgMotor
 
-        msgMotor = ControlMessage(ControlMessage.SET_JOG, tabMsg)
-        self.msgIO.sendMessage(0, msgMotor)
+        # msgMotor = ControlMessage(ControlMessage.SET_JOG, tabMsg)
+        # self.msgIO.sendMessage(0, msgMotor)
 
-    def jointMode(self, msg):
-
-        msgMotor = ControlMessage(ControlMessage.SET_JOIN_POSITION, tabMsg)
-        self.msgIO.sendMessage(0, msgMotor)
-    
-    def cartMode(self, msg):
-        print("This is meant to be something")
-    
-    def cartMode(self,msg):
-        '''This function moves to motors with using precise position in space'''
-        print("This is meant to be something")
-
-    def aimode(self, msg)
-        inputs = msg[1:]
-        matches = self.AI.evaluate(inputs)
+    def aiMode(self, flex, imu):
+        '''This function moves the motors according to the hand symbols the user is making; 
+        an AI recognise the right action even there is variation
+        
+        Parameters:
+        --------------------
+        newparametertofind : description of this new parameter
+        '''
+        inputs = flex + imu
+        matches = self.AI.evaluate(inputs).tolist()
         command = matches.index(max(matches))
         match command:
             case 1:
@@ -167,6 +169,11 @@ class translate:
     
     def interMode (self, msg):
         pass
+
+    # def jointMode(self, msg):
+
+    #     msgMotor = ControlMessage(ControlMessage.SET_JOIN_POSITION, tabMsg)
+    #     self.msgIO.sendMessage(0, msgMotor)
         
 
     # def jointMode(self, msg, rev):
@@ -181,6 +188,11 @@ class translate:
     
     # def interMode (self, msg):
     #     return
+
+    # def cartMode(self,msg):
+    # '''This function moves to motors with using precise position in space'''
+    # print("This is meant to be something")
+
 
     # def __glovetomotor(self, gloveValue):
     #     angleValue = gloveValue*90/100

@@ -8,6 +8,7 @@ import struct
 # uuid = "00001101-0000-1000-8000-00805f9b34fb"
 
 class Bluetooth:
+    '''This class represents the bluetooth communication with a device; in this case, it's an ESP32'''
 
     def __init__(self, mac, port=1, uuid=0):
         self.port = port

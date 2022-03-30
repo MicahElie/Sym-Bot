@@ -1,12 +1,21 @@
 import unittest
+
+# from setuptools import setup
 from Comm.MessageIO import MessageIO
 from Comm.translate import translate
+from Comm.fakeSerialComm import fakeSerialComm
 
 
 
 class testTranslate(unittest.TestCase):
-    msgIO = MessageIO()
-    message = translate(msgIO)
+    def setUp(self):
+        self.msgIO = MessageIO()
+        self.message = translate(self.msgIO)
+        self.msgIO.addDevice(fakeSerialComm())  #Port vers open
+        # driveManager = DriveManager([0, 0, 0], messageIO)
+
+    # msgIO = MessageIO()
+    # message = translate(msgIO)
 
     def test_chooseMode(self):
         for mode in range(1,6):
@@ -36,12 +45,12 @@ class testTranslate(unittest.TestCase):
     
     def test_gripper_jogMode(self):
 
-        # valFlex = 20
-        # valMotor = 0
-        # fake_bt_msg = {'Mode' : 1, 'Flex': [valFlex,valFlex,valFlex,valFlex], 'IMU' : [0,0,0.75]}
-        # self.message.chooseMode(fake_bt_msg)
-        # # print(self.message.getMsgMotor(-1))        
-        # self.assertEqual(self.message.getMsgMotor(-1), valMotor)
+        valFlex = 20
+        valMotor = 0
+        fake_bt_msg = {'Mode' : 1, 'Flex': [valFlex,valFlex,valFlex,valFlex], 'IMU' : [0,0,0.75]}
+        self.message.chooseMode(fake_bt_msg)
+        # print(self.message.getMsgMotor(-1))        
+        self.assertEqual(self.message.getMsgMotor(-1), valMotor)
 
         valFlex = 80
         valMotor = 1
@@ -58,8 +67,7 @@ class testTranslate(unittest.TestCase):
         self.message.chooseMode(fake_bt_msg)
         self.assertEqual(self.message.getMsgMotor(3), valMotor)
 
-    
-    
 
 if __name__ == '__main__':
     unittest.main()
+
