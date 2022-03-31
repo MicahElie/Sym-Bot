@@ -4,25 +4,31 @@
 #include <Wire.h>
 #include "BluetoothSerial.h"
 
-BluetoothSerial SerialBT;
+// Pins:
+const uint8_t LED = 2;
+const uint8_t BUTTON = 23;
 
-//Pins:
-uint8_t led = 2;
+// Const:
+const unsigned MILLISECONDS = 10;
 
 // Mode:
 uint8_t mode = 0;
+uint8_t MODE_MAX = 4;
 // Flex Sensors:
 ADS1015 pinkySensor;
 ADS1015 indexSensor;
 uint16_t hand_max[4] = {0, 0, 0, 0};
 uint16_t hand[4] = {0, 0, 0, 0}; // Order for the right hand: {INDEX MIDDLE RING PINKY}
-const uint16_t offset[4] = {0,0,0,190};//190
+const uint16_t offset[4] = {0,0,0,0};//190
 // IMU:
 MPU9250 mpu;
-float imu[3] = {0, 0, 0}; // Order for data: {LINEAR_Y LINEAR_Z ROTATION_Z}
+float imu[4] = {0, 0, 0}; // Order for data: {LINEAR_Y LINEAR_Z ROTATION_Z}
 
+// Communication:
+BluetoothSerial SerialBT;
 String serialData;
-unsigned milliseconds = 10;
+
+/*-------------------------------------------------- setup fonctions --------------------------------------------------*/
 
 void setupBluetooth() {
   SerialBT.begin("ESP32-Symbot-Glove"); //Bluetooth device name
@@ -53,8 +59,45 @@ void setupIMUSensor(){
 }
 
 void setupLED(){
-  pinMode(led, OUTPUT);
+  pinMode(LED, OUTPUT);
 }
+
+void buttonRead(){
+  static uint8_t lastButtonState=0;
+  static uint32_t debounceDelay = 10000;
+  static uint32_t lastDebounceTime = 0;
+  static uint8_t buttonState = 0;
+  // read the state of the switch into a local variable:
+  uint8_t reading = digitalRead(BUTTON);
+  // check to see if you just pressed the button
+  // (i.e. the input went from LOW to HIGH), and you've waited long enough
+  // since the last press to ignore any noise:
+  // If the switch changed, due to noise or pressing:
+  if (reading != lastButtonState) {
+    // reset the debouncing timer
+    lastDebounceTime = micros();
+  }
+  if ((micros() - lastDebounceTime) > debounceDelay) {
+    // whatever the reading is at, it's been there for longer than the debounce
+    // delay, so take it as the actual current state:
+    // if the button state has changed:
+    if (reading != buttonState) {
+      buttonState = reading;
+      // only toggle the LED if the new button state is HIGH
+      if (buttonState == HIGH) {
+        mode = (mode+1) % MODE_MAX;
+      }
+    }
+  }
+  // save the reading. Next time through the loop, it'll be the lastButtonState:
+  lastButtonState = reading;
+}
+
+void setupButton(){
+  pinMode(BUTTON, INPUT_PULLUP);
+}
+
+/*-------------------------------------------------- loop fonctions --------------------------------------------------*/
 
 void flexSensorsData(){
   for (int finger = 0; finger < 4; finger++){
@@ -85,24 +128,35 @@ void IMUSensorData(){
     // Serial.print(mpu.getAccZ()); 
     // Serial.println(")");
 
-    imu[0] = mpu.getLinearAccY()*9.81f; //Distance (Verifier l'axe X et Z pour voir si la main est bien plat => Z = 1.03 et X = 0.02 ou mettre un intervalle)
-    if (imu[0] <= 1.0f && imu[0] >= -1.0f)
-      imu[0] = 0;
+    // imu[0] += mpu.getLinearAccY()*9.81f*(milliseconds/1000.0); //Distance (Verifier l'axe X et Z pour voir si la main est bien plat => Z = 1.03 et X = 0.02 ou mettre un intervalle)
+    if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){
+      imu[0] += 0;
+    }
+    else {
+      imu[0] += mpu.getLinearAccY()*9.81f*(MILLISECONDS/1000.0);
+    }
+      
     imu[1] = mpu.getLinearAccZ()*9.81f; //Height (Verifier l'axe X et Z pour voir si la main est bien plat => Z = 1.03 et X = 0.02 ou mettre un intervalle)
-    if (imu[1] <= 1.0f && imu[1] >= -1.0f)
+    if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){
       imu[1] = 0;
+    }
     imu[2] = mpu.getAccZ(); //Rotation
-    if (imu[2] <= 0.15f && imu[2] >= -0.15f)
+    if (imu[2] <= 0.15f && imu[2] >= -0.15f){
       imu[2] = 0;
+    }
+    // imu[3] = mpu.getAccY(); //Rotation
+    // if (imu[3] <= 0.01f && imu[3] >= -0.01f){
+    //   imu[3] = 0;
+    // }
   }
 }
 
 void activationLED(){
   if (imu[2] == 0.0f){
-    digitalWrite(led, HIGH);
+    digitalWrite(LED, HIGH);
   }
   else {
-    digitalWrite(led, LOW);
+    digitalWrite(LED, LOW);
   }
 }
 
@@ -139,6 +193,7 @@ void setup() {
   delay(1000);
 
   setupLED();
+  setupButton();
   setupIMUSensor();
   setupFlexSensors();
 }
@@ -147,8 +202,9 @@ void loop() {
   flexSensorsData();
   IMUSensorData();
   activationLED();
+  buttonRead();
   stringToSend();
   Serial.println(serialData);
   SerialBT.println(serialData);
-  delay(milliseconds);
+  delay(MILLISECONDS);
 }
