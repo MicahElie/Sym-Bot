@@ -2,7 +2,7 @@ from test.TestCinematic.VectorTester import *
 from AI.AITrainer import *
 
 
-class TestReadData(VectorTester):
+class TestAITrainer(VectorTester):
 
     def test_classification_vector(self):
         aitrainer = self.prepare_aitrainer()
@@ -21,12 +21,13 @@ class TestReadData(VectorTester):
 
     def test_gradient_descent(self):
         aitrainer = self.prepare_aitrainer()
-        aitrainer.grad_descent(np.zeros((8, 5)), 0.1, 0.01)
-        result = aitrainer.evaluate(np.array([[0, 0, 0, 0, 0, -10, 0]]))
+        aitrainer.grad_descent(np.zeros((8, 5)), 0.2, 0.01)
+        test_vector = np.array([[0, 0, 0, 0, 0, -10, 0]])
+        result = aitrainer.evaluate(test_vector)
         self.assertVectorEqual(result[0, :] > 0.5, np.array([1, 0, 0, 0, 0]))
 
     def prepare_aitrainer(self, scaling=True):
-        aitrainer = AITrainer(8, 5)
+        aitrainer = AITrainer(7, 5)
         aitrainer.read_data('CSV_Data_Example.txt', scaling)
         return aitrainer
 
