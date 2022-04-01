@@ -1,6 +1,7 @@
 from Comm.ControlMessage import *
 
 class MessageIO:
+    '''This class adds new devices to an array and transform messages into dictionnaries to be read by SerialComm objects'''
     def __init__(self):
         self.devices = []
 
@@ -18,6 +19,7 @@ class MessageIO:
         self.devices[deviceIndex].sendJSon(j)
 
     def parseJSonMessage(self, JSonMessage):
+        '''Not sure about that one'''
         msgType = JSonMessage["type"]
         if "data" in JSonMessage:
             msgpayload = JSonMessage["data"]

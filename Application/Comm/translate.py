@@ -180,7 +180,7 @@ class translate:
 
     def aiMode(self, flex, imu):
         '''This function moves the motors according to the hand symbols the user is making; 
-        an AI recognise the right action even there is variation
+        an AI recognise the right action even if there is variation
         
         Parameters:
         --------------------

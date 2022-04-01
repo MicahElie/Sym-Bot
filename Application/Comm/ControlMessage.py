@@ -1,4 +1,13 @@
 class ControlMessage:
+    '''This class transforms message sent to the MessageIO object to be correctly read by it
+    
+    Attributes (most used for this application):
+    ---------------
+    SET_HOME :          Message type associated with robot having a new home (ah so cute)
+    SET_JOIN_POSITION : Message type associated with robot being control with angle sent to joints
+    GOTO_HOME :         Message type associated with robot going home (must be confortable)
+    SET_JOG :           Message type associated with robot controlled with jogMode (see translate.py)
+     '''
     SET_HOME = 3
     SET_HOME_MODEL = 4
     SET_JOIN_POSITION_MODEL = 6
