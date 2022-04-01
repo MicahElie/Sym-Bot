@@ -8,9 +8,22 @@ import struct
 # uuid = "00001101-0000-1000-8000-00805f9b34fb"
 
 class Bluetooth:
-    '''This class represents the bluetooth communication with a device; in this case, it's an ESP32'''
+    '''This class represents the bluetooth communication with a device; in this case, it's an ESP32
+
+    Attributes:
+    -------------
+    This class doesn't have any attributes
+    '''
 
     def __init__(self, mac, port=1, uuid=0):
+        ''' This function initialize all what's necessary for Bluetooth class to be functional
+
+        Parameters:
+        -------------
+        mac :   string  Adress for connection
+        port :  int     That's the communication port
+        uuid :  string  Give the ID of what we want to communicate with     
+        '''
         self.port = port
         self.host = mac
         
@@ -30,6 +43,12 @@ class Bluetooth:
         '''
         
     def isMessageAvailable(self):
+        '''This function verifies if a message is available
+        
+        Parameters:
+        -----------------
+        This function has no parameters
+        '''
         self.buffer = []
 
         data = self.sock.recv(64)
@@ -42,6 +61,12 @@ class Bluetooth:
             return False
 
     def readMessage(self):
+        '''It's pretty obvious what this function does
+        
+        Parameters:
+        -----------------
+        This function has no parameters
+        '''
         text = (self.buffer[:-3]).split(";")
         try:
             msg = {}
@@ -61,6 +86,12 @@ class Bluetooth:
         return msg
 
     def __convertBytesToFloat(self, datas):
+        '''It's pretty obvious what this function does
+        
+        Parameters:
+        -----------------
+        This function has no parameters
+        '''
         hexa = hex((datas[3][0]<<24)+(datas[2][0]<<16)+(datas[1][0]<<8)+(datas[0][0]))
         return struct.unpack('!f',bytes.fromhex(hexa[2:]))[0]
 
