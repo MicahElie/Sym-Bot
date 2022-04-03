@@ -3,6 +3,7 @@ import json
 
 
 class SerialComm:
+    '''This class translates a dictionnary send by MessageIO object into Json for serial communication'''
     def __init__(self, port, baud):
         self.port = port
         self.baud = baud

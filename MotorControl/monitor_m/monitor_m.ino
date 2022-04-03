@@ -147,11 +147,11 @@ void loop()
       }
       else if (cmd[0] == "position")
       {
-          uint8_t id       = cmd[1].toInt();
           int32_t data     = 0;
 
           if(cmd[1] != '\0')
           {
+              uint8_t id = cmd[1].toInt();
               if(isAvailableID(cmd[1].toInt()))
               {
                   cmdSucceedec = dxl_wb.itemRead(id, "Present_Position", &data, &log);
@@ -365,7 +365,7 @@ void loop()
               uint8_t id    = cmd[1].toInt();
               uint16_t goal = cmd[2].toInt();
 
-              cmdSucceedec = dxl_wb.jointMode(id, 0, 0, &log);
+              cmdSucceedec = dxl_wb.jointMode(id, 64, 0, &log);
               if (cmdSucceedec == false)
               {
                   Serial.println(log);
@@ -376,6 +376,35 @@ void loop()
                   Serial.println(log);
               }
 
+              if(len != 2) 
+              {
+                  cmdSucceedec = dxl_wb.goalPosition(id, (int32_t)goal, &log);
+                  if (cmdSucceedec == false)
+                  {
+                      Serial.println(log);
+                      return;
+                  }
+                  else
+                  {
+                      Serial.println(log);
+                  }
+              }
+          }
+          else if (cmd[0] == "extend")
+          {
+              uint8_t id    = cmd[1].toInt();
+              int32_t goal  = cmd[2].toInt();
+
+              cmdSucceedec = dxl_wb.setExtendedPositionControlMode(id, &log);
+              if (cmdSucceedec == false)
+              {
+                  Serial.println(log);
+                  return;
+              }
+              else
+              {
+                  Serial.println(log);
+              }
               if(len != 2) 
               {
                   cmdSucceedec = dxl_wb.goalPosition(id, (int32_t)goal, &log);
@@ -555,8 +584,9 @@ void printInst(void)
     Serial.print("led    (ID) (0|1)\n");
     Serial.print("counter_clockwise (ID)\n");
     Serial.print("clockwise (ID)\n");
-    Serial.print("position [ID]");
+    Serial.print("position [ID]\n");
     Serial.print("joint  (ID) [GOAL_POSITION]\n");
+    Serial.print("extend  (ID) [GOAL_POSITION]\n");
     Serial.print("wheel  (ID) [GOAL_VELOCITY]\n");
     Serial.print("*write (ID) (ADDRESS_NAME) (DATA)\n");
     Serial.print("read   (ID) (ADDRESS_NAME)\n");

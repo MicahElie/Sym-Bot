@@ -1,4 +1,4 @@
-# Sym-Bot : Hand-Controled Robotic Arm 
+# Sym-Bot : Robotic Arm by Hand Control  
 ## Sherbrooke University, Robotic Engineering Program, 66th promotion, 2022
 
 *Image de notre bras avec le gant pas trop loin*
