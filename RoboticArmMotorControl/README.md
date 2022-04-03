@@ -1,10 +1,11 @@
-# Sym-Bot : Hand-Controled Robotic Arm 
-## Sherbrooke University, Robotic Engineering Program, 66th promotion, 2022
+# Sym-Bot : Robotic Arm
 
 ## Table of Content
-1. [Environment](#environment)
-2. [Calibration](#calibration)
-3. [Controle](#controle)
+- [Sym-Bot : Robotic Arm](#sym-bot--robotic-arm)
+  - [Table of Content](#table-of-content)
+  - [Environment](#environment)
+  - [Calibration](#calibration)
+  - [Control](#control)
 
 ## Environment
 - Software : [Arduino IDE](https://www.arduino.cc/en/software)

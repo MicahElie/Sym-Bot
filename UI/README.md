@@ -1,11 +1,12 @@
-# Sym-Bot : Hand-Controled Robotic Arm 
-## Sherbrooke University, Robotic Engineering Program, 66th promotion, 2022
+# Sym-Bot : User Interface Glove
 
 ## Table of Content
-1. [Environment](#environment)
-2. [Glove](#glove)
-3. [Interface](#interface)
-3. [Alternative](#alternative)
+- [Sym-Bot : User Interface Glove](#sym-bot--user-interface-glove)
+  - [Table of Content](#table-of-content)
+  - [Environment](#environment)
+  - [Glove](#glove)
+  - [Interface](#interface)
+  - [Alternative](#alternative)
 
 ## Environment
 Coming soon

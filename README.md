@@ -63,7 +63,7 @@ We'll do anything we can for the documentation to be as clear as possible, but w
 * There must be enough space on the glove for all the electrical components
 * The material of the glove must permit to sew the electrical components on it
 * Make sure to use long enough wires for the connection between the motors and the OpenCR
-* For more information about the Electrical design, look at the [Electrical Section of the robotic arm](/RoboticArmMotorControl/) and the [Electrical Section of glove](/UI)
+* For more information about the Electrical design, look at the [Robotic Arm Electrical section](/RoboticArmMotorControl/) and the [Glove Electrical section](/UI)
 
 ### Software
 * We mostly use Python and C/C++ with VS code as code editor
