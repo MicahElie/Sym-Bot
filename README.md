@@ -56,18 +56,18 @@ We'll do anything we can for the documentation to be as clear as possible, but w
 * Most of the parts of our robot arm should be 3D-printed.
 * We use different kind of bolts, shafts, plastic insert and couplers
 * We created our own bearing with metalic balls; but you can easily modify this section
-* For information about the assembly of the robotic arm, look at the [Mechanical section](/Material%20%26%20Assembly/README.md)
+* For information about the assembly of the robotic arm, look at the [Mechanical section](/Material%20%26%20Assembly)
 
 ### Electrical
 * Most of the electrical part should be for the implementation of sensor on the glove
 * There must be enough space on the glove for all the electrical components
 * The material of the glove must permit to sew the electrical components on it
 * Make sure to use long enough wires for the connection between the motors and the OpenCR
-* For more information about the Electrical design, look at the [Electrical Section of the robotic arm](/RoboticArmMotorControl/README.md) and the [Electrical Section of glove](/UI/README.md)
+* For more information about the Electrical design, look at the [Electrical Section of the robotic arm](/RoboticArmMotorControl/) and the [Electrical Section of glove](/UI)
 
 ### Software
 * We mostly use Python and C/C++ with VS code as code editor
-* For more information abour the Sofware design, look at the [Application section](/Application/README.md)
+* For more information abour the Sofware design, look at the [Application section](/Application)
 
 ## External Ressources
 This section lists all external ressources used in our projet
