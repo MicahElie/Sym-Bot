@@ -4,25 +4,28 @@
 *Image de notre bras avec le gant pas trop loin*
 
 ## Table of Content
-1. [Authors](#authors)
-2. [Project Context](#project-context)
-3. [Objectives](#objectives)
-4. [Important note](#important-note)
-5. [Documentation](#documentation)
-6. [Recommandation](#recommandation)
-    * [Mechanical](#mechanical)
-    * [Electrical](#electrical)
-    * [Software](#software)
-8. [External Ressources](#external-ressources)
-    * [Single board computer](#single-board-computer)
-    * [MicroController](#microcontroller)
-    * [Dynamixel Motor 1](#dynamixel-motors-1)
-    * [Dynamixel Motor 2](#dynamixel-motors-2)
-    * [ServoMotors](#servomotors)
-    * [Power Supply](#power-supply)
-    * [Flex Sensor](#flex-sensor)
-    * [ESP32 microcontroller](#esp32-microcontroller)
-    * [IMU](#imu)
+- [Sym-Bot : Robotic Arm by Hand Control](#sym-bot--robotic-arm-by-hand-control)
+  - [Sherbrooke University, Robotic Engineering Program, 66th promotion, 2022](#sherbrooke-university-robotic-engineering-program-66th-promotion-2022)
+  - [Table of Content](#table-of-content)
+  - [Authors](#authors)
+  - [Project context](#project-context)
+  - [Objectives](#objectives)
+  - [Important Note](#important-note)
+  - [Documentation](#documentation)
+  - [Recommandation](#recommandation)
+    - [Mechanical](#mechanical)
+    - [Electrical](#electrical)
+    - [Software](#software)
+  - [External Ressources](#external-ressources)
+    - [MicroController](#microcontroller)
+    - [Single board computer](#single-board-computer)
+    - [Dynamixel Motors 1](#dynamixel-motors-1)
+    - [Dynamixel Motors 2](#dynamixel-motors-2)
+    - [ServoMotors](#servomotors)
+    - [Power Supply](#power-supply)
+    - [Flex Sensor](#flex-sensor)
+    - [ESP32 microcontroller](#esp32-microcontroller)
+    - [IMU](#imu)
 
 ## Authors
 - Andrei Ioan Gabor - [TerrySpooker](https://github.com/TerrySpooker)
@@ -63,7 +66,7 @@ For information about the Mechanical, Electrical and Software design of our proj
 * There must be enough space on the glove for all the electrical components
 * The material of the glove must permit to sew the electrical components on it
 * Make sure to use long enough wires for the connection between the motors and the OpenCR
-* For more information abour the Electrical design, look at the Electrical Section in Documentation
+* For more information about the Electrical design, look at the Electrical Section in Documentation
 
 ### Software
 * We mostly use Python and C/C++ with VS code as code editor
