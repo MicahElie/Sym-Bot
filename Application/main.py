@@ -76,7 +76,7 @@ if __name__ == '__main__':
     while True:
         while serial.in_waiting > 0:
             raw = serial.readline()
-            comm = raw.decode().replace("\r\n", "").split(";")
+            comm = raw.decode().replace("\r\n", "").split("|")
             if len(comm) == 9:
                 print(comm)
                 msg = todo(comm)

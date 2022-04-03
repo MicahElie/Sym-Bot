@@ -67,7 +67,7 @@ class Bluetooth:
         -----------------
         This function has no parameters
         '''
-        text = (self.buffer[:-3]).split(";")
+        text = (self.buffer[:-3]).split("|")
         try:
             msg = {}
             msg['Mode'] = int(text[0])
