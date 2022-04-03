@@ -12,7 +12,7 @@
   - [Project context](#project-context)
   - [Abilities](#abilities)
   - [Important Note](#important-note)
-  - [Recommandations](#recommandations)
+  - [Guide](#guide)
     - [Mechanical recommandations](#mechanical-recommandations)
     - [Electrical recommandations](#electrical-recommandations)
     - [Software recommandations](#software-recommandations)
@@ -40,11 +40,11 @@ Our robotic arm is a simple 3 degrees of freedom robot. The goal is to accomplis
 
 ## Important Note
 Make sure to read all the documentation linked if you want to recreate your own Sym-Bot. 
-We'll do anything we can so that the documentation is as clear as possible. First step, read [Recommandations](#recommandations) just below.
+We'll do anything we can so that the documentation is as clear as possible. First step, read the [Guide](#guide) just below.
 
-## Recommandations
+## Guide
 The first step to follow for building your own Sym-Bot application is to follow the READMEs step-by-step guide in each sections.
-Our project is divided in three main sections. 
+Our project is divided in three main sections: 
 * The first one is [Application (Main Software)](Application/), that's **where all the communication and data interpretation between the Glove and the Robotic Arm is done**. In that section, you will mainly find the Python code that will go on the Raspberry Pi 4B (or any other computer of your choice) that will be linked to the OpenCR of the Robotic arm and the Bluetooth of the Glove. That's also where the [AI section](Application/AI/) is.
 * The second section is [Robotic Arm](RoboticArm/), that's where **you'll find the C++ code for the motors control, all the 3D parts with the assembly models (SolidWorks) and the electrical scheme.**
 * Finally, the last, but not least, part, is the [User Interface Glove](UI), in this section **you'll find the C++ code used with PlatformIO on the ESP32 and the list of electrical sensors and components that are attached on the glove with the electrical scheme**.
