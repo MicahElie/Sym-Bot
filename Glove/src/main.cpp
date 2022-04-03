@@ -3,6 +3,7 @@
 #include <MPU9250.h>
 #include <Wire.h>
 #include "BluetoothSerial.h"
+#include "analogWrite.h"
 
 //Structs:
 struct Color{
@@ -24,12 +25,15 @@ struct Hand{
 const unsigned MILLISECONDS = 10;
 const uint8_t MODE_MAX = 3;
 const Color RED = {255,0,0}; // FATAL ERROR
-const Color ORANGE = {255,115,0}; // JOG MODE
+const Color ORANGE = {255,155,0}; // JOG MODE
 const Color GREEN = {70,255,0}; // CARTESIAN MODE
 const Color BLUE = {0,240,255}; // AI MODE
 // Pins:
-const uint8_t LED = 2;
-const uint8_t BUTTON = 23;
+#define LED 2
+#define PIN_RED    18
+#define PIN_GREEN  5
+#define PIN_BLUE   19
+#define BUTTON 23
 
 // Mode:
 uint8_t mode = 0;
@@ -79,39 +83,11 @@ void setupIMUSensor(){
   }
 }
 
-void setupLED(){
+void setupLEDs(){
   pinMode(LED, OUTPUT);
-}
-
-void buttonRead(){
-  static uint8_t lastButtonState=0;
-  static uint32_t debounceDelay = 10000;
-  static uint32_t lastDebounceTime = 0;
-  static uint8_t buttonState = 0;
-  // read the state of the switch into a local variable:
-  uint8_t reading = digitalRead(BUTTON);
-  // check to see if you just pressed the button
-  // (i.e. the input went from LOW to HIGH), and you've waited long enough
-  // since the last press to ignore any noise:
-  // If the switch changed, due to noise or pressing:
-  if (reading != lastButtonState) {
-    // reset the debouncing timer
-    lastDebounceTime = micros();
-  }
-  if ((micros() - lastDebounceTime) > debounceDelay) {
-    // whatever the reading is at, it's been there for longer than the debounce
-    // delay, so take it as the actual current state:
-    // if the button state has changed:
-    if (reading != buttonState) {
-      buttonState = reading;
-      // only toggle the LED if the new button state is HIGH(PULLDOWN) / LOW(PULLUP)
-      if (buttonState == LOW) {
-        mode = (mode+1) % MODE_MAX;
-      }
-    }
-  }
-  // save the reading. Next time through the loop, it'll be the lastButtonState:
-  lastButtonState = reading;
+  pinMode(PIN_RED,   OUTPUT);
+  pinMode(PIN_GREEN, OUTPUT);
+  pinMode(PIN_BLUE,  OUTPUT);
 }
 
 void setupButton(){
@@ -172,22 +148,60 @@ void IMUSensorData(){
   }
 }
 
-void activationLED(){
+void setColor(uint8_t r, uint8_t g, uint8_t b) {
+  analogWrite(PIN_RED,   r, 2048);
+  analogWrite(PIN_GREEN, g, 2048);
+  analogWrite(PIN_BLUE,  b, 2048);
+}
+
+void activationLEDs(){
   if (hand.imu[2] == 0.0f){
     digitalWrite(LED, HIGH);
   }
   else {
     digitalWrite(LED, LOW);
   }
+  setColor(colorsModes[mode].red, colorsModes[mode].green, colorsModes[mode].blue);
+}
+
+void buttonRead(){
+  static uint8_t lastButtonState=0;
+  static uint32_t debounceDelay = 10000;
+  static uint32_t lastDebounceTime = 0;
+  static uint8_t buttonState = 0;
+  // read the state of the switch into a local variable:
+  uint8_t reading = digitalRead(BUTTON);
+  // check to see if you just pressed the button
+  // (i.e. the input went from LOW to HIGH), and you've waited long enough
+  // since the last press to ignore any noise:
+  // If the switch changed, due to noise or pressing:
+  if (reading != lastButtonState) {
+    // reset the debouncing timer
+    lastDebounceTime = micros();
+  }
+  if ((micros() - lastDebounceTime) > debounceDelay) {
+    // whatever the reading is at, it's been there for longer than the debounce
+    // delay, so take it as the actual current state:
+    // if the button state has changed:
+    if (reading != buttonState) {
+      buttonState = reading;
+      // only toggle the LED if the new button state is HIGH(PULLDOWN) / LOW(PULLUP)
+      if (buttonState == LOW) {
+        mode = (mode+1) % MODE_MAX;
+      }
+    }
+  }
+  // save the reading. Next time through the loop, it'll be the lastButtonState:
+  lastButtonState = reading;
 }
 
 void stringToSend(){
-  serialData = String(mode) + ";";
+  serialData = String(mode) + "|";
 
   for (int finger = 0; finger < 4; finger++){
   //   //serialData += finger + ":";
   //   // serialData += hand[finger] + ";";
-    serialData += String(hand.fingers[finger]) + ";";
+    serialData += String(hand.fingers[finger]) + "|";
   }
 
   for (int i = 0; i < 3; i++){
@@ -202,7 +216,7 @@ void stringToSend(){
     //     serialData += "R:";
     //     break;
     // }
-    serialData += String(hand.imu[i]) + ";";
+    serialData += String(hand.imu[i]) + "|";
   }
 }
 
@@ -214,13 +228,14 @@ void setup() {
   setupBluetooth();
   delay(1000);
   //Sensors and UI setup:
-  setupLED();
+  setupLEDs();
   setupButton();
   setupIMUSensor();
   setupFlexSensors();
-  // Error flag raised verification:
+  // Errors flags raised verification:
   while (isFatalError[0] || isFatalError[1]){
     // red led of death:
+    setColor(RED.red, RED.green, RED.blue);
   }
 }
 
@@ -229,7 +244,7 @@ void loop() {
   flexSensorsData();
   IMUSensorData();
   // UI States:
-  activationLED();
+  activationLEDs();
   buttonRead();
   //Send data:
   stringToSend();
