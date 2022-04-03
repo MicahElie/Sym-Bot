@@ -5,6 +5,7 @@
   - [Table of Content](#table-of-content)
   - [Environment](#environment)
   - [Glove](#glove)
+    - [Control](#control)
   - [Interface](#interface)
   - [Alternative](#alternative)
 
@@ -12,6 +13,7 @@
 Coming soon
 
 ## Glove
+### Control
 Coming soon
 
 ## Interface
