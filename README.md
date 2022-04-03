@@ -1,4 +1,5 @@
 # Sym-Bot : Robotic Arm by Hand Control  
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](https://github.com/chameau5050/Handling-Gro/main/LICENSE)
 ## Sherbrooke University, Robotic Engineering Program, 66th promotion, 2022
 
 *Image de notre bras avec le gant pas trop loin*
@@ -11,8 +12,7 @@
   - [Project context](#project-context)
   - [Objectives](#objectives)
   - [Important Note](#important-note)
-  - [Documentation](#documentation)
-  - [Recommandation](#recommandation)
+  - [Recommandations](#recommandations)
     - [Mechanical](#mechanical)
     - [Electrical](#electrical)
     - [Software](#software)
@@ -41,7 +41,7 @@ More pricesly, some of these people don't have enough strength in their arms to 
 That's the core of the Symbot Project : Using a glove with sensors to control a robotic arm in the most intuitive way as possible, working in Symbiose with the user.
 
 ## Objectives
-Our robotic harm is a simple 3 degrees of freedom robot. The goal is to accomplish simple tasks only by using the "Glove controler". Here are four things we want to do:
+Our robotic arm is a simple 3 degrees of freedom robot. The goal is to accomplish simple tasks only by using the "Glove controler". Here are four things we want to do:
 1. Push/Pull an object on table, placed in front of our robot
 2. Turn an interuptor On/Off, the interuptor being on the table
 3. Take a cellphone (200g max.) and keep it in the air
@@ -51,26 +51,23 @@ Our robotic harm is a simple 3 degrees of freedom robot. The goal is to accompli
 Make sure to read all documentation linked with what you want to work on. 
 We'll do anything we can for the documentation to be as clear as possible, but we can't garanty that it's going to work with your application.
 
-## Documentation
-For information about the Mechanical, Electrical and Software design of our projet, look at the different readmeS in the section Documentation
-
-## Recommandation
+## Recommandations
 ### Mechanical
 * Most of the parts of our robot arm should be 3D-printed.
 * We use different kind of bolts, shafts, plastic insert and couplers
 * We created our own bearing with metalic balls; but you can easily modify this section
-* For information about the assembly of the robotic arm, look at the Mechanical section in Documentation
+* For information about the assembly of the robotic arm, look at the [Mechanical section](/Material%20%26%20Assembly/README.md)
 
 ### Electrical
 * Most of the electrical part should be for the implementation of sensor on the glove
 * There must be enough space on the glove for all the electrical components
 * The material of the glove must permit to sew the electrical components on it
 * Make sure to use long enough wires for the connection between the motors and the OpenCR
-* For more information about the Electrical design, look at the Electrical Section in Documentation
+* For more information about the Electrical design, look at the [Electrical Section of the robotic arm](/RoboticArmMotorControl/README.md) and the [Electrical Section of glove](/UI/README.md)
 
 ### Software
 * We mostly use Python and C/C++ with VS code as code editor
-* For more information abour the Sofware design, look at the Software section in Documentation
+* For more information abour the Sofware design, look at the [Application section](/Application/README.md)
 
 ## External Ressources
 This section lists all external ressources used in our projet
