@@ -38,11 +38,11 @@ Our robotic arm is a simple 3 degrees of freedom robot. The goal is to accomplis
 3. Take a cellphone (200g max.) and keep it in the air
 4. Using AI to predict moves based on hand signs that we created
 
-## Important Note
+## Important note
 Make sure to read all the documentation linked if you want to recreate your own Sym-Bot. 
-We'll do anything we can so that the documentation is as clear as possible. First step, read the [Guide](#guide) just below.
+We'll do anything we can so that the documentation is as clear as possible. First step, read the [Getting started](#getting-started) just below.
 
-## Guide
+## Getting started
 The first step to follow for building your own Sym-Bot application is to follow the READMEs step-by-step guide in each sections.
 Our project is divided in three main sections: 
 * The first one is [Application (Main Software)](Application/), that's **where all the communication and data interpretation between the Glove and the Robotic Arm is done**. In that section, you will mainly find the Python code that will go on the Raspberry Pi 4B (or any other computer of your choice) that will be linked to the OpenCR of the Robotic arm and the Bluetooth of the Glove. That's also where the [AI section](Application/AI/) is.
