@@ -32,7 +32,7 @@ More pricesly, some of these people don't have enough strength in their arms to 
 That's the core of the Sym-Bot Project : Using a glove with sensors to control a robotic arm in the most intuitive way as possible, working in **symbiosis** with the user.
 
 ## Abilities
-Our robotic arm is a simple 3 degrees of freedom robot. The goal is to accomplish simple tasks only by using the "Glove controler". Here are four things that Sym-Bot can do:
+Our robotic arm is a simple 3 degrees of freedom robot. The goal is to accomplish simple tasks only by using the "Glove controller". Here are four things that Sym-Bot can do:
 1. Push/Pull an object on table, placed in front of our robot
 2. Turn an interuptor On/Off, the interuptor being on the table
 3. Take a cellphone (200g max.) and keep it in the air
