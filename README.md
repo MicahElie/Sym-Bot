@@ -12,7 +12,7 @@
   - [Project context](#project-context)
   - [Abilities](#abilities)
   - [Important Note](#important-note)
-  - [Guide](#guide)
+  - [Getting started](#getting-started)
     - [Mechanical recommandations](#mechanical-recommandations)
     - [Electrical recommandations](#electrical-recommandations)
     - [Software recommandations](#software-recommandations)
