@@ -22,18 +22,18 @@ struct Hand{
 } hand = {};
 
 // Const:
-const unsigned MILLISECONDS = 10;
+const unsigned MILLISECONDS = 25;
 const uint8_t MODE_MAX = 3;
-const Color RED = {255,0,0}; // FATAL ERROR
-const Color ORANGE = {255,155,0}; // JOG MODE
-const Color GREEN = {70,255,0}; // CARTESIAN MODE
-const Color BLUE = {0,240,255}; // AI MODE
+const Color RED     = {255,  0,  0}; // FATAL ERROR
+const Color ORANGE  = {255,155,  0}; // JOG MODE
+const Color GREEN   = { 70,255,  0}; // CARTESIAN MODE
+const Color BLUE    = {  0,240,255}; // AI MODE
 // Pins:
-#define LED 2
-#define PIN_RED    18
-#define PIN_GREEN  5
-#define PIN_BLUE   19
-#define BUTTON 23
+#define LED         2
+#define PIN_RED     18
+#define PIN_GREEN   5
+#define PIN_BLUE    19
+#define BUTTON      23
 
 // Mode:
 uint8_t mode = 0;
@@ -103,13 +103,13 @@ void flexSensorsData(){
   for (int finger = 0; finger < 2; finger++) {
     if (indexSensor.getAnalogData(!finger) < hand.max[finger]){
       hand.fingers[finger] = hand.max[finger] - indexSensor.getAnalogData(!finger) - hand.offsets[finger];
-      if (hand.fingers[finger] > 100){
+      if (hand.fingers[finger] > 500){
         hand.fingers[finger] = 0;
       }
     }
     if (pinkySensor.getAnalogData(!finger) < hand.max[finger + 2]){
       hand.fingers[finger + 2] = hand.max[finger + 2] - pinkySensor.getAnalogData(!finger) - hand.offsets[finger + 2];
-      if (hand.fingers[finger + 2] > 100){
+      if (hand.fingers[finger + 2] > 500){
         hand.fingers[finger + 2] = 0;
       }
     }
@@ -126,21 +126,21 @@ void IMUSensorData(){
     // Serial.println(")");
 
     // imu[0] += mpu.getLinearAccY()*9.81f*(milliseconds/1000.0); //Distance (Verifier l'axe X et Z pour voir si la main est bien plat => Z = 1.03 et X = 0.02 ou mettre un intervalle)
-    if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){
-      hand.imu[0] += 0;
-    }
-    else {
-      hand.imu[0] += mpu.getLinearAccY()*9.81f*(MILLISECONDS/1000.0);
-    }
-      
-    hand.imu[1] = mpu.getLinearAccZ()*9.81f; //Height (Verifier l'axe X et Z pour voir si la main est bien plat => Z = 1.03 et X = 0.02 ou mettre un intervalle)
-    if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){
-      hand.imu[1] = 0;
-    }
-    hand.imu[2] = mpu.getAccZ(); //Rotation
-    if (hand.imu[2] <= 0.15f && hand.imu[2] >= -0.15f){
-      hand.imu[2] = 0;
-    }
+    // if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){
+    //   hand.imu[0] += 0;
+    // }
+    // else {
+    //   hand.imu[0] += mpu.getLinearAccY()*9.81f*(MILLISECONDS/1000.0);
+    // }
+    hand.imu[0] = mpu.getEulerX();//Pitch Roll
+    hand.imu[1] = 0;//mpu.getLinearAccZ()*9.81f; //Height (Verifier l'axe X et Z pour voir si la main est bien plat => Z = 1.03 et X = 0.02 ou mettre un intervalle)
+    // if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){
+    //   hand.imu[1] = 0;
+    // }
+    hand.imu[2] = 0;//mpu.getAccZ(); //Rotation
+    // if (hand.imu[2] <= 0.15f && hand.imu[2] >= -0.15f){
+    //   hand.imu[2] = 0;
+    // }
     // imu[3] = mpu.getAccY(); //Rotation
     // if (imu[3] <= 0.01f && imu[3] >= -0.01f){
     //   imu[3] = 0;
@@ -166,7 +166,7 @@ void activationLEDs(){
 
 void buttonRead(){
   static uint8_t lastButtonState=0;
-  static uint32_t debounceDelay = 10000;
+  static uint32_t debounceDelay = 50;
   static uint32_t lastDebounceTime = 0;
   static uint8_t buttonState = 0;
   // read the state of the switch into a local variable:
@@ -177,9 +177,9 @@ void buttonRead(){
   // If the switch changed, due to noise or pressing:
   if (reading != lastButtonState) {
     // reset the debouncing timer
-    lastDebounceTime = micros();
+    lastDebounceTime = millis();
   }
-  if ((micros() - lastDebounceTime) > debounceDelay) {
+  if ((millis() - lastDebounceTime) > debounceDelay) {
     // whatever the reading is at, it's been there for longer than the debounce
     // delay, so take it as the actual current state:
     // if the button state has changed:
