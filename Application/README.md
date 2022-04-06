@@ -1,21 +1,23 @@
 # Sym-Bot : Application (Main Software)
 
 ## Table of Content
-- [main.py]
-- [AI](
-- [Comm]
-- [Test]
-- [Cinematic]
+- [main.py](#main)
+- [AI](#ai)
+- [Comm](#comm)
+  - [BluetoothComm](#bluetoothcomm)
+  - [translate](#translate)
+- [Test](#test)
+- [Cinematic](#cinematic)
 
-## main.py
+## main
 
 ## AI
 
 ## Comm
 As you know, the Sym-Bot uses an ESP32, a Raspberry Pi 4 and an OpenCR Arduino microcontroler. All the code found in this section allows the communication between thoses devices to be functional. 
-### BluetoothComm.py
+### BluetoothComm
 
-### translate.py
+### translate
 When the bluetooth communication is established, it should receive messages in this form:
 ![Message reçu](https://github.com/MicahElie/Sym-Bot/blob/main/Application/MessageReceived.png)
 As you can see, this message receives the mode, the flexion state of four finger and information from the IMU. The strucutre used is a dictionnay whith the keys "Mode", "Flex" and "IMU".
