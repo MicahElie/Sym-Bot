@@ -208,9 +208,10 @@ class translate:
         flex : int Values associated with the four flexing fingers
         imu : double Values associated with the IMU which gives the direction of the hand
         '''
+        inputs = flex + imu
         if msvcrt.kbhit():
             action = msvcrt.getch()
-            inputs = flex + imu
+            # inputs = flex + imu
             self.AI_dataCollector.save_new_position(self.file_database, inputs, action)
             action = input()
     
