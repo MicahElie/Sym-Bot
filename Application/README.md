@@ -2,6 +2,7 @@
 
 ## Table of Content
 - [main.py](#main)
+- [Getting started](#getting-started)
 - [AI](#ai)
 - [Comm](#comm)
   - [BluetoothComm](#bluetoothcomm)
@@ -10,6 +11,8 @@
 - [Cinematic](#cinematic)
 
 ## main
+
+## Getting started
 
 ## AI
 
