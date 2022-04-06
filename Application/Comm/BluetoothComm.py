@@ -1,8 +1,7 @@
+from wsgiref import validate
 import bluetooth
 # https://docs.python.org/3/library/socket.html#socket.socket.listen
 import socket
-# https://docs.python.org/3/library/struct.html
-import struct
 
 # MAC = '58:BF:25:37:A6:9A'
 # uuid = "00001101-0000-1000-8000-00805f9b34fb"
@@ -14,6 +13,7 @@ class Bluetooth:
     -------------
     This class doesn't have any attributes
     '''
+    validateMsg = False
 
     def __init__(self, mac, port=1, uuid=0):
         ''' This function initialize all what's necessary for Bluetooth class to be functional
@@ -67,33 +67,23 @@ class Bluetooth:
         -----------------
         This function has no parameters
         '''
+        self.validateMsg = False
+
         text = (self.buffer[:-3]).split("|")
         try:
             msg = {}
             msg['Mode'] = int(text[0])
             msg['Flex'] = [int(x) for x in text[1:5]]
             msg['IMU']  = [float(x) for x in text[5:8]]
+
+            self.validateMsg = True
         except (Exception):
             pass
 
-        """
-        msg['Mode'] = self.buffer[0:1][0]
-        msg['Flex'] = [self.buffer[1][0],self.buffer[2][0],self.buffer[3][0],self.buffer[4][0]]
-        msg['IMU'] = [self.__convertBytesToFloat(self.buffer[5:9]), \
-                      self.__convertBytesToFloat(self.buffer[9:13]), \
-                      self.__convertBytesToFloat(self.buffer[13:17])]
-        """
         return msg
 
-    def __convertBytesToFloat(self, datas):
-        '''It's pretty obvious what this function does
-        
-        Parameters:
-        -----------------
-        This function has no parameters
-        '''
-        hexa = hex((datas[3][0]<<24)+(datas[2][0]<<16)+(datas[1][0]<<8)+(datas[0][0]))
-        return struct.unpack('!f',bytes.fromhex(hexa[2:]))[0]
+    def isValidMsg(self):
+        return self.validateMsg
 
     def closeConnection(self):
         self.sock.close()
