@@ -4,7 +4,7 @@ from AI.DataCollector import DataCollector
 from Comm import ControlMessage
 from Comm.ControlMessage import ControlMessage
 from Comm import MessageIO
-import msvcrt
+# import msvcrt
 
 import numpy as np
 
@@ -28,6 +28,8 @@ class translate:
 
     lastMsgMotor = [0,0,0,0]
     currentMsgMotor = [0,0,0,0]
+    griperIncrement = -1
+    triggerGripper  = False
     enumRep = 0
     file_database = "ai_database.txt"
 
@@ -65,46 +67,21 @@ class translate:
         -------------
         msgGlove : Data from the glove
         '''
-        if msgGlove['Mode'] == 1:
+        if msgGlove['Mode'] == 0:
+            # Jog Mode
             self.mode = msgGlove['Mode']
             self.jogMode(msgGlove["Flex"], msgGlove["IMU"])
+        elif msgGlove['Mode'] == 1:
+            # Joint Mode
+            self.mode = msgGlove['Mode']
         elif msgGlove['Mode'] == 2:
-            # print("this is joint mode")
+            # Cartesian Mode
             self.mode = msgGlove['Mode']
         elif msgGlove['Mode'] == 3:
-            # print("this is cartesian mode")
+            # AI Mode
             self.mode = msgGlove['Mode']
-        elif msgGlove['Mode'] == 4:
-            # print("this is AI mode")
-            self.mode = msgGlove['Mode']
-        elif msgGlove['Mode'] == 5:
-            #Something awesome
-            self.mode = msgGlove['Mode']
-
-
-
-        # match msgGlove['Mode']:
-        #     case 1:
-        #         # print("this is jog mode")
-        #         self.mode = msgGlove['Mode']
-        #         self.jogMode(msgGlove["Flex"], msgGlove["IMU"])
-                
-        #     case 2:
-        #         # print("this is joint mode")
-        #         self.mode = msgGlove['Mode']
-
-        #     case 3:
-        #         # print("this is cartesian mode")
-        #         self.mode = msgGlove['Mode']
-
-        #     case 4:
-        #         self.mode = msgGlove['Mode']
-        #         self.aiMode(msgGlove['Flex'], msgGlove['IMU'])
-
-        #     case 5:
-        #         # print("this is interface mode")
-        #         self.mode = msgGlove['Mode']
-
+        else:
+            print("This mode is not available !")
 
     def jogMode(self, flexion, imu):
         '''This function moves the motors as long as fingers are  in flexion
@@ -115,11 +92,12 @@ class translate:
         imu : double Values associated with the IMU which gives the direction of the hand
         '''
         tresholdFlex = 30
+        tresholdFlexMin = 10
         treshold_IMU_pos = 0.50
         treshold_IMU_neg = -0.50 
         self.currentMsgMotor = [0,0,0,0]
         sumFinger = 0
-        griperIncrement = 0
+
         # Verify the rotation of the hand associated with reversing direction
         if imu[2] <= treshold_IMU_neg:
             # Verify the flexion of the 3 fingers associated to joint 1,2,3
@@ -129,17 +107,18 @@ class translate:
                     sumFinger += 1
 
             # Verify the flexion of the last finger associated with the gripper        
-            if flexion[3] >= tresholdFlex and sumFinger == 3:
-                if griperIncrement  == 0:
-                    griperIncrement = 1
-                elif griperIncrement == 1:
-                    griperIncrement = 0
-                print(griperIncrement)
-                self.currentMsgMotor[3] = griperIncrement
+            if flexion[3] >= tresholdFlex:
+                # for id in range(0,3):
+                #     self.currentMsgMotor[id] = 0
+                if self.triggerGripper:
+                    self.griperIncrement    = -1 * self.griperIncrement
+                    self.currentMsgMotor[3] = self.griperIncrement
+                    self.triggerGripper     = False
+            elif flexion[3] <= tresholdFlexMin:
+                self.triggerGripper = True
 
             msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.currentMsgMotor)
             self.msgIO.sendMessage(0, msg_to_motor)
-
 
         elif imu[2] >= treshold_IMU_pos:  
             # Verify the flexion of the 3 fingers associated to joint 1,2,3
@@ -149,13 +128,15 @@ class translate:
                     sumFinger += 1
 
             # Verify the flexion of the last finger associated with the gripper        
-            if flexion[3] >= tresholdFlex and sumFinger == 3:
-                if griperIncrement  == 0:
-                    griperIncrement = 1
-                elif griperIncrement == 1:
-                    griperIncrement = 0
-                print(griperIncrement)
-                self.currentMsgMotor[3] = griperIncrement
+            if flexion[3] >= tresholdFlex:
+                # for id in range(0,3):
+                #     self.currentMsgMotor[id] = 0
+                if self.triggerGripper:
+                    self.griperIncrement    = -1 * self.griperIncrement
+                    self.currentMsgMotor[3] = self.griperIncrement
+                    self.triggerGripper     = False
+            elif flexion[3] <= tresholdFlexMin:
+                self.triggerGripper = True
         
             msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.currentMsgMotor)
             self.msgIO.sendMessage(0, msg_to_motor)
@@ -176,7 +157,7 @@ class translate:
         #     self.lastMsgMotor = self.currentMsgMotor
         #     self.enumRep = 0
         #This is a magnificent test
-
+        self.lastMsgMotor = self.currentMsgMotor
 
     def aiMode(self, flex, imu):
         '''This function moves the motors according to the hand symbols the user is making; 
