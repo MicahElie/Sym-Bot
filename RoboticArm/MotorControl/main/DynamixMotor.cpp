@@ -1,4 +1,4 @@
-#include "Motor.h"
+#include "DynamixMotor.h"
 
 DynamixelWorkbench dxl_wb;
 
@@ -11,7 +11,7 @@ DynamixelWorkbench dxl_wb;
  * @param max_limmit the position of motor corresponding to its maximal value
  * @param reverse indicates if motor has to turn the other side
 */
-Motor::Motor(uint8_t id, uint16_t zero, uint16_t home, uint8_t max_limit, bool reverse)
+DynamixMotor::DynamixMotor(uint8_t id, uint16_t zero, uint16_t home, uint16_t max_limit, bool reverse)
 {
     this->id = id;
 
@@ -45,46 +45,46 @@ Motor::Motor(uint8_t id, uint16_t zero, uint16_t home, uint8_t max_limit, bool r
     // cmdSucceeded = dxl_wb.itemWrite(id, "Min_Position_Limit", 0, &log);
 }
 
-void Motor::go_to(uint16_t pos)
+void DynamixMotor::go_to(uint16_t pos)
 {
-    pos += zero;
+    // pos += zero;
     if (pos > max_limit)
         pos = max_limit;
     dxl_wb.goalPosition(id, (int32_t)pos, &log);
 };
 
 // 4096/360 = 11,377777777777777777777777777778
-void Motor::go_to_degrees(uint16_t pos) { this->go_to(pos * 11.3778); }
-void Motor::go_to_home() { this->go_to(this->home); }
+void DynamixMotor::go_to_degrees(uint16_t pos) { this->go_to(pos * 11.3778+zero); }
+void DynamixMotor::go_to_home() { this->go_to(home); }
 
-void Motor::go_forward()
+void DynamixMotor::go_forward()
 {
     int32_t pos = get_position();
     pos += step;
     go_to(pos);
 };
 
-void Motor::go_backward()
+void DynamixMotor::go_backward()
 {
     int32_t pos = get_position();
     pos -= step;
     go_to(pos);
 }
-int32_t Motor::get_position()
+int16_t DynamixMotor::get_position()
 {
     int32_t data = 0;
     cmdSucceeded = dxl_wb.itemRead(id, "Present_Position", &data, &log);
     return data;
 }
 
-int32_t Motor::get_home_offset()
+int16_t DynamixMotor::get_home_offset()
 {
     int32_t data = 0;
     cmdSucceeded = dxl_wb.itemRead(id, "Homing_Offset", &data, &log);
     return data;
 }
 
-void Motor::setHomingOffset(int32_t pos)
+void DynamixMotor::setHomingOffset(int16_t pos)
 {
     cmdSucceeded = dxl_wb.itemWrite(id, "Homing_Offset", pos, &log);
 }

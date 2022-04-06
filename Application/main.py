@@ -56,29 +56,32 @@ if __name__ == '__main__':
     commPort = None
     messageIO = MessageIO()
     Micah = translate(messageIO)
-    messageIO.addDevice(SerialComm("COM7", 57600))  #Port vers open
+    messageIO.addDevice(SerialComm("/dev/ttyACM1", 57600))  #Port vers open
     driveManager = DriveManager([0, 0, 0], messageIO)
     
-    '''
-    bt = BluetoothComm(1,1)
+    MAC_ = '58:BF:25:37:A6:9A'
+    uuid_ = "00001101-0000-1000-8000-00805f9b34fb"
+    bt = Bluetooth(MAC_,1,uuid_)
     while True:
         if bt.isMessageAvailable():
             msg = bt.readMessage()
+            print(msg)
             Micah.chooseMode(msg)
-    '''
 
     ''' Comm USB '''
-    serial = serial.Serial("COM6", 57600, timeout=1)
+    '''
+    serial = serial.Serial("/dev/ttyACM0", 57600, timeout=1)
     # lastComm = [-10,-10]
     # delta = 3
     while True:
         while serial.in_waiting > 0:
             raw = serial.readline()
-            comm = raw.decode().replace("\r\n", "").split(";")
+            comm = raw.decode().replace("\r\n", "").split("|")
             if len(comm) == 9:
+                print(comm)
                 msg = todo(comm)
                 Micah.chooseMode(msg)
-
+    '''
 
 
     '''

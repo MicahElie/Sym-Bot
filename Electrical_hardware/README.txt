@@ -1,1 +1,0 @@
-The current electrical diagram of the robot is presented in the following file:
