@@ -8,10 +8,11 @@
   - [Control](#control)
 
 ## Environment
-- Software : [Arduino IDE](https://www.arduino.cc/en/software)
-- Add OpenCr board with instructions : https://emanual.robotis.com/docs/en/parts/controller/opencr10/#arduino-ide
-- Add library ArduinoJson with Libray Manager
+- Software : [Arduino IDE](https://www.arduino.cc/en/software) (1.8.19)
+- Add OpenCr board (1.6.4) with instructions : https://emanual.robotis.com/docs/en/parts/controller/opencr10/#arduino-ide
+- Add library ArduinoJson (6.18.5) with Libray Manager
 - Optional : Using [Visual Studio Code](https://code.visualstudio.com/) like a source-sode editor and add extension Arduino, publisher Microsoft
+- WARNING : The codes below used the versions mentioned in above (#.#.#).
 
 ## Calibration
 With monitor_m, we can get the different motor's position
@@ -29,4 +30,7 @@ With monitor_m, we can get the different motor's position
 * Write what is in the quotation marks to Serial Monitor, [] => optional number and () => must number
 
 ## Control
-Coming soon
+With main, we can upload the code to control the robotic arm
+Avant de téléverser le code dans la carte OpenCr,
+assurez-vous que les valeurs définies dans les fonctions init_dynamix() et init_servo() correspondent bien à votre implémentation du bras robitque.
+
