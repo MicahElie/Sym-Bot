@@ -74,7 +74,7 @@ void loop()
       default:
         break;
       case GO_TO_POSITION_INDEX: //Set position = 7 SET_JOIN_POSITION
-        motors[i]->go_to(msg->getPayload()[i]);
+        motors[i]->go_to_degrees(msg->getPayload()[i]);
         break;
       case GO_TO_JOG: // Jog
         if (msg->getPayload()[i] == 1)
@@ -139,6 +139,7 @@ void init_dynamix()
   const uint16_t ZEROs[] = {10, 1360, 1024};
   const uint16_t HOMEs[] = {2047, 1920, 2048};
   const uint16_t MAXs[] = {4090, 2384, 3072};
+  const uint16_t VELOCITYs[] = {128, 32, 32};
   const bool REVERSEs[] = {false, false, true};
 
   // Instanciation des Dynamix
@@ -146,7 +147,7 @@ void init_dynamix()
   {
     if (motors[m] == nullptr)
     {
-      motors[m] = new DynamixMotor(IDs[m], ZEROs[m], HOMEs[m], MAXs[m], REVERSEs[m]);
+      motors[m] = new DynamixMotor(IDs[m], ZEROs[m], HOMEs[m], MAXs[m], VELOCITYs[m], REVERSEs[m]);
       DEBUG_MSG_LN("Set dynamix");
     }
   }
