@@ -15,6 +15,7 @@ class interface:
 
     msgIO = MessageIO()
     msgIO.addDevice(dev=SerialComm("COM4", 57600))  #Port vers open
+    J_mode=True
 
 
     def op_grip(self,op,button1,button2):
@@ -36,21 +37,51 @@ class interface:
         print("CLOSE")
 
 
-    def ch_mode(self,button1,button2):
+    def ch_mode(self,M,button1,button2,lab1,lab2,lab3,lab4,lab5,lab6,coord1,coord2,coord3,val1,val2,val3,val4,val5,val6,u1,u2,u3,u4,u5,u6,d1,d2,d3,d4,d5,d6,ch1,ch2,ch3,ch4,ch5,ch6,ca1,ca2,ca3,go1,go2,go3):
         button1.bg=mint
         button2.bg=Peri
-
-
-    def cart_mode(self):
-        #This is where we go in cartesian mode
-        a=1
-        a=a+1
-
-
-    def joint_mode(self):
-        b=2
-        b=b+2
-
+        J_mode=M
+        lab1.hide()
+        lab2.hide()
+        lab3.hide()
+        lab4.show()
+        lab5.show()
+        lab6.show()
+        coord1.hide()
+        coord2.hide()
+        coord3.hide()
+        val1.hide()
+        val2.hide()
+        val3.hide()
+        val4.show()
+        val5.show()
+        val6.show()
+        u1.hide()
+        u2.hide()
+        u3.hide()
+        u4.show()
+        u5.show()
+        u6.show()
+        d1.hide()
+        d2.hide()
+        d3.hide()
+        d4.show()
+        d5.show()
+        d6.show()
+        ch1.hide()
+        ch2.hide()
+        ch3.hide()
+        ch4.show()
+        ch5.show()
+        ch6.show()
+        ca1.hide()
+        ca2.hide()
+        ca3.hide()
+        go1.hide()
+        go2.hide()
+        go3.hide()
+        
+   
 
     def change_val(self,coord,go_but,ch_but,can_but,u,d):
         ch_but.hide()
@@ -122,49 +153,49 @@ if __name__ == '__main__':
     closed_on="Application/Interface/Boutonpincefermeeonp.png"
     closed_off="Application/Interface/Boutonpincefermeep.png"
     is_op=False
-    ii=0
+    
 
 
     #grip_com=ButtonGroup(app,command=op_cl_grip,options)
 
-    cart_mode_but=PushButton(app,obj.cart_mode,text="Cartesian Mode",grid=[20,0])
-    joint_mode_but=PushButton(app,obj.joint_mode,text="Joint Mode",grid=[20,10])
+    cart_mode_but=PushButton(app,text="Cartesian Mode",grid=[20,0])
+    joint_mode_but=PushButton(app,text="Joint Mode",grid=[20,10])
     op_grip_but=PushButton(app,image=open_on,grid=[100,0],width=108,height=97)
     cl_grip_but=PushButton(app,image=closed_off,grid=[100,10],width=108,height=97)
     op_grip_but.update_command(obj.op_grip,args=(is_op,op_grip_but,cl_grip_but))
     cl_grip_but.update_command(obj.cl_grip,args=(is_op,op_grip_but,cl_grip_but))
-    cart_mode_but.update_command(obj.ch_mode,args=(cart_mode_but,joint_mode_but))
-    joint_mode_but.update_command(obj.ch_mode,args=(joint_mode_but,cart_mode_but))
-    X_lab=Text(app,text="X",grid=[0,60],align="left")
-    Y_lab=Text(app,text="Y",grid=[0,70],align="left")
-    Z_lab=Text(app,text="Z",grid=[0,80],align="left")
-    J1_lab=Text(app,text="J1",grid=[0,90],align="left")
-    J2_lab=Text(app,text="J2",grid=[0,100],align="left")
-    J3_lab=Text(app,text="J3",grid=[0,110],align="left")
-    X_val=Text(app,text="???",grid=[10,60],align="left")
-    Y_val=Text(app,text="???",grid=[10,70],align="left")
-    Z_val=Text(app,text="???",grid=[10,80],align="left")
-    J1_val=Text(app,text="???",grid=[10,90],align="left")
-    J2_val=Text(app,text="???",grid=[10,100],align="left")
-    J3_val=Text(app,text="???",grid=[10,110],align="left")
+    cart_mode_but.update_command(obj.ch_mode,args=(False,cart_mode_but,joint_mode_but,J1_lab,J2_lab,J3_lab,X_lab,Y_lab,Z_lab,J1_coord,J2_coord,J3_coord,J1_val,J2_val,J3_val,X_val,Y_val,Z_val,J1_U,J2_U,J3_U,X_U,Y_U,Z_U,J1_D,J2_D,J3_D,X_D,Y_D,Z_D,J1_ch,J2_ch,J3_ch,X_ch,Y_ch,Z_ch,J1_Ca,J2_Ca,J3_Ca,J1_Go,J2_Go,J3_Go))
+    joint_mode_but.update_command(obj.ch_mode,args=(True,joint_mode_but,cart_mode_but,X_lab,Y_lab,Z_lab,J1_lab,J2_lab,J3_lab,X_coord,Y_coord,Z_coord,X_val,Y_val,Z_val,J1_val,J2_val,J3_val,X_U,Y_U,Z_U,J1_U,J2_U,J3_U,X_D,Y_D,Z_D,J1_D,J2_D,J3_D,X_ch,Y_ch,Z_ch,J1_ch,J2_ch,J3_ch,X_Ca,Y_Ca,Z_Ca,X_Go,Y_Go,Z_Go))
+    X_lab=Text(app,text="X",grid=[0,60],align="left",visible=False)
+    Y_lab=Text(app,text="Y",grid=[0,70],align="left",visible=False)
+    Z_lab=Text(app,text="Z",grid=[0,80],align="left",visible=False)
+    J1_lab=Text(app,text="J1",grid=[0,60],align="left")
+    J2_lab=Text(app,text="J2",grid=[0,70],align="left")
+    J3_lab=Text(app,text="J3",grid=[0,80],align="left")
+    X_val=Text(app,text="???",grid=[10,60],align="left",visible=False)
+    Y_val=Text(app,text="???",grid=[10,70],align="left",visible=False)
+    Z_val=Text(app,text="???",grid=[10,80],align="left",visible=False)
+    J1_val=Text(app,text="???",grid=[10,60],align="left")
+    J2_val=Text(app,text="???",grid=[10,70],align="left")
+    J3_val=Text(app,text="???",grid=[10,80],align="left")
     X_coord=TextBox(app,grid=[25,60],visible=False)
     Y_coord=TextBox(app,grid=[25,70],visible=False)
     Z_coord=TextBox(app,grid=[25,80],visible=False)
-    J1_coord=TextBox(app,grid=[25,90],visible=False)
-    J2_coord=TextBox(app,grid=[25,100],visible=False)
-    J3_coord=TextBox(app,grid=[25,110],visible=False)
-    X_U=PushButton(app,text="▲",grid=[25,59])
-    X_D=PushButton(app,text="▼",grid=[25,60])
-    Y_U=PushButton(app,text="▲",grid=[25,69])
-    Y_D=PushButton(app,text="▼",grid=[25,70])
-    Z_U=PushButton(app,text="▲",grid=[25,79])
-    Z_D=PushButton(app,text="▼",grid=[25,80])
-    J1_U=PushButton(app,text="▲",grid=[25,89])
-    J1_D=PushButton(app,text="▼",grid=[25,90])
-    J2_U=PushButton(app,text="▲",grid=[25,99])
-    J2_D=PushButton(app,text="▼",grid=[25,100])
-    J3_U=PushButton(app,text="▲",grid=[25,109])
-    J3_D=PushButton(app,text="▼",grid=[25,110])
+    J1_coord=TextBox(app,grid=[25,60],visible=False)
+    J2_coord=TextBox(app,grid=[25,70],visible=False)
+    J3_coord=TextBox(app,grid=[25,80],visible=False)
+    X_U=PushButton(app,text="▲",grid=[25,59],visible=False)
+    X_D=PushButton(app,text="▼",grid=[25,60],visible=False)
+    Y_U=PushButton(app,text="▲",grid=[25,69],visible=False)
+    Y_D=PushButton(app,text="▼",grid=[25,70],visible=False)
+    Z_U=PushButton(app,text="▲",grid=[25,79],visible=False)
+    Z_D=PushButton(app,text="▼",grid=[25,80],visible=False)
+    J1_U=PushButton(app,text="▲",grid=[25,59])
+    J1_D=PushButton(app,text="▼",grid=[25,60])
+    J2_U=PushButton(app,text="▲",grid=[25,69])
+    J2_D=PushButton(app,text="▼",grid=[25,70])
+    J3_U=PushButton(app,text="▲",grid=[25,79])
+    J3_D=PushButton(app,text="▼",grid=[25,80])
     X_U.text_size=4
     X_D.text_size=4
     Y_U.text_size=4
@@ -178,24 +209,24 @@ if __name__ == '__main__':
     J3_U.text_size=4
     J3_D.text_size=4
 
-    X_ch=PushButton(app,text="Move",grid=[50,60])
+    X_ch=PushButton(app,text="Move",grid=[50,60],visible=False)
     X_Go=PushButton(app,text="Go",grid=[50,60],enabled=False,visible=False)
     X_Ca=PushButton(app,text="Cancel",grid=[75,60],enabled=False,visible=False)
-    Y_ch=PushButton(app,text="Move",grid=[50,70])
+    Y_ch=PushButton(app,text="Move",grid=[50,70],visible=False)
     Y_Go=PushButton(app,text="Go",grid=[50,70],enabled=False,visible=False)
     Y_Ca=PushButton(app,text="Cancel",grid=[75,70],enabled=False,visible=False)
-    Z_ch=PushButton(app,text="Move",grid=[50,80])
+    Z_ch=PushButton(app,text="Move",grid=[50,80],visible=False)
     Z_Go=PushButton(app,text="Go",grid=[50,80],enabled=False,visible=False)
     Z_Ca=PushButton(app,text="Cancel",grid=[75,80],enabled=False,visible=False)
-    J1_ch=PushButton(app,text="Move",grid=[50,90])
-    J1_Go=PushButton(app,text="Go",grid=[50,90],enabled=False,visible=False)
-    J1_Ca=PushButton(app,text="Cancel",grid=[75,90],enabled=False,visible=False)
-    J2_ch=PushButton(app,text="Move",grid=[50,100])
-    J2_Go=PushButton(app,text="Go",grid=[50,100],enabled=False,visible=False)
-    J2_Ca=PushButton(app,text="Cancel",grid=[75,100],enabled=False,visible=False)
-    J3_ch=PushButton(app,text="Move",grid=[50,110])
-    J3_Go=PushButton(app,text="Go",grid=[50,110],enabled=False,visible=False)
-    J3_Ca=PushButton(app,text="Cancel",grid=[75,110],enabled=False,visible=False)
+    J1_ch=PushButton(app,text="Move",grid=[50,60])
+    J1_Go=PushButton(app,text="Go",grid=[50,60],enabled=False,visible=False)
+    J1_Ca=PushButton(app,text="Cancel",grid=[75,60],enabled=False,visible=False)
+    J2_ch=PushButton(app,text="Move",grid=[50,70])
+    J2_Go=PushButton(app,text="Go",grid=[50,70],enabled=False,visible=False)
+    J2_Ca=PushButton(app,text="Cancel",grid=[75,70],enabled=False,visible=False)
+    J3_ch=PushButton(app,text="Move",grid=[50,80])
+    J3_Go=PushButton(app,text="Go",grid=[50,80],enabled=False,visible=False)
+    J3_Ca=PushButton(app,text="Cancel",grid=[75,80],enabled=False,visible=False)
 
     X_ch.update_command(obj.change_val,args=(X_coord,X_Go,X_ch,X_Ca,X_U,X_D))
     X_Go.update_command(obj.go_but_f,args=(X_coord,X_Go,X_ch,X_Ca,X_U,X_D,X_val,))
