@@ -17,8 +17,8 @@ public:
   ServoMotor(uint8_t pin);
   ~ServoMotor() = default;
 
-  void go_to(uint16_t pos);
-  void go_to_degrees(uint16_t pos);
+  void go_to(int16_t pos);
+  void go_to_degrees(int16_t pos);
   void go_to_home();
   void go_forward();
   void go_backward();

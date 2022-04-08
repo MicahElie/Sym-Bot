@@ -16,8 +16,8 @@ ServoMotor::ServoMotor(uint8_t pin)
 };
 
 // servo.write(angle), angle: the value to write to the servo, from 0 to 180
-void ServoMotor::go_to(uint16_t pos) { servo.write(pos); };
-void ServoMotor::go_to_degrees(uint16_t pos) { this->go_to(pos); }
+void ServoMotor::go_to(int16_t pos) { servo.write(pos); };
+void ServoMotor::go_to_degrees(int16_t pos) { this->go_to(pos); }
 void ServoMotor::go_to_home() { this->go_to(this->home); }
 void ServoMotor::go_forward() { this->go_to(60); };
 void ServoMotor::go_backward() { this->go_to(180); }
