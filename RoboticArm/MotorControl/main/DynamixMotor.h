@@ -26,20 +26,22 @@ private:
     uint16_t model_number;
     uint16_t baud = 57600;
     uint16_t velocity = 64;
+    uint16_t accelaration = 8;
 
     // uint16_t zero;      // {0, 1648, 0, 1536}
     // uint16_t home;      // {2047, 2048, 1023, 2048}
     // uint16_t max_limit; // {4095, 2672, 1408, 2560}
     // uint16_t step = 32;
+    int16_t position;
     bool reversed;
 
 public:
     DynamixMotor() = delete;
-    DynamixMotor(uint8_t id, uint16_t zero, uint16_t home, uint16_t max_limit, bool reverse);
+    DynamixMotor(uint8_t, uint16_t, uint16_t, uint16_t, uint16_t, bool);
     ~DynamixMotor() = default;
 
-    void go_to(uint16_t pos);
-    void go_to_degrees(uint16_t pos);
+    void go_to(int16_t pos);
+    void go_to_degrees(int16_t pos);
     void go_to_home();
     void go_forward();
     void go_backward();
