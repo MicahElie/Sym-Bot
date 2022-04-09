@@ -46,20 +46,20 @@ We'll do anything we can so that the documentation is as clear as possible. Firs
 The first step to follow for building your own Sym-Bot application is to follow the READMEs step-by-step guide in each sections.
 Our project is divided in three main sections: 
 * The first one is [Application (Main Software)](Application/), that's **where all the communication and data interpretation between the Glove and the Robotic Arm is done**. In that section, you will mainly find the Python code that will go on the Raspberry Pi 4B (or any other computer of your choice) that will be linked to the OpenCR of the Robotic arm and the Bluetooth of the Glove. That's also where the [AI section](Application/AI/) is.
-* The second section is [Robotic Arm](Robotic%20Arm/), that's where **you'll find the C++ code for the motors control, all the 3D parts with the assembly models (SolidWorks) and the electrical schematic.**
-* Finally, the last, but not least, part, is the [Glove User Interface](Glove%20UI/), in this section **you'll find the C++ code used with PlatformIO on the ESP32 and the list of electrical sensors and components that are attached on the glove with the electrical schematic**.
+* The second section is [Robotic Arm](/Robotic%20Arm/), that's where **you'll find the C++ code for the motors control, all the 3D parts with the assembly models (SolidWorks) and the electrical schematic.**
+* Finally, the last, but not least, part, is the [Glove User Interface](/Glove%20UI/), in this section **you'll find the C++ code used with PlatformIO on the ESP32 and the list of electrical sensors and components that are attached on the glove with the electrical schematic**.
 
 ### Mechanical recommandations
 * Most of the parts of our robot arm should be 3D-printed.
 * We use different kind of bolts, shafts, plastic insert and couplers
 * We created our own bearing with metalic marbles, but you can easily modify this section
-* The list of components to buy, 3D parts and the assembly of the robotic arm is in the [Material & Assembly section](/Material%20%26%20Assembly)
+* The list of components to buy, 3D parts and the assembly of the robotic arm is in the [Material & Assembly section](/Robotic%20Arm/Material%20%26%20Assembly/)
 
 ### Electrical recommandations
 * Most of the electrical part is on the implementation of sensors on the glove
 * We personnally sew the electrical components on the glove.
 * Make sure to use long enough wires for the connection between the motors and the OpenCR
-* For more information about the electrical design, look at the [Robotic Arm Electrical section](/RoboticArm/) and the [Glove Electrical section](/UI)
+* For more information about the electrical design, look at the [Robotic Arm Electrical section](/Robotic%20Arm/) and the [Glove Electrical section](/Glove%20UI/)
 
 ### Software recommandations
 * We mostly used Python and C/C++ with Visual Studio Code as code editor and IDE with extensions.
