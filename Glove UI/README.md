@@ -1,16 +1,18 @@
 # Sym-Bot : User Interface Glove
 
+#### *Picture of final glove coming soon...*
+
 ## Table of Content
 - [Sym-Bot : User Interface Glove](#sym-bot--user-interface-glove)
+      - [*Picture of final glove coming soon...*](#picture-of-final-glove-coming-soon)
   - [Table of Content](#table-of-content)
   - [Material](#material)
     - [Electrical Components](#electrical-components)
     - [Other components](#other-components)
   - [Electrical Schematic](#electrical-schematic)
-  - [Picture of Final Glove](#picture-of-final-glove)
   - [Getting started](#getting-started)
     - [Environnement setup](#environnement-setup)
-  - [Glove Control](#glove-control)
+  - [How to use the Sym-Bot Glove](#how-to-use-the-sym-bot-glove)
   - [Alternative](#alternative)
 
 ## Material
@@ -48,14 +50,13 @@
 ## Electrical Schematic
 Coming soon
 
-## Picture of Final Glove
-Comming soon
+*Refer also to the [picture](#picture-of-final-glove-coming-soon) above for assembly*
 
 ## Getting started
 ### Environnement setup
-PlatformIO...
+Visual Studio Code and PlatformIO...
 
-## Glove Control
+## How to use the Sym-Bot Glove
 Coming soon
 
 ## Alternative
