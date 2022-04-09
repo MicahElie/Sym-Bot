@@ -3,22 +3,60 @@
 ## Table of Content
 - [Sym-Bot : User Interface Glove](#sym-bot--user-interface-glove)
   - [Table of Content](#table-of-content)
-  - [Environment](#environment)
-  - [Glove](#glove)
-    - [Control](#control)
-  - [Interface](#interface)
+  - [Material](#material)
+    - [Electrical Components](#electrical-components)
+    - [Other components](#other-components)
+  - [Electrical Schematic](#electrical-schematic)
+  - [Picture of Final Glove](#picture-of-final-glove)
+  - [Getting started](#getting-started)
+    - [Environnement setup](#environnement-setup)
+  - [Glove Control](#glove-control)
   - [Alternative](#alternative)
 
-## Environment
+## Material
+### Electrical Components
+- #### ESP32 microcontroller
+  * Brand : [Espressif inc.](https://www.espressif.com/en/products/devkits/esp32-devkitc/overview)
+  * Model : DOIT ESP32 DEVKIT v1
+  * Quantity : 1 
+
+- #### Flex Sensor
+    * Brand : [SparkFun](https://www.sparkfun.com/products/14666)
+    * Mdoel : SparkFun Qwiic Flex Glove Controller
+    * Quantity : 2
+    * **Note: You can also use individual flex sensors, that will change the code implementation, because the data communication will not be I2C.** 
+
+- #### IMU
+  * Brand : [Grove](https://wiki.seeedstudio.com/Grove-IMU_9DOF_v2.0/)
+  * Model : IMU 9DOF v2.0
+  * Quantity : 1
+
+- #### Power Supply
+  * Brand : [EnergyCell Mini](https://www.amazon.ca/-/fr/EnergyCell-chargeur-portable-5000-compatible/dp/B09JNSVJD4/ref=sr_1_18?__mk_fr_CA=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2YP1LRY4BZLER&keywords=power%2Bbank%2B5v&qid=1649544794&refinements=p_36%3A12035760011&rnid=12035759011&s=electronics&sprefix=power%2Bbank%2B5v%2Caps%2C86&sr=1-18&th=1)
+  * Model : Black
+  * Quantity : 1
+  * **Note: You can use your own power bank of 5V with at least 1250mAh, depends on your glove's time usage with one charge.**
+
+- #### Some Wires
+- #### Breadboard (for testing)
+
+### Other components
+
+- #### Gardening Gloves
+- #### Medical Gloves (each finger of the gardening glove should fit inside the medical glove)
+
+## Electrical Schematic
 Coming soon
 
-## Glove
-### Control
-Coming soon
+## Picture of Final Glove
+Comming soon
 
-## Interface
-The interface is built thanks to guizero, an easy to install (and to use) module.
-Note to self: to integrate the Interface into the code, we must include the file. Don't forget to display() at the end. The update_command function must be used in the main to change the functions attached to the buttons. We must link the labels of X, Y, Z, J1, J2 and J3 so that it shows real time values. We must also make variables that will be linked to the state of the gripper and wether we are in Cartesian or Joint mode. We should add an update function so that the info can stay up-to-date. -Fred
+## Getting started
+### Environnement setup
+PlatformIO...
+
+## Glove Control
+Coming soon
 
 ## Alternative
-Coming soon
+***Proto Board (à confirmer avec François Ferland si on a le droit d'utiliser les schémas et photos de l'APP6)***
