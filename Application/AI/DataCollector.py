@@ -12,28 +12,28 @@ class DataCollector:
     async def read_action(self):
         self.Action = input()
 
-    async def read_example(self, filename, inputs):
+    async def read_example(self, inputs):
         try:
-            await asyncio.wait_for(self.read_action(), timeout=0.5)
+            await asyncio.wait_for(self.read_action(), timeout=0.05)
         except asyncio.TimeoutError:
-            pass
+            print('No input read')
 
         if self.Action >= 0:
+            self.save_new_position(inputs)
 
-
-        asyncio.create_task(self.read_action())
-
-    def save_new_position(self, inputs, target_action):  # inputs: float vector, target_action: int
+    def save_new_position(self, inputs):  # inputs: float vector, target_action: int
 
         if len(inputs) != self.N:
             return 1  # Invalid size for input vector
 
-        if target_action < 0 or target_action >= self.K:
+        if self.Action < 0 or self.Action >= self.K:
             return 2  # Invalid target action
 
         with open(self.Filename, 'a') as f:
-            f.write('\n' + str(target_action) + '  ')
+            f.write('\n' + str(self.Action) + '  ')
             for i in inputs:
                 f.write(str(i))
                 f.write('  ')
+
+        self.Action = -1
         return 0

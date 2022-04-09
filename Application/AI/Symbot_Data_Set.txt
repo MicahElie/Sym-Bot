@@ -1,0 +1,3 @@
+# Data set used to train the AI - Data collected by the Symbot Project team.
+#
+# Action  Flex_1  Flex_2  Flex_3  Flex_4  IMU_X IMU_Y  IMU_Z
