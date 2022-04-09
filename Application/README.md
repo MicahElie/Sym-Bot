@@ -1,18 +1,21 @@
 # Sym-Bot : Application (Main Software)
 
 ## Table of Content
-- [main.py](#main)
 - [Getting started](#getting-started)
+- [main.py](#main)
 - [AI](#ai)
 - [Comm](#comm)
   - [BluetoothComm](#bluetoothcomm)
   - [translate](#translate)
 - [Test](#test)
-- [Cinematic](#cinematic)
-
-## main
+  - [test_translate](#test-translate-class)
 
 ## Getting started
+First, here's the hardware schematic that you have to keep in mind for every aspect of the project:
+
+![image](https://github.com/MicahElie/Sym-Bot/blob/main/Application/Hardware_Schematic.PNG)
+
+## main
 
 ## AI
 
@@ -49,6 +52,6 @@ self.msgIO.sendMessage(0, msg_to_motor)
 Note that in our application, the message sent to the motors are in the form : `[motor1,motor2, motor3, servoMotor]`. In other words, its a message for each motor used
 
 ## Test
+### test translate class
 
-## Cinematic
 
