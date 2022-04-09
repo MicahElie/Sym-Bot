@@ -13,7 +13,7 @@
 ## Getting started
 First, here's the hardware schematic that you have to keep in mind for every aspect of the project:
 
-![image](https://github.com/MicahElie/Sym-Bot/blob/main/Application/Hardware_Schematic.PNG)
+<img src="./img/Hardware_Schematic.PNG" alt="Hardware Schematic" width="512"/>
 
 ## main
 
@@ -25,7 +25,9 @@ As you know, the Sym-Bot uses an ESP32, a Raspberry Pi 4 and an OpenCR Arduino m
 
 ### translate
 When the bluetooth communication is established, it should receive messages in this form:
-![Message reçu](https://github.com/MicahElie/Sym-Bot/blob/main/Application/MessageReceived.png)
+<div>
+  <img src="./img/MessageReceived.png" alt="Message Received" width="512"/>
+</div>
 As you can see, this message receives the mode, the flexion state of four finger and information from the IMU. The strucutre used is a dictionnay whith the keys "Mode", "Flex" and "IMU".
 - Modes are linked with the "chooseMode()" function. It is possible to add others modes if you want, but make sure to use numbers that are used in this function
 - Flexion state are linked with the "Flex" key of the dictionnary and are used in every function of the translate class, depending on the way we want to translate the message
