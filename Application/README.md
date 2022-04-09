@@ -1,14 +1,16 @@
 # Sym-Bot : Application (Main Software)
 
 ## Table of Content
-- [Getting started](#getting-started)
-- [main.py](#main)
-- [AI](#ai)
-- [Comm](#comm)
-  - [BluetoothComm](#bluetoothcomm)
-  - [translate](#translate)
-- [Test](#test)
-  - [test_translate](#test-translate-class)
+- [Sym-Bot : Application (Main Software)](#sym-bot--application-main-software)
+  - [Table of Content](#table-of-content)
+  - [Getting started](#getting-started)
+  - [Comm](#comm)
+    - [BluetoothComm](#bluetoothcomm)
+    - [translate.py](#translatepy)
+  - [Test](#test)
+    - [test translate class](#test-translate-class)
+  - [AI](#ai)
+  - [Interface](#interface)
 
 ## Getting started
 First, here's the hardware schematic that you have to keep in mind for every aspect of the project:
@@ -22,10 +24,6 @@ Setup environment
   - pyserial (3.5)
   - pybluez (0.23)
 
-## main
-
-## AI
-
 ## Comm
 As you know, the Sym-Bot uses an ESP32, a Raspberry Pi 4 and an OpenCR Arduino microcontroler. All the code found in this section allows the communication between thoses devices to be functional. 
 ### BluetoothComm
@@ -33,7 +31,7 @@ Turn on bluetooth
 Connect ESP32's device
 Using [rfcomm-client.py's example](https://github.com/pybluez/pybluez/blob/master/examples/simple/rfcomm-client.py) to find MAC & uuid device
 
-### translate
+### translate.py
 When the bluetooth communication is established, it should receive messages in this form:
 <img src="./img/MessageReceived.png" alt="Message Received" width="512"/>
 
@@ -64,5 +62,12 @@ Note that in our application, the message sent to the motors are in the form : `
 
 ## Test
 ### test translate class
+
+## AI
+[AI section click here](/Application/AI/)
+
+## Interface
+The interface is built thanks to guizero, an easy to install (and to use) module.
+To integrate the Interface into the code, we must include the file. Don't forget to display() at the end. The update_command function must be used in the main to change the functions attached to the buttons. We must link the labels of X, Y, Z, J1, J2 and J3 so that it shows real time values. We must also make variables that will be linked to the state of the gripper and wether we are in Cartesian or Joint mode. We should add an update function so that the info can stay up-to-date.
 
 
