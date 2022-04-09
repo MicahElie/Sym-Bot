@@ -1,6 +1,8 @@
 import unittest
 
 # from setuptools import setup
+import sys
+sys.path.insert(0,"/Users/labmi/Documents/GitHub/Sym-Bot/Application/")
 from Comm.MessageIO import MessageIO
 from Comm.translate import translate
 from Comm.fakeSerialComm import fakeSerialComm
