@@ -1,4 +1,4 @@
-from test.TestCinematic.VectorTester import *
+from test.TestAI.VectorTester import *
 from AI.DataCollector import *
 import msvcrt
 

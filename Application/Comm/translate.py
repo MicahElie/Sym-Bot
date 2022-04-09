@@ -5,6 +5,7 @@ from Comm import ControlMessage
 from Comm.ControlMessage import ControlMessage
 from Comm import MessageIO
 # import msvcrt
+import asyncio
 
 import numpy as np
 
@@ -20,22 +21,23 @@ class translate:
     
     '''
 
-    JOG = 0;
-    JOINT = 1;
-    CART = 2;
-    AI = 3;
-    INTERFACE = 4;
+    TRAIN = -1
+    JOG = 0
+    JOINT = 1
+    CART = 2
+    AI_MODE = 3
+    INTERFACE = 4
 
-    lastMsgMotor = [0,0,0,0]
-    currentMsgMotor = [0,0,0,0]
+    lastMsgMotor = [0, 0, 0, 0]
+    currentMsgMotor = [0, 0, 0, 0]
     griperIncrement = -1
     triggerGripper  = False
     enumRep = 0
-    file_database = "ai_database.txt"
+    file_data_set = 'AI/Symbot_Data_Set.txt'
 
     mode = 0
-    flexion = [0,0,0,0]
-    imu = [0,0,0]
+    flexion = [0, 0, 0, 0]
+    imu = [0, 0, 0]
 
     # Forme du message recu par le gant
     # "Mode: ", "Flex : [4]", "IMU : [3]"
@@ -43,8 +45,8 @@ class translate:
     def __init__(self, msgIO):
         self.msgIO = msgIO
         self.AI = AITrainer(7, 10)
-        #self.AI.read_data("filename")
-        #self.AI.grad_descent(np.zeros((8, 10)), 0.2, 0.01)
+        self.AI.read_data(self.file_data_set)
+        self.AI.grad_descent(np.zeros((8, 10)), 0.2, 0.01)
         self.AI_dataCollector = DataCollector(7, 10)
         
     def getMode(self):
@@ -67,19 +69,24 @@ class translate:
         -------------
         msgGlove : Data from the glove
         '''
-        if msgGlove['Mode'] == 0:
+        self.mode = msgGlove['Mode']
+        flex = msgGlove["Flex"]
+        imu = msgGlove["IMU"]
+        if self.mode == self.JOG:
             # Jog Mode
-            self.mode = msgGlove['Mode']
-            self.jogMode(msgGlove["Flex"], msgGlove["IMU"])
-        elif msgGlove['Mode'] == 1:
+            self.jogMode(flex, imu)
+        elif self.mode == self.JOINT:
             # Joint Mode
-            self.mode = msgGlove['Mode']
-        elif msgGlove['Mode'] == 2:
+            pass
+        elif self.mode == self.CART:
             # Cartesian Mode
-            self.mode = msgGlove['Mode']
-        elif msgGlove['Mode'] == 3:
+            pass
+        elif self.mode == self.AI_MODE:
             # AI Mode
-            self.mode = msgGlove['Mode']
+            self.aiMode(flex, imu)
+        elif self.mode == self.TRAIN:
+            # AI (Train) Mode
+            self.trainMode(flex, imu)
         else:
             print("This mode is not available !")
 
@@ -190,11 +197,12 @@ class translate:
         imu : double Values associated with the IMU which gives the direction of the hand
         '''
         inputs = flex + imu
-        if msvcrt.kbhit():
-            action = msvcrt.getch()
-            # inputs = flex + imu
-            self.AI_dataCollector.save_new_position(self.file_database, inputs, action)
-            action = input()
+        # if msvcrt.kbhit():
+        #     action = msvcrt.getch()
+        #     inputs = flex + imu
+        #     self.AI_dataCollector.save_new_position(self.file_database, inputs, action)
+        #     action = input()
+        asyncio.run(self.AI_dataCollector.read_example(inputs))
     
     def interMode (self, msg):
         pass
