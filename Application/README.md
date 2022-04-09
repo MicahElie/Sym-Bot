@@ -12,8 +12,15 @@
 
 ## Getting started
 First, here's the hardware schematic that you have to keep in mind for every aspect of the project:
-
 <img src="./img/Hardware_Schematic.PNG" alt="Hardware Schematic" width="512"/>
+
+Setup environment
+- Software : [Visual Studio Code](https://code.visualstudio.com/) (Stable Build) and add extension Python, publisher Microsoft
+- Using Python version (3.7 and newer)
+- Installing packages from the Python with [command line](https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-from-pypi) :
+  - numpy (1.22.2)
+  - pyserial (3.5)
+  - pybluez (0.23)
 
 ## main
 
@@ -22,6 +29,9 @@ First, here's the hardware schematic that you have to keep in mind for every asp
 ## Comm
 As you know, the Sym-Bot uses an ESP32, a Raspberry Pi 4 and an OpenCR Arduino microcontroler. All the code found in this section allows the communication between thoses devices to be functional. 
 ### BluetoothComm
+Turn on bluetooth
+Connect ESP32's device
+Using [rfcomm-client.py's example](https://github.com/pybluez/pybluez/blob/master/examples/simple/rfcomm-client.py) to find MAC & uuid device
 
 ### translate
 When the bluetooth communication is established, it should receive messages in this form:
