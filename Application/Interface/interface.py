@@ -36,16 +36,26 @@ class interface:
         op=0
         print("CLOSE")
    
-    def go_up(self,motor,button):
+    def go_up(self,motor,button,j_id):
+        self.currentMsgMotor=[0,0,0,0]
+        self.currentMsgMotor[j_id]=1
+        msg_to_motor=ControlMessage(ControlMessage.SET_JOG,self.currentMsgMotor)
         while button.value==1:
-            #tell motor to go forward
-        #tell motor to stop, thank you
+            self.msgIO.sendMessage(0, msg_to_motor)
+            print("1")
+        self.currentMsgMotor[j_id]=0
+        msg_to_motor=ControlMessage(ControlMessage.SET_JOG,self.currentMsgMotor)
         
     
-    def go_down(self,motor,button):
+    def go_down(self,motor,button,j_id):
+        self.currentMsgMotor=[0,0,0,0]
+        self.currentMsgMotor[j_id]=-1
+        msg_to_motor=ControlMessage(ControlMessage.SET_JOG,self.currentMsgMotor)
         while button.value==1:
-            #tell motor to go backwards
-        #tell motor to stop, thank you
+            self.msgIO.sendMessage(0, msg_to_motor)
+            print("-1")
+        self.currentMsgMotor[j_id]=0
+        msg_to_motor=ControlMessage(ControlMessage.SET_JOG,self.currentMsgMotor)
 
 
     def ch_mode(self,M,button1,button2,lab1,lab2,lab3,lab4,lab5,lab6,coord1,coord2,coord3,val1,val2,val3,val4,val5,val6,u1,u2,u3,u4,u5,u6,d1,d2,d3,d4,d5,d6,ch1,ch2,ch3,ch4,ch5,ch6,ca1,ca2,ca3,go1,go2,go3):
@@ -219,12 +229,12 @@ if __name__ == '__main__':
     J2_D.text_size=4
     J3_U.text_size=4
     J3_D.text_size=4
-    J1_U.update_command(obj.go_up,args=(motor1,J1_U))
-    J1_D.update_command(obj.go_down,args=(motor1,J1_D))
-    J2_U.update_command(obj.go_up,args=(motor2,J2_U))
-    J1_D.update_command(obj.go_down,args=(motor2,J2_D))
-    J3_U.update_command(obj.go_up,args=(motor3,J3_U))
-    J3_D.update_command(obj.go_down,args=(motor3,J3_D))
+    J1_U.update_command(obj.go_up,args=(motor1,J1_U,1))
+    J1_D.update_command(obj.go_down,args=(motor1,J1_D,1))
+    J2_U.update_command(obj.go_up,args=(motor2,J2_U,2))
+    J1_D.update_command(obj.go_down,args=(motor2,J2_D,2))
+    J3_U.update_command(obj.go_up,args=(motor3,J3_U,3))
+    J3_D.update_command(obj.go_down,args=(motor3,J3_D,3))
 
     X_ch=PushButton(app,text="Move",grid=[50,60],visible=False)
     X_Go=PushButton(app,text="Go",grid=[50,60],enabled=False,visible=False)
