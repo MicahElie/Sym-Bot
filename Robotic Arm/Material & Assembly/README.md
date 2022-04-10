@@ -14,11 +14,6 @@
 All the parts that need to be 3D printed are in the STL folder, see the BOM in the [wiki](https://github.com/chameau5050/Handling-Gro/wiki) to know the number required and to see the step by step assembly guide.
 
 ## Electrical Components
-### Single board computer
-* Brand : [RaspBerry Pi](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
-* Model : Raspberry PI 4 B
-* Quantity : 1
-  
 ### MicroController
 * Brand : [OpenCr](https://www.robot-advance.com/art-opencr1-0-robotis-2353.htm)
 * Model : OpenCr
