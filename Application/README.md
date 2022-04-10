@@ -24,6 +24,11 @@ Setup environment
   - pyserial (3.5)
   - pybluez (0.23)
 
+Single board computer
+* Brand : [RaspBerry Pi](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
+* Model : Raspberry PI 4 B
+* Quantity : 1
+
 ## Comm
 As you know, the Sym-Bot uses an ESP32, a Raspberry Pi 4 and an OpenCR Arduino microcontroler. All the code found in this section allows the communication between thoses devices to be functional. 
 ### BluetoothComm
