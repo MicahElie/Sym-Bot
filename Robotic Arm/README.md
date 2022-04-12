@@ -30,7 +30,6 @@ With monitor_m, we can get the different motor's position
 * Write what is in the quotation marks to Serial Monitor, [] => optional number and () => must number
 
 ## Control
-With main, we can upload the code to control the robotic arm
-Avant de téléverser le code dans la carte OpenCr,
-assurez-vous que les valeurs définies dans les fonctions init_dynamix() et init_servo() correspondent bien à votre implémentation du bras robitque.
+With main, we can upload the code to control the robotic arm.
+Before uploading the OpenCR Microcontroler code , make sur that the values defined in the init_dynamix() and init_servo() functions coresponds to your articulated arm implementation
 
