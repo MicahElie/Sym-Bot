@@ -1,4 +1,7 @@
+import threading
 from enum import Enum
+from time import sleep
+
 from AI.AITrainer import AITrainer
 from AI.DataCollector import DataCollector
 from Comm import ControlMessage
@@ -28,11 +31,20 @@ class translate:
     AI_MODE = 3
     INTERFACE = 4
 
+    # Special mode to train the AI. Keep "False" to run the system normally
+    DEVELOPER_MODE = True
+
+    # Number of consecutive identical readings (AI) required to start a new action
+    ACTION_COUNT_MIN = 10
+    action_count = 0
+    last_command = -1
+
     lastMsgMotor = [0, 0, 0, 0]
     currentMsgMotor = [0, 0, 0, 0]
     griperIncrement = -1
     triggerGripper  = False
     enumRep = 0
+    command = -1
     file_data_set = 'AI/Symbot_Data_Set.txt'
 
     mode = 0
@@ -45,9 +57,11 @@ class translate:
     def __init__(self, msgIO):
         self.msgIO = msgIO
         self.AI = AITrainer(7, 10)
-        self.AI.read_data(self.file_data_set)
-        self.AI.grad_descent(np.zeros((8, 10)), 0.2, 0.01)
-        self.AI_dataCollector = DataCollector(7, 10)
+        if not self.DEVELOPER_MODE:
+            self.AI.read_data(self.file_data_set)
+            self.AI.grad_descent(np.zeros((8, 10)), 0.2, 0.01)
+        self.AI_dataCollector = DataCollector(7, 10, self.file_data_set)
+        self.commandThread = threading.Thread(target=self.manageAction)
         
     def getMode(self):
         return self.mode
@@ -69,10 +83,17 @@ class translate:
         -------------
         msgGlove : Data from the glove
         '''
-        self.mode = msgGlove['Mode']
+        if self.DEVELOPER_MODE:
+            self.mode = self.TRAIN
+        else:
+            self.mode = msgGlove['Mode']
         flex = msgGlove["Flex"]
         imu = msgGlove["IMU"]
-        if self.mode == self.JOG:
+
+        if self.mode == self.TRAIN:
+            # AI (Train) Mode
+            self.trainMode(flex, imu)
+        elif self.mode == self.JOG:
             # Jog Mode
             self.jogMode(flex, imu)
         elif self.mode == self.JOINT:
@@ -84,9 +105,6 @@ class translate:
         elif self.mode == self.AI_MODE:
             # AI Mode
             self.aiMode(flex, imu)
-        elif self.mode == self.TRAIN:
-            # AI (Train) Mode
-            self.trainMode(flex, imu)
         else:
             print("This mode is not available !")
 
@@ -101,7 +119,8 @@ class translate:
         tresholdFlex = 30
         tresholdFlexMin = 10
         treshold_IMU_pos = 0.50
-        treshold_IMU_neg = -0.50 
+        treshold_IMU_neg = -0.50
+        # [0, 360], [0, 90], [0, 180], [0, 180] -> Avoid getting to close to
         self.currentMsgMotor = [0,0,0,0]
         sumFinger = 0
 
@@ -175,17 +194,57 @@ class translate:
         flex : int Values associated with the four flexing fingers
         imu : double Values associated with the IMU which gives the direction of the hand
         '''
+        if self.commandThread.isAlive():
+            return
+
         inputs = flex + imu
         matches = self.AI.evaluate(inputs).tolist()
-        command = matches.index(max(matches))
+        if max(matches) < 0.5:
+            self.command = -1
+        else:
+            self.command = matches.index(max(matches))
+
+        if self.command == self.last_command or self.command == -1:
+            self.action_count = self.action_count + 1
+        else:
+            self.action_count = 0
+
+        self.last_command = self.command
+
+        if self.action_count > self.ACTION_COUNT_MIN:
+            self.commandThread.start()
+            self.action_count = 0
+
+    def manageAction(self):
+        '''Base function used by the command thread to control the message
+        sent to the motors in AI mode
         '''
-        match command:
-            case 1:
-                pass
-            case 2:
-                pass
-            #...
-        '''
+        mode = ControlMessage.SET_JOINT_POSITION
+        command = self.command
+
+        if command == 0:
+            # GO_HOME
+            mode = ControlMessage.GOTO_HOME
+            msg = [0, 0, 0, 0]
+        elif command == 1:
+            # PICK
+            msg = [[0, 45, 0, 170], [0, 0, 30, 170], [0, 0, 30, 30], [0, 45, 0, 30]]
+        elif command == 2:
+            # PUSH
+            pass
+        elif command == 3:
+            # PULL
+            pass
+        elif command == 4:
+            # REVERSE
+            pass
+
+        n_pos = len(msg)
+        for i in range(n_pos):
+            current_pos = msg[i]
+            msg_to_motor = ControlMessage(mode, current_pos)
+            self.msgIO.sendMessage(0, msg_to_motor)
+            sleep(2)
 
     def trainMode(self, flex, imu):
         '''This function registers current sensors values and saves them as
@@ -202,14 +261,15 @@ class translate:
         #     inputs = flex + imu
         #     self.AI_dataCollector.save_new_position(self.file_database, inputs, action)
         #     action = input()
-        asyncio.run(self.AI_dataCollector.read_example(inputs))
-    
+        # asyncio.run(self.AI_dataCollector.read_example(inputs))
+        self.AI_dataCollector.read_example(inputs)
+
     def interMode (self, msg):
         pass
 
     # def jointMode(self, msg):
 
-    #     msgMotor = ControlMessage(ControlMessage.SET_JOIN_POSITION, tabMsg)
+    #     msgMotor = ControlMessage(ControlMessage.SET_JOINT_POSITION, tabMsg)
     #     self.msgIO.sendMessage(0, msgMotor)
         
 
@@ -220,7 +280,7 @@ class translate:
     #     for id in range(0,4):
     #         currentMsgMotor[id] = self.__glovetomotor(msg[id+1])
     #     print("This is meant to be something")
-    #     # currentMsgMotor = ControlMessage(ControlMessage.SET_JOIN_POSITION, currentMsgMotor)
+    #     # currentMsgMotor = ControlMessage(ControlMessage.SET_JOINT_POSITION, currentMsgMotor)
     #     self.msgIO.sendMessage(0, currentMsgMotor)
     
     # def interMode (self, msg):
