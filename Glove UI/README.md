@@ -1,10 +1,11 @@
 # Sym-Bot : User Interface Glove
 
-#### *Picture of final glove coming soon...*
+<div id="platform" align="center">
+    <img src="./res/Final%20Glove.jpg" alt="Glove Assembly" width="400"/>
+</div>
 
 ## Table of Content
 - [Sym-Bot : User Interface Glove](#sym-bot--user-interface-glove)
-      - [*Picture of final glove coming soon...*](#picture-of-final-glove-coming-soon)
   - [Table of Content](#table-of-content)
   - [Material](#material)
     - [Electrical Components](#electrical-components)
@@ -38,19 +39,24 @@
   * Model : Black
   * Quantity : 1
   * **Note: You can use your own power bank of 5V with at least 1250mAh, depends on your glove's time usage with one charge.**
-
+  
+- #### RGB LED module
+  * For example: [LED RGB module](https://fr.banggood.com/3-Colour-RGB-SMD-LED-Display-Module-5050-Full-Color-p-90626.html?cur_warehouse=USA&rmmds=search)
+- #### Button
 - #### Some Wires
 - #### Breadboard (for testing)
 
 ### Other components
-
 - #### Gardening Gloves
 - #### Medical Gloves (each finger of the gardening glove should fit inside the medical glove)
 
-## Electrical Schematic
-Coming soon
 
-*Refer also to the [picture](#picture-of-final-glove-coming-soon) above for assembly*
+## Electrical Schematic
+<div id="platform2" align="center">
+    <img src="./res/Schema%20Electrique%20Gant.png" alt="Glove Electrical Schematic" width="500"/>
+</div>
+
+*Refer also to the [picture](#sym-bot--user-interface-glove) above for assembly*
 
 ## Getting started
 ### Environnement setup

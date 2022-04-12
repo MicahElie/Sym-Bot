@@ -6,24 +6,28 @@
 #include "analogWrite.h"
 
 //Structs:
-struct Color{
-  uint8_t red;
-  uint8_t green;
-  uint8_t blue;
-};
-struct Hand{
-  static const uint8_t FINGERS = 4;
-  static const uint8_t AXIS = 3;
 
-  uint16_t max[FINGERS] = {0, 0, 0, 0};
+/// RGB color struct
+struct Color{
+  uint8_t red; // R in (R,G,B)
+  uint8_t green; // G in (R,G,B)
+  uint8_t blue; // B in (R,G,B)
+};
+
+/// Struct that contains all the data from the glove
+struct Hand{
+  static const uint8_t FINGERS = 4; // Max number of fingers with flexs
+  static const uint8_t AXIS = 3; // Number of MPU9250's axis data to send
+
+  uint16_t max[FINGERS] = {0, 0, 0, 0}; // Contains the initial values of flexs
   uint16_t fingers[FINGERS] = {0, 0, 0, 0}; // Order for the right hand: {INDEX MIDDLE RING PINKY}
-  uint16_t offsets[FINGERS] = {0,0,0,0};//last offset 190??
-  float imu[AXIS] = {0, 0, 0}; // Order for data: {LINEAR_Y LINEAR_Z ROTATION_Z}
+  uint16_t offsets[FINGERS] = {0,0,0,0};// Offset that can be applied if flex's data are different 
+  float imu[AXIS] = {0, 0, 0}; // Order for data: {LINEAR_X LINEAR_Y ROTATION_Z}
 } hand = {};
 
 // Const:
-const unsigned MILLISECONDS = 25;
-const uint8_t MODE_MAX = 3;
+const unsigned MILLISECONDS = 25; // DELAY
+const uint8_t MODE_MAX = 3; // Max number of modes
 const Color RED     = {255,  0,  0}; // FATAL ERROR
 const Color ORANGE  = {255,155,  0}; // JOG MODE
 const Color GREEN   = { 70,255,  0}; // CARTESIAN MODE
@@ -31,42 +35,53 @@ const Color BLUE    = {  0,240,255}; // AI MODE
 // Pins:
 #define LED         2
 #define PIN_RED     18
-#define PIN_GREEN   5
-#define PIN_BLUE    19
+#define PIN_GREEN   19
+#define PIN_BLUE    5
 #define BUTTON      23
 
 // Mode:
+
 uint8_t mode = 0;
 Color colorsModes[MODE_MAX] = {ORANGE, GREEN, BLUE};
+
 // Flex Sensors:
+
 ADS1015 pinkySensor;
 ADS1015 indexSensor;
+
 // IMU:
+
 MPU9250 mpu;
+
 // Communication:
+
 BluetoothSerial SerialBT;
 String serialData;
+
 // Flags:
+
 bool isFatalError[2] = {false, false};
 
 /*-------------------------------------------------- setup fonctions --------------------------------------------------*/
 
+/// Setting up ESP32's bluetooth
 void setupBluetooth() {
   SerialBT.begin("ESP32-Symbot-Glove"); //Bluetooth device name
 }
 
+/// Setting up two Sparkfun flex sensors with GND(0x48) and SDA(0x4A) addresses
 void setupFlexSensors(){
   //Set up each sensor, change the addresses based on the location of each sensor
+    if (indexSensor.begin(ADS1015_ADDRESS_GND) == false) {
+     SerialBT.println("Index not found. Check wiring.");
+     isFatalError[0] = true;
+  } 
   if (pinkySensor.begin(ADS1015_ADDRESS_SDA) == false) {
      SerialBT.println("Pinky not found. Check wiring.");
      isFatalError[0] = true;
   }
-  if (indexSensor.begin(ADS1015_ADDRESS_GND) == false) {
-     SerialBT.println("Index not found. Check wiring.");
-     isFatalError[0] = true;
-  }  
-  pinkySensor.setGain(ADS1015_CONFIG_PGA_TWOTHIRDS); // Gain of 2/3 to works well with flex glove board voltage swings (default is gain of 2)
   indexSensor.setGain(ADS1015_CONFIG_PGA_TWOTHIRDS); // Gain of 2/3 to works well with flex glove board voltage swings (default is gain of 2)
+  pinkySensor.setGain(ADS1015_CONFIG_PGA_TWOTHIRDS); // Gain of 2/3 to works well with flex glove board voltage swings (default is gain of 2)
   
   for (int finger = 0; finger < 2; finger++) {
     hand.max[finger] = indexSensor.getAnalogData(!finger);
@@ -74,6 +89,7 @@ void setupFlexSensors(){
   }
 }
 
+/// Setting up MPU9250 9-DOF IMU I2C(0x68) with accel and gyro calibration
 void setupIMUSensor(){
   isFatalError[1] = !mpu.setup(0x68);
   if (isFatalError[1]){
@@ -83,6 +99,7 @@ void setupIMUSensor(){
   }
 }
 
+/// Setting up ALL LEDs pins mode
 void setupLEDs(){
   pinMode(LED, OUTPUT);
   pinMode(PIN_RED,   OUTPUT);
@@ -90,12 +107,14 @@ void setupLEDs(){
   pinMode(PIN_BLUE,  OUTPUT);
 }
 
+/// Setting up pin for button mode
 void setupButton(){
   pinMode(BUTTON, INPUT_PULLUP);
 }
 
 /*-------------------------------------------------- loop fonctions --------------------------------------------------*/
 
+/// Gathers flex sensors data 
 void flexSensorsData(){
   for (int finger = 0; finger < 4; finger++){
     hand.fingers[finger] = 0;
@@ -116,6 +135,7 @@ void flexSensorsData(){
   }
 }
 
+/// Gathers MPU9250 sensor's data
 void IMUSensorData(){
   if (mpu.update()) {
 
@@ -147,13 +167,20 @@ void IMUSensorData(){
     // }
   }
 }
-
+ 
+/**
+ * Changes RGB LED colors
+ * @param r R value from (R,G,B)
+ * @param g G value from (R,G,B)
+ * @param b B value from (R,G,B)
+ */
 void setColor(uint8_t r, uint8_t g, uint8_t b) {
   analogWrite(PIN_RED,   r, 2048);
   analogWrite(PIN_GREEN, g, 2048);
   analogWrite(PIN_BLUE,  b, 2048);
 }
 
+///Manages LEDs behaviour
 void activationLEDs(){
   if (hand.imu[2] == 0.0f){
     digitalWrite(LED, HIGH);
@@ -164,6 +191,11 @@ void activationLEDs(){
   setColor(colorsModes[mode].red, colorsModes[mode].green, colorsModes[mode].blue);
 }
 
+/**
+ * Debounce Algorithm
+ * It's mainly for fixing button readings instead of using the attachInterrupt 
+ * and RISING (it's an alternative)
+ */
 void buttonRead(){
   static uint8_t lastButtonState=0;
   static uint32_t debounceDelay = 50;
@@ -195,6 +227,10 @@ void buttonRead(){
   lastButtonState = reading;
 }
 
+/**
+ * Formats the serial communication protocol to send it as a string:
+ * MODE|INDEX|MIDDLE|RING|PINKY|X|Y|Z-ROTATION|
+ */
 void stringToSend(){
   serialData = String(mode) + "|";
 
@@ -221,6 +257,7 @@ void stringToSend(){
 }
 
 /*-------------------------------------------------- main fonctions --------------------------------------------------*/
+
 void setup() {
   //Communication setup:
   Wire.begin();
