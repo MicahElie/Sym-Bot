@@ -31,8 +31,8 @@ const Color BLUE    = {  0,240,255}; // AI MODE
 // Pins:
 #define LED         2
 #define PIN_RED     18
-#define PIN_GREEN   5
-#define PIN_BLUE    19
+#define PIN_GREEN   19
+#define PIN_BLUE    5
 #define BUTTON      23
 
 // Mode:
