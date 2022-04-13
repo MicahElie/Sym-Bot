@@ -75,5 +75,6 @@ class DataCollector:
                 f.write('  ')
 
         self.Action = -1
-        print('Successfully added new training example')
+        print('Successfully added new training example : ')
+        print(inputs)
         return 0

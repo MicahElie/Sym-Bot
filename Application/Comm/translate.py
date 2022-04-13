@@ -14,7 +14,7 @@ import numpy as np
 
 
 class translate:
-    '''This class represent the translation of a message accordinf to the mode chosen by the user.
+    '''This class represent the translation of a message according to the mode chosen by the user.
 
     Attributes:
     ------------------
@@ -55,12 +55,13 @@ class translate:
     # "Mode: ", "Flex : [4]", "IMU : [3]"
 
     def __init__(self, msgIO):
+        N_INPUTS = 5
         self.msgIO = msgIO
-        self.AI = AITrainer(7, 10)
+        self.AI = AITrainer(N_INPUTS, 10)
         if not self.DEVELOPER_MODE:
             self.AI.read_data(self.file_data_set)
-            self.AI.grad_descent(np.zeros((8, 10)), 0.2, 0.01)
-        self.AI_dataCollector = DataCollector(7, 10, self.file_data_set)
+            self.AI.grad_descent(np.zeros((N_INPUTS+1, 10)), 0.2, 0.01)
+        self.AI_dataCollector = DataCollector(N_INPUTS, 10, self.file_data_set)
         self.commandThread = threading.Thread(target=self.manageAction)
         
     def getMode(self):
@@ -197,7 +198,7 @@ class translate:
         if self.commandThread.isAlive():
             return
 
-        inputs = flex + imu
+        inputs = flex + [imu[2]]
         matches = self.AI.evaluate(inputs).tolist()
         if max(matches) < 0.5:
             self.command = -1
@@ -255,13 +256,7 @@ class translate:
         flex : int Values associated with the four flexing fingers
         imu : double Values associated with the IMU which gives the direction of the hand
         '''
-        inputs = flex + imu
-        # if msvcrt.kbhit():
-        #     action = msvcrt.getch()
-        #     inputs = flex + imu
-        #     self.AI_dataCollector.save_new_position(self.file_database, inputs, action)
-        #     action = input()
-        # asyncio.run(self.AI_dataCollector.read_example(inputs))
+        inputs = flex + [imu[2]]
         self.AI_dataCollector.read_example(inputs)
 
     def interMode (self, msg):
