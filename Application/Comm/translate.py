@@ -26,9 +26,8 @@ class translate:
 
     TRAIN = -1
     JOG = 0
-    JOINT = 1
-    CART = 2
-    AI_MODE = 3
+    CART = 1
+    AI_MODE = 2
     INTERFACE = 4
 
     # Special mode to train the AI. Keep "False" to run the system normally
@@ -38,6 +37,7 @@ class translate:
     ACTION_COUNT_MIN = 10
     action_count = 0
     last_command = -1
+    run_command = False
 
     lastMsgMotor = [0, 0, 0, 0]
     currentMsgMotor = [0, 0, 0, 0]
@@ -56,13 +56,15 @@ class translate:
 
     def __init__(self, msgIO):
         N_INPUTS = 5
+        N_ACTIONS = 7
         self.msgIO = msgIO
-        self.AI = AITrainer(N_INPUTS, 10)
+        self.AI = AITrainer(N_INPUTS, N_ACTIONS)
         if not self.DEVELOPER_MODE:
             self.AI.read_data(self.file_data_set)
-            self.AI.grad_descent(np.zeros((N_INPUTS+1, 10)), 0.2, 0.01)
-        self.AI_dataCollector = DataCollector(N_INPUTS, 10, self.file_data_set)
+            self.AI.grad_descent(np.zeros((N_INPUTS+1, N_ACTIONS)), 0.2, 0.01)
+        self.AI_dataCollector = DataCollector(N_INPUTS, N_ACTIONS, self.file_data_set)
         self.commandThread = threading.Thread(target=self.manageAction)
+        self.commandThread.start()
         
     def getMode(self):
         return self.mode
@@ -86,7 +88,7 @@ class translate:
         '''
         if self.DEVELOPER_MODE:
             self.mode = self.TRAIN
-        elif not self.commandThread.isAlive():
+        elif not self.run_command:
             self.mode = msgGlove['Mode']
         flex = msgGlove["Flex"]
         imu = msgGlove["IMU"]
@@ -134,14 +136,14 @@ class translate:
                     sumFinger += 1
 
             # Verify the flexion of the last finger associated with the gripper        
-            if flexion[3] >= tresholdFlex:
+            if flexion[3] >= 80:
                 # for id in range(0,3):
                 #     self.currentMsgMotor[id] = 0
                 if self.triggerGripper:
                     self.griperIncrement    = -1 * self.griperIncrement
                     self.currentMsgMotor[3] = self.griperIncrement
                     self.triggerGripper     = False
-            elif flexion[3] <= tresholdFlexMin:
+            elif flexion[3] <= 40:
                 self.triggerGripper = True
 
             msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.currentMsgMotor)
@@ -155,14 +157,14 @@ class translate:
                     sumFinger += 1
 
             # Verify the flexion of the last finger associated with the gripper        
-            if flexion[3] >= tresholdFlex:
+            if flexion[3] >= 80:
                 # for id in range(0,3):
                 #     self.currentMsgMotor[id] = 0
                 if self.triggerGripper:
                     self.griperIncrement    = -1 * self.griperIncrement
                     self.currentMsgMotor[3] = self.griperIncrement
                     self.triggerGripper     = False
-            elif flexion[3] <= tresholdFlexMin:
+            elif flexion[3] <= 40:
                 self.triggerGripper = True
         
             msg_to_motor = ControlMessage(ControlMessage.SET_JOG, self.currentMsgMotor)
@@ -195,12 +197,14 @@ class translate:
         flex : int Values associated with the four flexing fingers
         imu : double Values associated with the IMU which gives the direction of the hand
         '''
-        if self.commandThread.isAlive():
+        if self.run_command:
             return
 
         inputs = flex + [imu[2]]
-        matches = self.AI.evaluate(inputs).tolist()
-        if max(matches) < 0.5:
+        test = np.array([inputs])
+        matches = self.AI.evaluate(np.array([inputs])).tolist()[0]
+        print(matches)
+        if max(matches) < 0.3:
             self.command = -1
         else:
             self.command = matches.index(max(matches))
@@ -213,39 +217,52 @@ class translate:
         self.last_command = self.command
 
         if self.action_count > self.ACTION_COUNT_MIN:
-            self.commandThread.start()
+            self.run_command = True
             self.action_count = 0
 
     def manageAction(self):
         '''Base function used by the command thread to control the message
         sent to the motors in AI mode
         '''
-        mode = ControlMessage.SET_JOINT_POSITION
-        command = self.command
+        while True:
+            if self.run_command:
+                mode = ControlMessage.SET_JOINT_POSITION
+                command = self.command
+                msg = [[]]
 
-        if command == 0:
-            # GO_HOME
-            mode = ControlMessage.GOTO_HOME
-            msg = [0, 0, 0, 0]
-        elif command == 1:
-            # PICK
-            msg = [[0, 45, 0, 170], [0, 0, 30, 170], [0, 0, 30, 30], [0, 45, 0, 30]]
-        elif command == 2:
-            # PUSH
-            pass
-        elif command == 3:
-            # PULL
-            pass
-        elif command == 4:
-            # REVERSE
-            pass
+                if command == 0:
+                    # GO_HOME
+                    mode = ControlMessage.GOTO_HOME
+                    msg = [[0, 0, 0, 30]]
+                elif command == 1:
+                    # PICK
+                    msg = [[0, 45, 0, 170], [0, 0, 30, 170], [0, 0, 30, 30], [0, 45, 0, 30]]
+                elif command == 2:
+                    # DROP
+                    msg = [[270, 45, 0, 30], [270, 0, 30, 30], [270, 0, 30, 170], [270, 45, 0, 170]]
+                elif command == 3:
+                    # PUSH
+                    sleep(0.1)
+                elif command == 4:
+                    # PULL
+                    sleep(0.1)
+                elif command == 5:
+                    # REVERSE
+                    sleep(0.1)
+                elif command == 6:
+                    # IDLE
+                    sleep(0.1)
 
-        n_pos = len(msg)
-        for i in range(n_pos):
-            current_pos = msg[i]
-            msg_to_motor = ControlMessage(mode, current_pos)
-            self.msgIO.sendMessage(0, msg_to_motor)
-            sleep(2)
+                n_pos = len(msg)
+                for i in range(n_pos):
+                    current_pos = msg[i]
+                    msg_to_motor = ControlMessage(mode, current_pos)
+                    self.msgIO.sendMessage(0, msg_to_motor)
+                    sleep(2)
+                
+                self.run_command = False
+            else:
+                sleep(0.1)
 
     def trainMode(self, flex, imu):
         '''This function registers current sensors values and saves them as

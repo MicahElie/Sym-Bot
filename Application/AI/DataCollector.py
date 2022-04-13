@@ -3,8 +3,6 @@ import threading
 import time
 from queue import Queue
 
-from inputimeout import inputimeout, TimeoutOccurred
-
 class DataCollector:
 
     def __init__(self, n, k, filename):
@@ -12,35 +10,6 @@ class DataCollector:
         self.K = k  # Number of possible actions
         self.Action = -1
         self.Filename = filename
-
-    def _input(self, msg, q):
-        ra = input(msg)
-        if ra:
-            q.put(ra)
-        else:
-            q.put("None")
-        return
-
-    def _slp(self, tm, q):
-        time.sleep(tm)
-        q.put("Timeout")
-        return
-
-    def wait_for_input(self, msg="Press Enter to continue", time=10):
-        q = Queue()
-        th = threading.Thread(target=self._input, args=(msg, q,))
-        tt = threading.Thread(target=self._slp, args=(time, q,))
-
-        th.start()
-        tt.start()
-        ret = None
-        while True:
-            ret = q.get()
-            if ret:
-                th._Thread__stop()
-                tt._Thread__stop()
-                return ret
-        return ret
 
     def my_input(self):
         self.Action = int(input())

@@ -8,35 +8,22 @@ class ControlMessage:
     GOTO_HOME :             Message type associated with robot going home (must be confortable)
     SET_JOG :               Message type associated with robot controlled with jogMode (see translate.py)
     '''
-
-    SET_HOME = 3
-    SET_HOME_MODEL = 4
-    SET_JOINT_POSITION_MODEL = 6
-    SET_JOINT_POSITION = 7
-    SET_CARTESIAN_POSITION = 8
-    GOTO_HOME = 9
-    OPEN_GRIPPER = 10
-    CLOSE_GRIPPER = 12
-    SET_GRIPPER_POSITION = 24
-    SET_GRIPPER_POSITION_RATE = 26
-    SET_JOG = 77
-
-    # SET VALUE IN[01, 09]
-    SET_ZERO_POSITION_INDEX = 1,
-    SET_HOME_POSITION_INDEX = 2,
-    SET_MAX_POSITION_INDEX = 3,
-    # RETURN VALUE IN[11, 19]
-    RETURN_ZERO_POSITION_INDEX = 11,
-    RETURN_HOME_POSITION_INDEX = 12,
-    RETURN_MAX_POSITION_INDEX = 13,
-    RETURN_ACTUAL_POSITION_INDEX = 17,
     # ACTION IN[21, 29]
-    GO_TO_JOIN_INDEX = 21,
-    GO_TO_HOME_INDEX = 22,
-    GO_TO_JOG_INDEX = 23,
-    ACTION_OPEN_GRIPPER = 25,
-    ACTION_CLOSE_GRIPPER = 26,
-    ACTION_POSITION_GRIPPER = 27
+    SET_JOINT_POSITION              =  1
+    GOTO_HOME                       =  2
+    SET_JOG                         =  3
+    OPEN_GRIPPER                    =  5
+    CLOSE_GRIPPER                   =  6
+    ACTION_POSITION_GRIPPER         =  7
+    # SET VALUE IN[11, 19]
+    SET_ZERO_POSITION_INDEX         = 11
+    SET_HOME_POSITION_INDEX         = 12
+    SET_MAX_POSITION_INDEX          = 13
+    # RETURN VALUE IN[21, 29]
+    RETURN_ZERO_POSITION_INDEX      = 21
+    RETURN_HOME_POSITION_INDEX      = 22
+    RETURN_MAX_POSITION_INDEX       = 23
+    RETURN_ACTUAL_POSITION_INDEX    = 27
 
     def __init__(self, type, payload=[]):
         self.type = type
