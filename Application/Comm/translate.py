@@ -1,3 +1,4 @@
+from cmath import sin
 import threading
 from enum import Enum
 from time import sleep
@@ -51,6 +52,16 @@ class translate:
     flexion = [0, 0, 0, 0]
     imu = [0, 0, 0]
 
+    # Cartesian Mode
+    firstCallCartesian = True
+    x = 0
+    y = 0
+    theta1 = 0
+    theta2 = 0
+    LA = 20
+    LB = 20
+
+
     # Forme du message recu par le gant
     # "Mode: ", "Flex : [4]", "IMU : [3]"
 
@@ -93,20 +104,25 @@ class translate:
         if self.mode == self.TRAIN:
             # AI (Train) Mode
             self.trainMode(flex, imu)
+            firstCallCartesian = True
         elif self.mode == self.JOG:
             # Jog Mode
             self.jogMode(flex, imu)
+            firstCallCartesian = True
         elif self.mode == self.JOINT:
             # Joint Mode
             pass
         elif self.mode == self.CART:
             # Cartesian Mode
+            self.cartesianMode()
             pass
         elif self.mode == self.AI_MODE:
             # AI Mode
             self.aiMode(flex, imu)
+            firstCallCartesian = True
         else:
             print("This mode is not available !")
+        
 
     def jogMode(self, flexion, imu):
         '''This function moves the motors as long as fingers are  in flexion
@@ -184,6 +200,42 @@ class translate:
         #     self.enumRep = 0
         #This is a magnificent test
         self.lastMsgMotor = self.currentMsgMotor
+
+    def cartesianMode(self, flex, imu):
+        if self.firstCallCartesian:
+            self.firstCallCartesian = False
+            msgOpenCr = ControlMessage(27, self.currentMsgMotor)
+            self.msgIO.sendMessage(0, msgOpenCr)
+            waitReceived = True
+            while(waitReceived):
+                msgOpenCr = self.msgIO.readMessage(0)
+                if msgOpenCr != None:
+                    waitReceived = False
+            stepToDegree = 2*np.pi/4096
+            phi = (msgOpenCr.getPayload(1)-1920)*stepToDegree+90
+            omega = (msgOpenCr.getPayload(2)-2160)*stepToDegree
+            self.x = np.cos(phi)*self.LA+np.cos(omega)*self.LB
+            self.y = np.sin(phi)*self.LA+np.sin(omega)*self.LB
+
+        if imu[2] != 0:
+            sens = 1 if imu[2] > 0 else -1
+            if flex[1] > 35:
+                self.x += sens
+                if self.x < 0:  self.x = 0
+                elif self.x > 40: self.x = 40
+            if flex[2] > 35:
+                self.y -= sens
+                if self.y < 0:  self.y= 0
+                elif self.y > 40: self.y = 40
+
+            try:
+                phi = np.arccos((self.x**2 + self.y**2 - self.LA**2 - self.LB**2)/(2*self.LA*self.LB))
+                omega = np.arctan(self.y/self.x) - np.arctan((self.LB*np.sin(phi)/(self.LA+self.LB*np.cos(phi))))
+
+                msgOpenCr = ControlMessage(1, [180,omega-45,phi+90,-2*flex[0]+180])
+                self.msgIO.sendMessage(0, msgOpenCr)
+            except(Exception):
+                pass
 
     def aiMode(self, flex, imu):
         '''This function moves the motors according to the hand symbols the user is making; 
