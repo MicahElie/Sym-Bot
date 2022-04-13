@@ -112,9 +112,6 @@ class translate:
             # Jog Mode
             self.jogMode(flex, imu)
             firstCallCartesian = True
-        elif self.mode == self.JOINT:
-            # Joint Mode
-            pass
         elif self.mode == self.CART:
             # Cartesian Mode
             self.cartesianMode()
