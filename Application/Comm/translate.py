@@ -32,7 +32,7 @@ class translate:
     INTERFACE = 4
 
     # Special mode to train the AI. Keep "False" to run the system normally
-    DEVELOPER_MODE = True
+    DEVELOPER_MODE = False
 
     # Number of consecutive identical readings (AI) required to start a new action
     ACTION_COUNT_MIN = 10
@@ -86,7 +86,7 @@ class translate:
         '''
         if self.DEVELOPER_MODE:
             self.mode = self.TRAIN
-        else:
+        elif not self.commandThread.isAlive():
             self.mode = msgGlove['Mode']
         flex = msgGlove["Flex"]
         imu = msgGlove["IMU"]
@@ -205,7 +205,7 @@ class translate:
         else:
             self.command = matches.index(max(matches))
 
-        if self.command == self.last_command or self.command == -1:
+        if self.command == self.last_command and self.command != -1:
             self.action_count = self.action_count + 1
         else:
             self.action_count = 0
