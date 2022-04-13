@@ -25,7 +25,7 @@ class SerialComm:
         raw     = self.serial.readline()
         decode  = raw.decode()
         replace = decode.replace("\r\n", "")
-        array   = replace.split(";")
+        array   = replace.split("|")
         return array
 
     def isGoodMsg(self, array):
