@@ -99,9 +99,6 @@ class translate:
         elif self.mode == self.JOG:
             # Jog Mode
             self.jogMode(flex, imu)
-        elif self.mode == self.JOINT:
-            # Joint Mode
-            pass
         elif self.mode == self.CART:
             # Cartesian Mode
             pass
