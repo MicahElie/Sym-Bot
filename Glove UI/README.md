@@ -13,6 +13,8 @@
   - [Electrical Schematic](#electrical-schematic)
   - [Getting started](#getting-started)
     - [Environnement setup](#environnement-setup)
+    - [Running the code](#running-the-code)
+    - [Notes](#notes)
   - [How to use the Sym-Bot Glove](#how-to-use-the-sym-bot-glove)
   - [Alternative](#alternative)
 
@@ -60,7 +62,22 @@
 
 ## Getting started
 ### Environnement setup
-Visual Studio Code and PlatformIO...
+First, you'll neeed to install [Visual Studio Code](https://code.visualstudio.com/Download)
+
+When you open Visual Studio Code, go to the Extensions section search for the extension [PlatformIO](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) and finally, install it.
+
+### Running the code
+Once everything is installed, you can click on the little Home button.
+
+Then go to Open Project
+
+Choose Glove folder
+
+That's it! Now you are ready to Build and Compile the code to an DOIT-ESP32 Devkit v2
+
+### Notes
+
+You can change the type of board and some other settings in the file [platformio.ini](https://docs.platformio.org/en/latest/projectconf/index.html).
 
 ## How to use the Sym-Bot Glove
 Coming soon
