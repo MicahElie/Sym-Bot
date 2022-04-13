@@ -26,7 +26,7 @@ struct Hand{
 } hand = {};
 
 // Const:
-const unsigned MILLISECONDS = 25; // DELAY
+const unsigned MILLISECONDS = 10; // DELAY
 const uint8_t MODE_MAX = 3; // Max number of modes
 const Color RED     = {255,  0,  0}; // FATAL ERROR
 const Color ORANGE  = {255,155,  0}; // JOG MODE
@@ -157,10 +157,10 @@ void IMUSensorData(){
     // if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){
     //   hand.imu[1] = 0;
     // }
-    hand.imu[2] = 0;//mpu.getAccZ(); //Rotation
-    // if (hand.imu[2] <= 0.15f && hand.imu[2] >= -0.15f){
-    //   hand.imu[2] = 0;
-    // }
+    hand.imu[2] = mpu.getAccZ(); //Rotation
+    if (hand.imu[2] <= 0.15f && hand.imu[2] >= -0.15f){
+      hand.imu[2] = 0;
+    }
     // imu[3] = mpu.getAccY(); //Rotation
     // if (imu[3] <= 0.01f && imu[3] >= -0.01f){
     //   imu[3] = 0;
