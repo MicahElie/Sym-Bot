@@ -32,7 +32,7 @@
     * **Note: You can also use individual flex sensors, that will change the code implementation, because the data communication will not be I2C.** 
 
 - #### IMU
-  * Brand : [Grove](https://wiki.seeedstudio.com/Grove-IMU_9DOF_v2.0/)
+  * Brand : [Grove-SeeedStudio](https://wiki.seeedstudio.com/Grove-IMU_9DOF_v2.0/)
   * Model : IMU 9DOF v2.0
   * Quantity : 1
 
