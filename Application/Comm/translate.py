@@ -1,4 +1,5 @@
 from cmath import sin
+import math
 import threading
 from enum import Enum
 from time import sleep
@@ -114,7 +115,7 @@ class translate:
             firstCallCartesian = True
         elif self.mode == self.CART:
             # Cartesian Mode
-            self.cartesianMode()
+            self.cartesianMode(flex, imu)
             pass
         elif self.mode == self.AI_MODE:
             # AI Mode
@@ -212,10 +213,11 @@ class translate:
                 if msgOpenCr != None:
                     waitReceived = False
             stepToDegree = 2*np.pi/4096
-            phi = (msgOpenCr.getPayload(1)-1920)*stepToDegree+90
-            omega = (msgOpenCr.getPayload(2)-2160)*stepToDegree
-            self.x = np.cos(phi)*self.LA+np.cos(omega)*self.LB
-            self.y = np.sin(phi)*self.LA+np.sin(omega)*self.LB
+            load = msgOpenCr.getPayload()
+            phi = (load[1]-1920)*stepToDegree+np.pi/2
+            omega = (load[2]-2160)*stepToDegree
+            self.x = np.cos(phi)*self.LA+np.cos(omega+phi)*self.LB
+            self.y = np.sin(phi)*self.LA+np.sin(omega+phi)*self.LB
 
         if imu[2] != 0:
             sens = 1 if imu[2] > 0 else -1
@@ -230,9 +232,13 @@ class translate:
 
             try:
                 phi = np.arccos((self.x**2 + self.y**2 - self.LA**2 - self.LB**2)/(2*self.LA*self.LB))
-                omega = np.arctan(self.y/self.x) - np.arctan((self.LB*np.sin(phi)/(self.LA+self.LB*np.cos(phi))))
+                omega = math.atan2(self.y, self.x) - math.atan2(self.LB*np.sin(phi),(self.LA+self.LB*np.cos(phi)))
 
-                msgOpenCr = ControlMessage(1, [180,omega-45,phi+90,-2*flex[0]+180])
+                datas = [180,omega*180/np.pi-45,phi*180/np.pi+90,-2*flex[0]+180]
+                print(phi,omega)
+                print(self.x,self.y)
+                print(datas)
+                msgOpenCr = ControlMessage(1, datas)
                 self.msgIO.sendMessage(0, msgOpenCr)
             except(Exception):
                 pass

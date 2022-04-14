@@ -8,7 +8,7 @@ from Comm.SerialComm import SerialComm
 if __name__ == '__main__':
 
     # Select Communicatino's type between "USB" (Simuling UI) or "BT" (Glove)
-    TypeComm = "USB" 
+    TypeComm = "BT" 
 
     commPort = None
     messageIO = MessageIO()
@@ -24,7 +24,7 @@ if __name__ == '__main__':
             if bt.isMessageAvailable():
                 msg = bt.readMessage()
                 if bt.isValidMsg():
-                    print(msg)
+                    # print(msg)
                     Micah.chooseMode(msg)
 
     elif TypeComm == "USB":
