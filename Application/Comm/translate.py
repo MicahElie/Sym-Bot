@@ -296,17 +296,17 @@ class translate:
                     # DROP
                     msg = [[270, 45, 0, 30], [270, 0, 30, 30], [270, 0, 30, 170], [270, 45, 0, 170]]
                 elif command == 3:
-                    # PUSH
+                    # PUSH (Not implemented)
                     sleep(0.1)
                 elif command == 4:
-                    # PULL
+                    # PULL (Not implemented)
                     sleep(0.1)
                 elif command == 5:
-                    # REVERSE
+                    # REVERSE (Not implemented)
                     sleep(0.1)
                 elif command == 6:
                     # IDLE
-                    sleep(0.1)
+                    msg = [[180, 45, 0, 30]]
 
                 n_pos = len(msg)
                 for i in range(n_pos):
