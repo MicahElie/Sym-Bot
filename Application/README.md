@@ -70,6 +70,7 @@ Note that in our application, the message sent to the motors are in the form : `
 
 ## Test
 ### test translate class
+This test class looks mainly at the chooseMode or jogMode method. It verifies if the right mode is pass to the other class, if the IMU is taken into account and if the rigth message is sent according to what was received. If you run this test, you should see "OK". At the end of this project, a modification made by another members created an error that we didn't have time to correct. The error code shown when you run the test should help you debug this test.
 
 ## AI
 [AI section click here](/Application/AI/)
