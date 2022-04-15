@@ -14,7 +14,7 @@
   - [Getting started](#getting-started)
     - [Environnement setup](#environnement-setup)
     - [Running the code](#running-the-code)
-    - [Notes](#notes)
+    - [Recommendations](#recommendations)
   - [How to use the Sym-Bot Glove](#how-to-use-the-sym-bot-glove)
   - [Alternative](#alternative)
 
@@ -64,20 +64,26 @@
 ### Environnement setup
 First, you'll neeed to install [Visual Studio Code](https://code.visualstudio.com/Download)
 
-When you open Visual Studio Code, go to the Extensions section search for the extension [PlatformIO](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) and finally, install it.
+When you open Visual Studio Code, go to the Extensions section <img src="./img/extensions.png" alt="PIO Extensions Button"> search for the extension [PlatformIO](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) and finally, install it.
 
 ### Running the code
-Once everything is installed, you can click on the little Home button.
+Once everything is installed, you can click on the little Home button <img src="./img/homePIO.png" alt="PIO Home Button"> that is on the bottom blue bar, near the left side. 
 
 Then go to Open Project
+<div align="center">
+  <img src="./img/PIOOpenProject.png" alt="Open Project image guide">
+</div>
+Search and choose to open the Glove folder
 
-Choose Glove folder
+That's it! Now you are ready to Build and Compile <img src="./img/buildandcompile.png" alt="PIO Build and Compile"> the code to an DOIT-ESP32 Devkit v1
 
-That's it! Now you are ready to Build and Compile the code to an DOIT-ESP32 Devkit v2
+### Recommendations 
 
-### Notes
+If you're running into some troubles with the DOIT-ESP32 Devkit v1 [check this site](https://randomnerdtutorials.com/esp32-troubleshooting-guide/). **I personally had to follow the 6th troubleshooting(COM port not found) for using for the first time the DOIT-ESP32 Devkit v1.**
 
-You can change the type of board and some other settings in the file [platformio.ini](https://docs.platformio.org/en/latest/projectconf/index.html).
+More information on setting up [DOIT-ESP32 Devkit v1](https://docs.platformio.org/en/latest/boards/espressif32/esp32doit-devkit-v1.html) with PlatformIO.
+
+You can also change the type of board and some other settings in the file [platformio.ini](https://docs.platformio.org/en/latest/projectconf/index.html). 
 
 ## How to use the Sym-Bot Glove
 Coming soon
