@@ -1,11 +1,19 @@
 /**
  *  Simulate partially the glove and send data to Serial
- *    Button One      => Select mode
- *    Button Two      => LOW : Gripper close | HIGH : Gripper open
- *    Potentiometer 1 => Simulate Flex 1
- *    Potentiometer 2 => Simulate Flex 2
- *    Potentiometer 3 => Simulate Flex 3
- *    Potentiometer 4 => Simulate Hand's rotation (3th IMU's data)
+ *    JOG MODE (possibility to use for AI & CART MODE => not tested)
+ *        Button One      => Select mode (0)
+ *        Button Two      => LOW : Gripper close | HIGH : Gripper open
+ *        Potentiometer 1 => Simulate Flex 1 [0-128] no unit for J1
+ *        Potentiometer 2 => Simulate Flex 2 [0-128] no unit for J2
+ *        Potentiometer 3 => Simulate Flex 3 [0-128] no unit for J3
+ *        Potentiometer 4 => Simulate Hand's rotation (3th IMU's data)
+ *    JOINT MODE (Not implemented in Application)
+ *        Button One      => Select mode (3)
+ *        Button Two      => Don't care
+ *        Potentiometer 1 => Simulate Flex 1 [0-360]° for J1
+ *        Potentiometer 2 => Simulate Flex 2 [0-360]° for J2
+ *        Potentiometer 3 => Simulate Flex 3 [0-360]° for J3
+ *        Potentiometer 4 => Simulate Flex 4 [0-180]° for SW1
  *
  *  Simulation with a ATmega2560 and gro420-shield
  *    gro420-shield : 
@@ -22,16 +30,20 @@
 #define PIN_RV3 A2
 #define PIN_RV4 A3
 
-const uint8_t NB_FLEX = 4;
-const uint8_t NB_IMU  = 3;
+const uint8_t NB_FLEX   = 4;
+const uint8_t NB_IMU    = 3;
+
+const String SEPARATOR  = "|";
 
 struct Msg{
-  uint8_t Mode;
-  uint8_t Flex[NB_FLEX];
-  float   IMU[NB_IMU];
+  uint8_t  Mode;
+  uint16_t Flex[NB_FLEX];
+  float    IMU[NB_IMU];
 };
 // Create & initiale message's datas
 Msg msg = {1,0,0,0,0,0,0,0};
+// Data for Joint Mode
+uint16_t joint[NB_FLEX] = {0};
 
 void fetchMode();
 void fetchPot();
@@ -100,7 +112,7 @@ void fetchMode(){
   lastButtonState = reading;
 }
 
-// Simulate Open/Close gripper with 2th button
+// Simulate Open/Close gripper with 2th button in JOG MODE
 void fetchGrippper(){
   static uint8_t lastButtonState=0;
   static uint32_t debounceDelay = 1000;
@@ -143,14 +155,19 @@ void fetchGrippper(){
 void fetchPot(){
   for(uint8_t i = 0; i < NB_FLEX-1 ; ++i){
     msg.Flex[i] = analogRead(i+PIN_RV1)*0.125;  // y = ((100-0)/(1024-0))*x
+    joint[i] = analogRead(i+PIN_RV1)*0.3515625; // y = ((360-0)/(1024-0))*x
   }
+
+  // Value for gripper between [0, 180]° in JOINT MODE
+  joint[3] = analogRead(PIN_RV4)*0.17578125; // y = ((180-0)/(1024-0))*x
 }
 
-// Simulate 3th IMU's data with 4th potentiometer
+// Simulate 3th IMU's data with 4th potentiometer in JOG MODE
 void fetchRotZ(){
   msg.IMU[2] = analogRead(PIN_RV4)*0.001953125-1.0; // y = ((1-(-1))/(1024-0))*x-1.0
 }
 
+// Send message to Raspberry PI (Serial Communication)
 void sendMessage(){
   static uint32_t lastTimeSend = 0;
   uint32_t timeSend = millis();
@@ -159,11 +176,17 @@ void sendMessage(){
   if ((timeSend - lastTimeSend ) > 10) {
     lastTimeSend = timeSend;
 
-    String data = String(msg.Mode)+";";
-    for(uint8_t flex : msg.Flex)
-      data += String(flex)+";";
+    String data = String(msg.Mode)+SEPARATOR;
+    if(msg.Mode == 3){                                      // Joint Mode
+      for(uint16_t flex : joint)
+        data += String(flex)+SEPARATOR;
+    }
+    else {                                                  // Other Mode
+      for(uint8_t flex : msg.Flex)
+        data += String(flex)+SEPARATOR;
+    }
     for(float imu : msg.IMU)
-      data += String(imu)+";";
+      data += String(imu)+SEPARATOR;
     Serial.println(data);
   }
 }
