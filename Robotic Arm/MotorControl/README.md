@@ -1,7 +1,7 @@
-# Sym-Bot : Robotic Arm
+# Sym-Bot : Motor Control
 
 ## Table of Content
-- [Sym-Bot : Robotic Arm](#sym-bot--robotic-arm)
+- [Sym-Bot : Motor Control](#sym-bot--motor-control)
   - [Table of Content](#table-of-content)
   - [Environment](#environment)
   - [Calibration](#calibration)
