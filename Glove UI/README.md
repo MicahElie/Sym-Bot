@@ -83,4 +83,14 @@ You can change the type of board and some other settings in the file [platformio
 Coming soon
 
 ## Alternative
-***Proto Board (à confirmer avec François Ferland si on a le droit d'utiliser les schémas et photos de l'APP6)***
+Le code symbotUIproto vous permet de simuler partiellement le gant en mode JOG et JOINT en envoyant les données sur port USB à l'aide d'un Arduino Mega.
+
+Pour le circuit électrique, vous pouvez vous inspirer du montage Proto Board ci-dessus.
+<img src="./res/ShieldArduinoMegaWithUI.png" alt="Electrical Schematic - Shield Arduino Mega With UI" width="1024">
+
+<div>
+    <img src="./res/PCB_ShieldArduinoMegaWithUI.png" alt="PCB Shield Arduino Mega With UI" width="256">
+    <p>PCB utilisé pour simuler le gant</p>
+</div>
+
+***Les images proviennent d'un montage utilisé, Proto Board, dans un cours à l'Université de Sherbrooke en Génie Robotique avec l'autorisation de Monsieur François Ferland)***
