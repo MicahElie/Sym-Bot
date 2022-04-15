@@ -1,7 +1,7 @@
 # Sym-Bot : User Interface Glove
 
-<div id="platform" align="center">
-    <img src="./res/Final%20Glove.jpg" alt="Glove Assembly" width="400"/>
+<div align="center">
+    <img src="./img/Final%20Glove.jpg" alt="Glove Assembly" width="400"/>
 </div>
 
 ## Table of Content
@@ -54,8 +54,8 @@
 
 
 ## Electrical Schematic
-<div id="platform2" align="center">
-    <img src="./res/Schema%20Electrique%20Gant.png" alt="Glove Electrical Schematic" width="500"/>
+<div align="center">
+    <img src="./img/Schema%20Electrique%20Gant.png" alt="Glove Electrical Schematic" width="500"/>
 </div>
 
 *Refer also to the [picture](#sym-bot--user-interface-glove) above for assembly*
@@ -83,14 +83,17 @@ You can change the type of board and some other settings in the file [platformio
 Coming soon
 
 ## Alternative
-Le code symbotUIproto vous permet de simuler partiellement le gant en mode JOG et JOINT en envoyant les données sur port USB à l'aide d'un Arduino Mega.
+The symbotUIproto code provided can be used with the Arduino Mega 2560 ATmega. This code uses USB Serial communication with the main.py in Application folder. You can use it with the JOG and JOINT mode that are in translate.py to control the robotic arm. 
 
-Pour le circuit électrique, vous pouvez vous inspirer du montage Proto Board ci-dessus.
-<img src="./res/ShieldArduinoMegaWithUI.png" alt="Electrical Schematic - Shield Arduino Mega With UI" width="1024">
-
-<div>
-    <img src="./res/PCB_ShieldArduinoMegaWithUI.png" alt="PCB Shield Arduino Mega With UI" width="256">
-    <p>PCB utilisé pour simuler le gant</p>
+To help you recreate the proto-board shield that goes on the Arduino Mega, here's an electrical schematic with a picture.
+<div align="center">
+  <img src="./img/ShieldArduinoMegaWithUI.png" alt="Electrical Schematic - Shield Arduino Mega With UI" width="1024">
+  <p>Electrical schematic of the proto-board</p>
 </div>
 
-***Les images proviennent d'un montage utilisé, Proto Board, dans un cours à l'Université de Sherbrooke en Génie Robotique avec l'autorisation de Monsieur François Ferland)***
+<div align="center">
+    <img src="./img/PCB_ShieldArduinoMegaWithUI.png" alt="PCB Shield Arduino Mega With UI" width="256">
+    <p>PCB shield used to mock the glove</p>
+</div>
+
+***Images from the Proto-Board are provided by University of Sherbrooke from the Robotics Engineering program and with the autorisation of François Ferland***
