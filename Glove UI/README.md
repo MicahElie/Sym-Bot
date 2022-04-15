@@ -75,7 +75,7 @@ Then go to Open Project
 </div>
 Search and choose to open the Glove folder
 
-That's it! Now you are ready to Build and Compile <img src="./img/buildandcompile.png" alt="PIO Build and Compile"> the code to an DOIT-ESP32 Devkit v1
+That's it! Now you are ready to Build and Compile <img src="./img/buildandcompile.png" alt="PIO Build and Compile"> the code on the DOIT-ESP32 Devkit v1
 
 ### Recommendations 
 
