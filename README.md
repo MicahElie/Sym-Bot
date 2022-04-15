@@ -2,7 +2,9 @@
 ## Sherbrooke University, Robotics Engineering S4 Project, 66th promotion, Winter 2022
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](/LICENSE)
 
-*Image de notre bras avec le gant pas trop loin*
+<div id="platform" align="center">
+    <img src="./Application/res/Human's%20Touch.jpg" alt="Sym-Bot Human's Touch" width="600"/>
+</div>
 
 ## Table of Content
 - [The Sym-Bot Project: A Robotic Arm by Hand Control](#the-sym-bot-project-a-robotic-arm-by-hand-control)
