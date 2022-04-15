@@ -62,7 +62,7 @@ String serialData;
 
 bool isFatalError[2] = {false, false};
 
-/*-------------------------------------------------- setup fonctions --------------------------------------------------*/
+/*-------------------------------------------------- setup functions --------------------------------------------------*/
 
 /// Setting up ESP32's bluetooth
 void setupBluetooth() {
@@ -112,7 +112,7 @@ void setupButton(){
   pinMode(BUTTON, INPUT_PULLUP);
 }
 
-/*-------------------------------------------------- loop fonctions --------------------------------------------------*/
+/*-------------------------------------------------- loop functions --------------------------------------------------*/
 
 /// Gathers flex sensors data 
 void flexSensorsData(){
@@ -138,33 +138,32 @@ void flexSensorsData(){
 /// Gathers MPU9250 sensor's data
 void IMUSensorData(){
   if (mpu.update()) {
+    hand.imu[0] = 0;
+    hand.imu[1] = 0;
+    // Author's Note:
+    // imu[0] and imu[1] were finally not used in the modes of translate.py that is in Application folder of the Project
+    // We mainly wanted to use them to get the position of the hand in x(AccY) and y(AccZ) to transpose them to the robotic arm in real time
+    // but didn't had the time to continue working on it
+    // So, here's a piece of incomplete code to try getting the position...
+    /*
+    hand.imu[0] += mpu.getLinearAccY()*9.81f*(MILLISECONDS/1000.0); //Distance
+    if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){ // (if the hand is well oriented we add acceleration)
+      hand.imu[0] += 0;
+    }
+    else {
+      hand.imu[0] += mpu.getLinearAccY()*9.81f*(MILLISECONDS/1000.0);
+    }
 
-    // Serial.print("Accelerations: \n(");
-    // Serial.print(mpu.getAccX()); Serial.print(", ");
-    // Serial.print(mpu.getAccY()); Serial.print(", ");
-    // Serial.print(mpu.getAccZ()); 
-    // Serial.println(")");
-
-    // imu[0] += mpu.getLinearAccY()*9.81f*(milliseconds/1000.0); //Distance (Verifier l'axe X et Z pour voir si la main est bien plat => Z = 1.03 et X = 0.02 ou mettre un intervalle)
-    // if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){
-    //   hand.imu[0] += 0;
-    // }
-    // else {
-    //   hand.imu[0] += mpu.getLinearAccY()*9.81f*(MILLISECONDS/1000.0);
-    // }
-    hand.imu[0] = mpu.getEulerX();//Pitch Roll
-    hand.imu[1] = 0;//mpu.getLinearAccZ()*9.81f; //Height (Verifier l'axe X et Z pour voir si la main est bien plat => Z = 1.03 et X = 0.02 ou mettre un intervalle)
-    // if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){
-    //   hand.imu[1] = 0;
-    // }
+    hand.imu[1] = mpu.getLinearAccZ()*9.81f; //Height 
+    if ((mpu.getAccY() >= 0.05f || mpu.getAccY() <= -0.05f) && mpu.getAccZ() > 0.85f){ // (if the hand is well oriented we add acceleration)
+      hand.imu[1] = 0;
+    }
+    */
+    //Hand orientation:
     hand.imu[2] = mpu.getAccZ(); //Rotation
     if (hand.imu[2] <= 0.15f && hand.imu[2] >= -0.15f){
       hand.imu[2] = 0;
     }
-    // imu[3] = mpu.getAccY(); //Rotation
-    // if (imu[3] <= 0.01f && imu[3] >= -0.01f){
-    //   imu[3] = 0;
-    // }
   }
 }
  
@@ -256,7 +255,7 @@ void stringToSend(){
   }
 }
 
-/*-------------------------------------------------- main fonctions --------------------------------------------------*/
+/*-------------------------------------------------- main functions --------------------------------------------------*/
 
 void setup() {
   //Communication setup:
