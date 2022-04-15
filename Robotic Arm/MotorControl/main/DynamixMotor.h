@@ -10,12 +10,14 @@
 #define DEVICE_NAME ""
 #endif
 
-// Definition de la classe moteur pour les moteurs dynamixel
-// Definition of the motor class for dynamixel motors
+// Documentation on Dynamixel Motor
 // https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_workbench/#opencr-and-opencm-tutorials
-// https://emanual.robotis.com/docs/en/dxl/x/xl430-w250/#profile-acceleration108
-// https://emanual.robotis.com/docs/en/dxl/x/xm430-w350/#goal-velocity104
+// https://emanual.robotis.com/docs/en/dxl/x/xl430-w250/#control-table-description
+// https://emanual.robotis.com/docs/en/dxl/x/xm430-w350/#control-table-description
+// Dynamixel Item
 // https://github.com/ROBOTIS-GIT/dynamixel-workbench/blob/09e31a8649a7d3b89d76b6bdd2df3407c1622a5c/dynamixel_workbench_toolbox/src/dynamixel_workbench_toolbox/dynamixel_item.cpp
+
+// Definition of the motor class for dynamixel motors
 class DynamixMotor: public Motor
 {
 private:
@@ -24,21 +26,21 @@ private:
 
     uint8_t id;
     uint16_t model_number;
-    uint16_t baud = 57600;
-    uint16_t velocity = 64;
-    uint16_t accelaration = 8;
+    uint16_t baud           = 57600;        // DEFAULT DYNAMIXEL BAUD (57600)
+    uint16_t velocity       = 64;           // DEFAULT VELOCITY MOTOR (64)
+    uint16_t accelaration   = 16;           // DEFAULT ACCELERATION MOTOR (16)
 
-    // uint16_t zero;      // {0, 1648, 0, 1536}
-    // uint16_t home;      // {2047, 2048, 1023, 2048}
-    // uint16_t max_limit; // {4095, 2672, 1408, 2560}
-    // uint16_t step = 32;
+    uint16_t step           = 4;            // DEFAULT STEP MOTOR (4)
     int16_t position;
     bool reversed;
 
 public:
-    DynamixMotor() = delete;
+    DynamixMotor() = delete;                // DISABLE DEFAULT CONSTR
     DynamixMotor(uint8_t, uint16_t, uint16_t, uint16_t, uint16_t, bool);
     ~DynamixMotor() = default;
+
+    uint16_t get_step() { return step; }
+    void set_step(uint16_t step) { this->step = step; }
 
     void go_to(int16_t pos);
     void go_to_degrees(int16_t pos);
@@ -47,6 +49,7 @@ public:
     void go_backward();
 
     int16_t get_position();
+    // DONT USE IN SYM-BOT PROJECT
     int16_t get_home_offset();
     void setHomingOffset(int16_t pos);
 };

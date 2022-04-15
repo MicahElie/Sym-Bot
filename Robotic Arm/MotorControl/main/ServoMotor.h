@@ -4,17 +4,16 @@
 #include <Servo.h>
 #include "Motor.h"
 
-// Definition de la classe moteur pour les moteurs SERVO
 // Definition of the motor class for SERVO motors
 class ServoMotor: public Motor
 {
 private:
-  uint8_t pin;
-  uint16_t home = 180; // degrees
+  uint8_t pin;              // pin of board, must be attach on PWM
+  Servo servo;              // create servo object to control a servo
 
 public:
   ServoMotor() = delete;
-  ServoMotor(uint8_t pin);
+  ServoMotor(uint8_t pin, uint16_t home=180);
   ~ServoMotor() = default;
 
   void go_to(int16_t pos);
@@ -24,6 +23,7 @@ public:
   void go_backward();
 
   int16_t get_position();
+  // DONT USE IN SYM-BOT PROJECT
   int16_t get_home_offset();
   void setHomingOffset(int16_t pos);
 };
