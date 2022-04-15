@@ -7,13 +7,13 @@
   - [Motor Control](#motor-control)
 
 ## Material & Assembly
-Dans cette section, vous allez retrouver:
-1. Les pièces a achete pour la conception du bras robotique
-2. Les modèles de dessin assisté par ordinateur imprimable avec l'imprimante 3D
-3. Le guide d'assemblage
-4. Et un schéma électrique pour les branchements des moteurs sur la carte OpenCr
+In this folder, you will find:
+1. List of pieces needed to assemble the robotic arm
+2. Drawings (SW) and models (STL)
+3. Assembly guide
+4. Electrical schematics for the OpenCR card and its attached motors
 
 ## Motor Control
-Dans cette section vous allez retrouver:
-1. Le code pour la calibration manuelle des moteurs puisque ce bras robotique n'utilise pas des capteurs de fin de course
-2. Le code pour le control des moteurs et la communication Serial avec un diagramme de classe
+In this folder, you will find:
+1. C++ code to manually calibrate the motors (Due to the lack of positional sensors)
+2. C++ code responsible for motor control and serial communication
