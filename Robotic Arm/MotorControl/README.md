@@ -31,5 +31,7 @@ With monitor_m, we can get the different motor's position
 
 ## Control
 With main, we can upload the code to control the robotic arm.
+
 Before uploading the OpenCR Microcontroler code , make sur that the values defined in the init_dynamix() and init_servo() functions coresponds to your articulated arm implementation
 
+<img src="ClassDiagram_Main.png" alt="Class Diagram Main">
