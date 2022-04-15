@@ -14,7 +14,7 @@ class interface:
     gripper = 180
 
     msgIO = MessageIO()
-    msgIO.addDevice(dev=SerialComm("COM4", 57600))  #Port vers open
+    # msgIO.addDevice(dev=SerialComm("COM3", 57600))  #Port vers open
     J_mode=True
 
 
@@ -36,7 +36,7 @@ class interface:
         op=0
         print("CLOSE")
    
-    def go_up(self,motor,button,j_id):
+    def go_up(self,button,j_id):
         self.currentMsgMotor=[0,0,0,0]
         self.currentMsgMotor[j_id]=1
         msg_to_motor=ControlMessage(ControlMessage.SET_JOG,self.currentMsgMotor)
@@ -154,14 +154,14 @@ class interface:
 
     def sendMsg(self):
         tabMsg = [float(J1_coord.value), float(J2_coord.value), float(J3_coord.value), self.gripper]
-        msg_to_motor = ControlMessage(ControlMessage.SET_JOIN_POSITION, tabMsg)
+        msg_to_motor = ControlMessage(ControlMessage.SET_JOINT_POSITION, tabMsg)
         self.msgIO.sendMessage(0, msg_to_motor)
         print(tabMsg)    
 
 if __name__ == '__main__':
     
     obj = interface()
-    app=App(title="Symbot",layout="grid",width=800,height=700)
+    app=App(title="Symbot",layout="grid",width=600,height=550)
     C_Title=Text(app,text="Coordinates",grid=[25,50])
     red=(255,0,0)
     green=(0,255,0)
@@ -185,8 +185,8 @@ if __name__ == '__main__':
     cl_grip_but=PushButton(app,image=closed_off,grid=[100,10],width=108,height=97)
     op_grip_but.update_command(obj.op_grip,args=(is_op,op_grip_but,cl_grip_but))
     cl_grip_but.update_command(obj.cl_grip,args=(is_op,op_grip_but,cl_grip_but))
-    cart_mode_but.update_command(obj.ch_mode,args=(False,cart_mode_but,joint_mode_but,J1_lab,J2_lab,J3_lab,X_lab,Y_lab,Z_lab,J1_coord,J2_coord,J3_coord,J1_val,J2_val,J3_val,X_val,Y_val,Z_val,J1_U,J2_U,J3_U,X_U,Y_U,Z_U,J1_D,J2_D,J3_D,X_D,Y_D,Z_D,J1_ch,J2_ch,J3_ch,X_ch,Y_ch,Z_ch,J1_Ca,J2_Ca,J3_Ca,J1_Go,J2_Go,J3_Go))
-    joint_mode_but.update_command(obj.ch_mode,args=(True,joint_mode_but,cart_mode_but,X_lab,Y_lab,Z_lab,J1_lab,J2_lab,J3_lab,X_coord,Y_coord,Z_coord,X_val,Y_val,Z_val,J1_val,J2_val,J3_val,X_U,Y_U,Z_U,J1_U,J2_U,J3_U,X_D,Y_D,Z_D,J1_D,J2_D,J3_D,X_ch,Y_ch,Z_ch,J1_ch,J2_ch,J3_ch,X_Ca,Y_Ca,Z_Ca,X_Go,Y_Go,Z_Go))
+    # cart_mode_but.update_command(obj.ch_mode,args=(False,cart_mode_but,joint_mode_but,J1_lab,J2_lab,J3_lab,X_lab,Y_lab,Z_lab,J1_coord,J2_coord,J3_coord,J1_val,J2_val,J3_val,X_val,Y_val,Z_val,J1_U,J2_U,J3_U,X_U,Y_U,Z_U,J1_D,J2_D,J3_D,X_D,Y_D,Z_D,J1_ch,J2_ch,J3_ch,X_ch,Y_ch,Z_ch,J1_Ca,J2_Ca,J3_Ca,J1_Go,J2_Go,J3_Go))
+    # joint_mode_but.update_command(obj.ch_mode,args=(True,joint_mode_but,cart_mode_but,X_lab,Y_lab,Z_lab,J1_lab,J2_lab,J3_lab,X_coord,Y_coord,Z_coord,X_val,Y_val,Z_val,J1_val,J2_val,J3_val,X_U,Y_U,Z_U,J1_U,J2_U,J3_U,X_D,Y_D,Z_D,J1_D,J2_D,J3_D,X_ch,Y_ch,Z_ch,J1_ch,J2_ch,J3_ch,X_Ca,Y_Ca,Z_Ca,X_Go,Y_Go,Z_Go))
     X_lab=Text(app,text="X",grid=[0,60],align="left",visible=False)
     Y_lab=Text(app,text="Y",grid=[0,70],align="left",visible=False)
     Z_lab=Text(app,text="Z",grid=[0,80],align="left",visible=False)
@@ -229,12 +229,12 @@ if __name__ == '__main__':
     J2_D.text_size=4
     J3_U.text_size=4
     J3_D.text_size=4
-    J1_U.update_command(obj.go_up,args=(motor1,J1_U,1))
-    J1_D.update_command(obj.go_down,args=(motor1,J1_D,1))
-    J2_U.update_command(obj.go_up,args=(motor2,J2_U,2))
-    J1_D.update_command(obj.go_down,args=(motor2,J2_D,2))
-    J3_U.update_command(obj.go_up,args=(motor3,J3_U,3))
-    J3_D.update_command(obj.go_down,args=(motor3,J3_D,3))
+    J1_U.update_command(obj.go_up,args=(J1_U,1))
+    J1_D.update_command(obj.go_down,args=(J1_D,1))
+    J2_U.update_command(obj.go_up,args=(J2_U,2))
+    J1_D.update_command(obj.go_down,args=(J2_D,2))
+    J3_U.update_command(obj.go_up,args=(J3_U,3))
+    J3_D.update_command(obj.go_down,args=(J3_D,3))
 
     X_ch=PushButton(app,text="Move",grid=[50,60],visible=False)
     X_Go=PushButton(app,text="Go",grid=[50,60],enabled=False,visible=False)
@@ -274,41 +274,44 @@ if __name__ == '__main__':
     J3_Go.update_command(obj.go_but_f,args=(J3_coord,J3_Go,J3_ch,J3_Ca,J3_U,J3_D,J3_val))
     J3_Ca.update_command(obj.can_but_f,args=(J3_coord,J3_Go,J3_ch,J3_Ca,J3_U,J3_D))
 
-    S_title=Text(app,text="Sensors",grid=[175,50])
-    p_lab=Text(app,text="Pinky",grid=[150,90],align="left")
-    i_lab=Text(app,text="Index",grid=[150,60],align="left")
-    m_lab=Text(app,text="Middle",grid=[150,70],align="left")
-    r_lab=Text(app,text="Ring",grid=[150,80],align="left")
-    o_lab=Text(app,text="IMU",grid=[150,100],align="left")
+    cart_mode_but.update_command(obj.ch_mode,args=(False,cart_mode_but,joint_mode_but,J1_lab,J2_lab,J3_lab,X_lab,Y_lab,Z_lab,J1_coord,J2_coord,J3_coord,J1_val,J2_val,J3_val,X_val,Y_val,Z_val,J1_U,J2_U,J3_U,X_U,Y_U,Z_U,J1_D,J2_D,J3_D,X_D,Y_D,Z_D,J1_ch,J2_ch,J3_ch,X_ch,Y_ch,Z_ch,J1_Ca,J2_Ca,J3_Ca,J1_Go,J2_Go,J3_Go))
+    joint_mode_but.update_command(obj.ch_mode,args=(True,joint_mode_but,cart_mode_but,X_lab,Y_lab,Z_lab,J1_lab,J2_lab,J3_lab,X_coord,Y_coord,Z_coord,X_val,Y_val,Z_val,J1_val,J2_val,J3_val,X_U,Y_U,Z_U,J1_U,J2_U,J3_U,X_D,Y_D,Z_D,J1_D,J2_D,J3_D,X_ch,Y_ch,Z_ch,J1_ch,J2_ch,J3_ch,X_Ca,Y_Ca,Z_Ca,X_Go,Y_Go,Z_Go))
 
-    p_sl=Slider(app,grid=[175,90])
-    i_sl=Slider(app,grid=[175,60])
-    m_sl=Slider(app,grid=[175,70])
-    r_sl=Slider(app,grid=[175,80])
-    o_sl=Slider(app,grid=[175,100])
+    # S_title=Text(app,text="Sensors",grid=[175,50])
+    # p_lab=Text(app,text="Pinky",grid=[150,90],align="left")
+    # i_lab=Text(app,text="Index",grid=[150,60],align="left")
+    # m_lab=Text(app,text="Middle",grid=[150,70],align="left")
+    # r_lab=Text(app,text="Ring",grid=[150,80],align="left")
+    # o_lab=Text(app,text="IMU",grid=[150,100],align="left")
 
-    i_cl=PushButton(app,text="Set as closed",grid=[225,60])
-    m_cl=PushButton(app,text="Set as closed",grid=[225,70])
-    r_cl=PushButton(app,text="Set as closed",grid=[225,80])
-    p_cl=PushButton(app,text="Set as closed",grid=[225,90])
-    i_op=PushButton(app,text="Set as open",grid=[200,60])
-    m_op=PushButton(app,text="Set as open",grid=[200,70])
-    r_op=PushButton(app,text="Set as open",grid=[200,80])
-    p_op=PushButton(app,text="Set as open",grid=[200,90])
+    # p_sl=Slider(app,grid=[175,90])
+    # i_sl=Slider(app,grid=[175,60])
+    # m_sl=Slider(app,grid=[175,70])
+    # r_sl=Slider(app,grid=[175,80])
+    # o_sl=Slider(app,grid=[175,100])
+
+    # i_cl=PushButton(app,text="Set as closed",grid=[225,60])
+    # m_cl=PushButton(app,text="Set as closed",grid=[225,70])
+    # r_cl=PushButton(app,text="Set as closed",grid=[225,80])
+    # p_cl=PushButton(app,text="Set as closed",grid=[225,90])
+    # i_op=PushButton(app,text="Set as open",grid=[200,60])
+    # m_op=PushButton(app,text="Set as open",grid=[200,70])
+    # r_op=PushButton(app,text="Set as open",grid=[200,80])
+    # p_op=PushButton(app,text="Set as open",grid=[200,90])
 
     ###############################################################################
     ## Bouton ajoutee
     ###############################################################################
-    sendButton=PushButton(app,obj.sendMsg,text="Send command",grid=[175,110])
+    sendButton=PushButton(app,obj.sendMsg,text="Send command",grid=[22,250])
 
-    i_cl.bg=cer
-    m_cl.bg=cer
-    r_cl.bg=cer
-    p_cl.bg=cer
-    i_op.bg=mint
-    m_op.bg=mint
-    r_op.bg=mint
-    p_op.bg=mint
+    # i_cl.bg=cer
+    # m_cl.bg=cer
+    # r_cl.bg=cer
+    # p_cl.bg=cer
+    # i_op.bg=mint
+    # m_op.bg=mint
+    # r_op.bg=mint
+    # p_op.bg=mint
 
     ###############################################################################
     ## Show App
