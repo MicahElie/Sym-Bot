@@ -4,14 +4,14 @@
 - [Material and Assembly](#material-and-assembly)
   - [Table of Content](#table-of-content)
   - [Electrical Components](#electrical-components)
-    - [Single board computer](#single-board-computer)
     - [MicroController](#microcontroller)
     - [Dynamixel Motors 1](#dynamixel-motors-1)
     - [Dynamixel Motors 2](#dynamixel-motors-2)
     - [ServoMotors](#servomotors)
     - [Power Supply](#power-supply)
-
-All the parts that need to be 3D printed are in the STL folder, see the BOM in the [wiki](https://github.com/chameau5050/Handling-Gro/wiki) to know the number required and to see the step by step assembly guide.
+  - [Material Components](#material-components)
+  - [Assembly Info](#assembly-info)
+  - [Electrical Schematic](#electrical-schematic)
 
 ## Electrical Components
 ### MicroController
@@ -38,3 +38,14 @@ All the parts that need to be 3D printed are in the STL folder, see the BOM in t
 * Brand : [GlobTek inc.](https://www.digikey.ca/en/products/detail/globtek-inc/TR9CE7500LLP-IM-R6B/11201299?s=N4IgTCBcDaIOIBUCyBOAbCgDJgClgjBALoC%2BQA)
 * Model : GTM96900P9012-T2
 * Quantity : 1
+
+## Material Components
+Need update
+
+All the parts that need to be 3D printed are in the STL folder, see the BOM in the [wiki](https://github.com/chameau5050/Handling-Gro/wiki) to know the number required and to see the step by step assembly guide.
+
+## Assembly Info
+Coming soon
+
+## Electrical Schematic
+<img src="ElectricalSchematic_RoboticArm.png" alt="ElectricalSchematic - RoboticArm">
