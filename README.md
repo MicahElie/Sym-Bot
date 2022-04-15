@@ -2,8 +2,8 @@
 ## Sherbrooke University, Robotics Engineering S4 Project, 66th promotion, Winter 2022
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](/LICENSE)
 
-<div id="platform" align="center">
-    <img src="./Application/res/Human's%20Touch.jpg" alt="Sym-Bot Human's Touch" width="600"/>
+<div align="center">
+    <img src="./Application/img/Human's%20Touch.jpg" alt="Sym-Bot Human's Touch" width="600"/>
 </div>
 
 ## Table of Content
