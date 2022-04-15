@@ -1,9 +1,13 @@
 # Sym-Bot : Robotic Arm
 
+<div align="center">
+    <img src="./Material%20&%20Assembly/img/Robotic%20Arm.png" alt="Sym-Bot Human's Touch" width="600"/>
+</div>
+
 ## Table of Content
 - [Sym-Bot : Robotic Arm](#sym-bot--robotic-arm)
   - [Table of Content](#table-of-content)
-  - [Material & Assembly](#material-&-assembly)
+  - [Material & Assembly](#material--assembly)
   - [Motor Control](#motor-control)
 
 ## Material & Assembly
