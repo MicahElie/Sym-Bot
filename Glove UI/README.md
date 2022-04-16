@@ -55,7 +55,7 @@
 
 ## Electrical Schematic
 <div align="center">
-    <img src="./img/Schema%20Electrique%20Gant.png" alt="Glove Electrical Schematic" width="500"/>
+    <img src="./img/Schema%20Electrique%20Gant.png" alt="Glove Electrical Schematic" width="350"/>
 </div>
 
 *Refer also to the [picture](#sym-bot--user-interface-glove) above for assembly*
@@ -71,7 +71,7 @@ Once everything is installed, you can click on the little Home button <img src="
 
 Then go to Open Project
 <div align="center">
-  <img src="./img/PIOOpenProject.png" alt="Open Project image guide">
+  <img src="./img/PIOOpenProject.png" alt="Open Project image guide" width="600">
 </div>
 Search and choose to open the Glove folder
 
@@ -93,7 +93,7 @@ The symbotUIproto code provided can be used with the Arduino Mega 2560 ATmega. T
 
 To help you recreate the proto-board shield that goes on the Arduino Mega, here's an electrical schematic with a picture.
 <div align="center">
-  <img src="./img/ShieldArduinoMegaWithUI.png" alt="Electrical Schematic - Shield Arduino Mega With UI" width="1024">
+  <img src="./img/ShieldArduinoMegaWithUI.png" alt="Electrical Schematic - Shield Arduino Mega With UI" width="718">
   <p>Electrical schematic of the proto-board</p>
 </div>
 
