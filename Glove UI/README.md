@@ -1,7 +1,7 @@
 # Sym-Bot : User Interface Glove
 
 <div align="center">
-    <img src="./img/Final%20Glove.jpg" alt="Glove Assembly" width="400"/>
+    <img src="./img/Final%20Glove.png" alt="Glove Assembly" width="400"/>
 </div>
 
 ## Table of Content
