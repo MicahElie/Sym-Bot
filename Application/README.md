@@ -65,6 +65,8 @@ Steps to setup serial device (Must do before you launch main application) :
 ```
 15  messageIO.addDevice(SerialComm("/dev/ttyACM0", 57600))  # Robotic Arm (OpenCr Board)
 ```
+* On Windows OS, the Port Number start with COM#
+* On Linux OS, the Port Number start with /dev/ttyACM# or /dev/USB#
 
 ### Translate
 When the bluetooth communication is established, it should receive messages in this form:
