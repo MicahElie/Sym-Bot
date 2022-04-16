@@ -34,4 +34,19 @@ With main, we can upload the code to control the robotic arm.
 
 Before uploading the OpenCR Microcontroler code , make sur that the values defined in the init_dynamix() and init_servo() functions coresponds to your articulated arm implementation
 
-<img src="ClassDiagram_Main.png" alt="Class Diagram Main">
+After to upload the code on OpenCr Board, you can test the communication by writing directly to the monitor serial (Arduino IDE)<br>
+Summary for JSON message :
+- "type": Define the command, [1,9] : Action cmd, [11,19] : Set command & [21,29] : Return command
+- "PLS" : Length of data
+- "data": Data for motors [J1,J2,J3,Gripper] (Ignore when it's return command, store the informations)
+Example :
+- {"type":1,"PLS":4,"data":[180,45,90,180]} => HOME Position in JOINT MODE
+- {"type":2,"PLS":4,"data":[180,45,90,180]} => Set Robotic Arm in HOME Position
+- {"type":3,"PLS":4,"data":[0,1,-1,1]}      => [Not move, Foward, Backward, Close] in JOG MODE, Only once
+- Repeat {"type":3,"PLS":4,"data":[0,1,-1,1]} to keep jog
+- {"type":27,"PLS":4,"data":[0,0,0,0]}      => Return the actual position the each motor in data (step unit)
+
+<div>
+  <h4>Class Diagram Main</h4>
+  <img src="ClassDiagram_Main.png" alt="Class Diagram Main">
+</div>
