@@ -39,13 +39,21 @@
 * Model : GTM96900P9012-T2
 * Quantity : 1
 
-## Material Components
-Need update
-
-All the parts that need to be 3D printed are in the STL folder, see the BOM in the [wiki](https://github.com/chameau5050/Handling-Gro/wiki) to know the number required and to see the step by step assembly guide.
-
 ## Assembly Info
-Coming soon
+Assembly schematics and BOMs for each part of the robot (gripper, arm and base) are available in "Material and Assembly" -> "Assembly". Parts that need to be printed can be found in their respective "STL" folder.
+
+### couplerW350
+The XM430-W350 Dynamixel motors use a particular coupler in order to support higher torques. The couplerW350 (available under "Miscellaneous") fonctions as a bridge between the motor and the 545548 hub. To properly assemble the coupler, the following screws should be used:
+* 4 x M2x03 socket head
+* 4 x 6-32x1/4 socket head
+
+### Gripper
+Due to its compactness, the gripper should be assembled in a specific order to tighten every screws properly.
+* Assemble the claw tips and the racks through the slots of the casing using the appropriate spacers and washers in between.
+* Fix the HS-422 Hitec servomotor to the casing. In order to protect the casing, the use of washers is recommended, but not necessary.
+* Install the adaptor. Make sure the cables of the Hitec servomotor bend in a natural way to avoid permanent damage
+* Screw the two parts of the casing together. Make sure the driving gear is in its "open" state by turning it clockwise until it blocks before connecting it with the racks.
+* Gently push the claw tips toward each other. If everything went well, the gear should rotate along. The gripper is now ready to use.
 
 ## Electrical Schematic
 <img src="ElectricalSchematic_RoboticArm.png" alt="ElectricalSchematic - RoboticArm">
