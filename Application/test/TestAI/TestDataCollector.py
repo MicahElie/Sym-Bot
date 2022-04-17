@@ -12,22 +12,6 @@ class TestDataCollector(VectorTester):
         aiDC = DataCollector(7, 10, filename)
         aiDC.save_new_position(inputs1, 2)
         aiDC.save_new_position(inputs2, 4)
-        #test = 1
-        #while not msvcrt.kbhit():
-        #    print(test)
-        #    test = test + 1
-        #test = msvcrt.getch()
-        # self.assertVectorEqual(input_exp, input2)
-
-    async def read_action(self):
-        filename = "CSV_Writing_Example.txt"
-        aiDC = DataCollector(7, 10, filename)
-        await asyncio.sleep(10)
-        await asyncio.create_task(aiDC.read_example())
-        print(aiDC.Action)
-
-    def test_read_action(self):
-        asyncio.run(self.read_action())
 
 
 if __name__ == '__main__':

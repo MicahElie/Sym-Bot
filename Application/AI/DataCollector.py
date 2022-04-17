@@ -1,7 +1,5 @@
 import math
 import threading
-import time
-from queue import Queue
 
 class DataCollector:
 
@@ -15,14 +13,7 @@ class DataCollector:
         self.Action = int(input())
 
     def read_example(self, inputs):
-        action = '-1'
-        #try:
-        #    # action = inputimeout(prompt='I am prompt:', timeout=5)
-        #    # action = self.wait_for_input('>>', time=5)
-        #except TimeoutOccurred:
-        #    print('No input read')
         ti = threading.Thread(target=self.my_input)
-        # self.Action = int(action)
         ti.start()
         ti.join(0.01)
 

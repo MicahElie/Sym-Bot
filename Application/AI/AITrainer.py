@@ -15,10 +15,6 @@ class AITrainer:
         self.debug = np.zeros((1, k))
 
     def sigmoid(self, Z):
-        # for row in range(self.M):
-        #    for col in range(self.K):
-        #       Z[row, col] = 1 / (1 + math.exp(-Z[row, col]))
-
         return 1 / (1 + np.exp(-Z))
 
     def cost_function(self):
