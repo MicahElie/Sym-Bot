@@ -15,7 +15,7 @@
     - [Environnement setup](#environnement-setup)
     - [Running the code](#running-the-code)
     - [Recommendations](#recommendations)
-  - [How to use the Sym-Bot Glove](#how-to-use-the-sym-bot-glove)
+  - [How to use the Sym-Bot Glove with the Robotic Arm](#how-to-use-the-sym-bot-glove-with-the-robotic-arm)
   - [Alternative](#alternative)
 
 ## Material
@@ -85,8 +85,18 @@ More information on setting up [DOIT-ESP32 Devkit v1](https://docs.platformio.or
 
 You can also change the type of board and some other settings in the file [platformio.ini](https://docs.platformio.org/en/latest/projectconf/index.html). 
 
-## How to use the Sym-Bot Glove
-Coming soon
+## How to use the Sym-Bot Glove with the Robotic Arm
+
+To control the robotic arm with the glove, there are three modes available:
+
+- The first one is Jog Mode with the orange LED, in this mode you control individually each motor of the robotic arm by closing either the index, middle or/and ring finger(s) and the orientation of the rotation of the motor with the orientation of the hand. The pinky closes or opens the gripper.
+- The second mode is Cartesian Mode with the green LED, in this mode you can control with precision the gripper and normally you can move horizontally the gripper with the index and vertically with the middle finger. With the ring finger you can control the base rotation. This mode doesn't work well right now, it is in early development.
+- Finally, we have the Gesture Mode (AI) with the blue LED, in this mode you control the robotic arm with gestures. We only added three gestures for now:
+  - The first one is with only the index open and the others fingers closed and the palm of the hand facing the ground (like pointing something)
+  - The second one is the same as the first one, but the palm is facing up.
+  - The last is just all the fingers closed.
+  
+  So, the first gesture makes the robot do a pick animation, the second is a drop animation and the last is go to Home position. This mode is also in early development.
 
 ## Alternative
 The symbotUIproto code provided can be used with the Arduino Mega 2560 ATmega. This code uses USB Serial communication with the main.py in Application folder. You can use it with the JOG and JOINT mode that are in translate.py to control the robotic arm. 
