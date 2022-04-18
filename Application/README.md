@@ -15,7 +15,7 @@
 
 ## Getting started
 First, here's the hardware schematic that you have to keep in mind for every aspect of the project:
-<div id="platform" align="center">
+<div align="center">
     <img src="./img/Hardware_Schematic.PNG" alt="Hardware Schematic" width="675"/>
 </div>
 
@@ -70,7 +70,7 @@ Steps to setup Serial device (Must do before you launch main application) :
 
 ### Translate
 When the Bluetooth communication is established, it should receive messages in this form:
-<div id="platform" align="center">
+<div align="center">
     <img src="./img/MessageReceived.png" alt="Communication Protocol" width="675"/>
 </div>
 
