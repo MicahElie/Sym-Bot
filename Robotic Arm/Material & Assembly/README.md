@@ -9,8 +9,9 @@
     - [Dynamixel Motors 2](#dynamixel-motors-2)
     - [ServoMotors](#servomotors)
     - [Power Supply](#power-supply)
-  - [Material Components](#material-components)
   - [Assembly Info](#assembly-info)
+    - [couplerW350](#couplerw350)
+    - [Gripper](#gripper)
   - [Electrical Schematic](#electrical-schematic)
 
 ## Electrical Components
@@ -43,7 +44,7 @@
 Assembly schematics and BOMs for each part of the robot (gripper, arm and base) are available in "Material and Assembly" -> "Assembly". Parts that need to be printed can be found in their respective "STL" folder.
 
 ### couplerW350
-The XM430-W350 Dynamixel motors use a particular coupler in order to support higher torques. The couplerW350 (available under "Miscellaneous") fonctions as a bridge between the motor and the 545548 hub. To properly assemble the coupler, the following screws should be used:
+The XM430-W350 Dynamixel motors use a particular coupler in order to support higher torques. The couplerW350 (available under "Miscellaneous") functions as a bridge between the motor and the 545548 hub. To properly assemble the coupler, the following screws should be used:
 * 4 x M2x03 socket head
 * 4 x 6-32x1/4 socket head
 
@@ -51,7 +52,7 @@ The XM430-W350 Dynamixel motors use a particular coupler in order to support hig
 Due to its compactness, the gripper should be assembled in a specific order to tighten every screws properly.
 * Assemble the claw tips and the racks through the slots of the casing using the appropriate spacers and washers in between.
 * Fix the HS-422 Hitec servomotor to the casing. In order to protect the casing, the use of washers is recommended, but not necessary.
-* Install the adaptor. Make sure the cables of the Hitec servomotor bend in a natural way to avoid permanent damage
+* Install the adaptor. Make sure the cables of the Hitec servomotor bend in a natural way to avoid permanent damage.
 * Screw the two parts of the casing together. Make sure the driving gear is in its "open" state by turning it clockwise until it blocks before connecting it with the racks.
 * Gently push the claw tips toward each other. If everything went well, the gear should rotate along. The gripper is now ready to use.
 

@@ -33,20 +33,20 @@ Single board computer
 * Quantity : 1
 
 ## Communication
-As you know, the Sym-Bot uses an ESP32, a Raspberry Pi 4 and an OpenCR Arduino microcontroler. All the code found in this section allows the communication between thoses devices to be functional. 
+As you know, the Sym-Bot uses an ESP32, a Raspberry Pi 4 and an OpenCR Arduino microcontroller. All the code found in this section allows the communication between thoses devices to be functional. 
 ### BluetoothComm
 Bluetooth Communication is used between Glove UI (ESP32) and Control System (PI4)
 
-Steps to setup bluetooth device (Must do before you launch main application) :
-1. Turn on bluetooth on Raspberry PI
-2. Supply the device bluetooth
+Steps to setup Bluetooth device (Must do before you launch main application) :
+1. Turn on Bluetooth on Raspberry PI
+2. Supply the device Bluetooth
 3. Connect ESP32's device on Raspberry PI
 4. Collect the informations device
 * If you don't know the MAC & uuid device :
 Using [rfcomm-client.py's example](https://github.com/pybluez/pybluez/blob/master/examples/simple/rfcomm-client.py) to find MAC & uuid device
 5. Write "BT" to select bluetooth communication in main.py
 ```
-10  # Select Communication's type between "USB" (Simuling UI) or "BT" (Glove)
+10  # Select Communication's type between "USB" (Alternative proto-board UI) or "BT" (Glove)
 11  TypeComm = "BT" 
 ```
 6. Change the MAC & uuid device for yours
@@ -59,26 +59,26 @@ Using [rfcomm-client.py's example](https://github.com/pybluez/pybluez/blob/maste
 ### SerialComm
 Serial communication is used between Control System (PI4) and Robotic Arm (OpenCr)
 
-Steps to setup serial device (Must do before you launch main application) :
+Steps to setup Serial device (Must do before you launch main application) :
 1. Find the Serial Port of OpenCr Board (You can find this information with Arduino IDE -> Tools -> Ports)
-2. Change port number on this line
+2. Change port number on this line:
 ```
 15  messageIO.addDevice(SerialComm("/dev/ttyACM0", 57600))  # Robotic Arm (OpenCr Board)
 ```
-* On Windows OS, the Port Number start with COM#
-* On Linux OS, the Port Number start with /dev/ttyACM# or /dev/USB#
+* On Windows OS, the Port Number starts with COM#
+* On Linux OS, the Port Number starts with /dev/ttyACM# or /dev/USB#
 
 ### Translate
-When the bluetooth communication is established, it should receive messages in this form:
+When the Bluetooth communication is established, it should receive messages in this form:
 <div id="platform" align="center">
     <img src="./img/MessageReceived.png" alt="Communication Protocol" width="675"/>
 </div>
 
-As you can see, this message receives the mode, the flexion state of four finger and information from the IMU. The strucutre used is a dictionnay whith the keys "Mode", "Flex" and "IMU".
+As you can see, this message receives the mode, the flexion state of four fingers and information from the IMU. The strucutre used is a dictionary whith the keys "Mode", "Flex" and "IMU".
 - Modes are linked with the "chooseMode()" function. It is possible to add others modes if you want, but make sure to use numbers that are used in this function
-- Flexion state are linked with the "Flex" key of the dictionnary and are used in every function of the translate class, depending on the way we want to translate the message
-- Horizontal and vertical are not use in our application, but it could used ofr knowing how your hand moves, vertically and horizontally. It's is linked with the "IMU" key of the dictionnary
-- Rotation is also linked with the "IMU" key and it is used to know if your hand is upside-down or not. It also used in every function of the translate class. In our particular case, the orientation of the hand indicates in which direction you want to control the motor.
+- Flexion states are linked with the "Flex" key of the dictionary and are used in every function of the translate class, depending on the way we want to translate the message
+- Horizontal and vertical are not used in our application, but it could be used for knowing how your hand moves, vertically and horizontally. It's linked with the "IMU" key of the dictionary
+- Rotation is also linked with the "IMU" key and it is used to know if your hand is upside-down or not. It's also used in every function of the translate class. In our particular case, the orientation of the hand indicates in which direction you want to control the motor.
 
 As it was stated before, it is possible to add an other mode. It also means that you may want to add another function in the translate class. Here's how you should do it:
 - Add mode in chooseMode() and execute the name of your new function in the if clause.
@@ -97,7 +97,7 @@ def yourNewMode(self, "oneOfTheKeysYouSent", "oneOfTheKeysYouSent"):
 msg_to_motor = ControlMessage(ControlMessage.yourOwnConstant, self.youMessage)
 self.msgIO.sendMessage(0, msg_to_motor)
 ```
-Note that in our application, the message sent to the motors are in the form : `[motor1,motor2, motor3, servoMotor]`. In other words, its a message for each motor used
+Note that in our application, the message sent to the motors are in the form: `[motor1,motor2,motor3,servoMotor]`. In other words, its a message for each motor used.
 
 ## AI
 [AI section click here](/Application/AI/)
@@ -108,4 +108,4 @@ To integrate the Interface into the code, we must include the file. Don't forget
 
 ## Test
 ### test translate class
-This test class looks mainly at the chooseMode or jogMode method. It verifies if the right mode is pass to the other class, if the IMU is taken into account and if the rigth message is sent according to what was received. If you run this test, you should see "OK". At the end of this project, a modification made by another members created an error that we didn't have time to correct. The error code shown when you run the test should help you debug this test.
+This test class looks mainly at the chooseMode or jogMode method. It verifies if the right mode is passed to the other class, if the IMU is taken into account and if the rigth message is sent according to what was received. If you run this test, you should see "OK". At the end of this project, a modification made by another member created an error that we didn't have time to correct. The error code shown when you run the test should help you debug this test.

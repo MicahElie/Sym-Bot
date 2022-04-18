@@ -12,18 +12,18 @@
 - Add OpenCr board (1.6.4) with instructions : https://emanual.robotis.com/docs/en/parts/controller/opencr10/#arduino-ide
 - Add library ArduinoJson (6.18.5) with Libray Manager
 - Optional : Using [Visual Studio Code](https://code.visualstudio.com/) like a source-sode editor and add extension Arduino, publisher Microsoft
-- WARNING : The codes below used the versions mentioned in above (#.#.#).
+- WARNING : The codes below uses the versions mentioned in above (#.#.#).
 
 ## Calibration
 With monitor_m, we can get the different motor's position
-1. Open Serial Monitor after to have upload the code
+1. Open Serial Monitor after uploading the code
 2. Write "begin [baudrate]" to initialise the communication with motor(s)
 3. Write "scan [range]" to find the motor's id
 4. Write "joint (id)" to set joint mode | Foreach motor
 5. Write "torque (id) 0" to disable torque | Foreach motor
 6. Position the robot at its zero
 7. Write "position (id)" to get present position from motor | Foreach motor
-8. Transcribe the resultat into main code, function init_dynamix()
+8. Transcribe the results into main code, function init_dynamix()
 9. Repeat step [6,8] for different position
 10. If motor doesn't rotate in good direction, you can write "counter_clockwise (id)" or "clockwise (id)"
 
@@ -32,9 +32,9 @@ With monitor_m, we can get the different motor's position
 ## Control
 With main, we can upload the code to control the robotic arm.
 
-Before uploading the OpenCR Microcontroler code , make sur that the values defined in the init_dynamix() and init_servo() functions coresponds to your articulated arm implementation
+Before uploading the OpenCR Microcontroller code , make sur that the values defined in the init_dynamix() and init_servo() functions coresponds to your articulated arm implementation
 
-After to upload the code on OpenCr Board, you can test the communication by writing directly to the monitor serial (Arduino IDE)<br>
+After uploading the code on the OpenCr Board, you can test the communication by writing directly to the monitor serial (Arduino IDE)<br>
 Summary for JSON message :
 - "type": Define the command, [1,9] : Action cmd, [11,19] : Set command & [21,29] : Return command
 - "PLS" : Length of data

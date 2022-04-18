@@ -55,7 +55,7 @@
 
 ## Electrical Schematic
 <div align="center">
-    <img src="./img/Schema%20Electrique%20Gant.png" alt="Glove Electrical Schematic" width="350"/>
+    <img src="./img/Electrical%20Schematic%20Glove.png" alt="Glove Electrical Schematic" width="350"/>
 </div>
 
 *Refer also to the [picture](#sym-bot--user-interface-glove) above for assembly*

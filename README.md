@@ -30,13 +30,13 @@
 
 ## Project context
 This project came up from the desire to help people with disabilities to take or move objects out of reach. 
-More pricesly, some of these people don't have enough strength in their arms to strech them out. Fortunately, most of the times, they can at least move their hands.
-That's the core of the Sym-Bot Project : Using a glove with sensors to control a robotic arm in the most intuitive way as possible, working in **symbiosis** with the user.
+More precisely, some of these people don't have enough strength in their arms to strech them out. Fortunately, most of the times, they can at least move their hands and fingers.
+That's the core of the Sym-Bot Project : Using a glove with sensors to control a robotic arm in the most intuitive way possible, by working in **symbiosis** with the user.
 
 ## Abilities
 Our robotic arm is a simple 3 degrees of freedom robot. The goal is to accomplish simple tasks only by using the "Glove controller". Here are four things that Sym-Bot can do:
-1. Push/Pull an object on table, placed in front of our robot
-2. Turn an interuptor On/Off, the interuptor being on the table
+1. Push/Pull an object on the table, placed in front of our robot
+2. Turn switch On/Off, the switch being on the table
 3. Take a cellphone (200g max.) and keep it in the air
 4. Using AI to predict moves based on hand signs that we created
 
@@ -53,15 +53,15 @@ Our project is divided in three main sections:
 
 ### Mechanical recommandations
 * Most of the parts of our robot arm should be 3D-printed.
-* We use different kind of bolts, shafts, plastic insert and couplers
+* We used different kind of bolts, shafts, inserts and couplers
 * We created our own bearing with metalic marbles, but you can easily modify this section
 * The list of components to buy, 3D parts and the assembly of the robotic arm is in the [Material & Assembly section](/Robotic%20Arm/Material%20%26%20Assembly/)
 
 ### Electrical recommandations
 * Most of the electrical part is on the implementation of sensors on the glove
-* We personnally sew the electrical components on the glove.
+* We personally sew the electrical components on the glove.
 * Make sure to use long enough wires for the connection between the motors and the OpenCR
-* For more information about the electrical design, look at the [Robotic Arm Electrical section](/Robotic%20Arm/) and the [Glove Electrical section](/Glove%20UI/)
+* For more information about the electrical design, look at the [Robotic Arm Electrical schematic](/Robotic%20Arm/Material%20%26%20Assembly/ElectricalSchematic_RoboticArm.png) and the [Glove Electrical schematic](/Glove%20UI/img/Electrical%20Schematic%20Glove.png)
 
 ### Software recommandations
 * We mostly used Python and C/C++ with Visual Studio Code as code editor and IDE with extensions.
